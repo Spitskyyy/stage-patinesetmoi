@@ -14,6 +14,15 @@ class BanquetteType extends AbstractType
         $builder
             ->add('title')
             ->add('image')
+            ->add('finition')
+            ->add('tissu')
+            ->add('usagetxt')
+            ->add('materiaux')
+            ->add('temp')
+            ->add('recouverture')
+            ->add('largeur')
+            ->add('profondeur')
+            ->add('hauteur')
         ;
     }
 
