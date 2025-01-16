@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banquette{% endblock %}
+
+{% block body %}
+    <h1>Banquette</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ banquette.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ banquette.title }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ banquette.image }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_banquette_index') }}">back to list</a>
+
+    <a href="{{ path('app_banquette_edit', {'id': banquette.id}) }}">edit</a>
+
+    {{ include('banquette/_delete_form.html.twig') }}
+{% endblock %}
