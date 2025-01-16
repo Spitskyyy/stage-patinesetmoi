@@ -64,7 +64,7 @@
 								<i class="bi bi-chevron-down toggle-dropdown"></i>
 							</a>
 							<ul>
-								<li><a href="#">Banquettes</a></li>
+								<li><a href="/banquette">Banquettes</a></li>
 								<li><a href="#">Fauteuil d'agrement</a></li>
 								<li><a href="#">Garniture</a></li>
 								<li><a href="#">Avant / Après</a></li>
@@ -73,25 +73,32 @@
 
 						<li class="dropdown">
 							<a href="#">
-								<span>Couture<p3>....</p3>
+								<span>Couture d'ameublement
 								</span>
 								<i class="bi bi-chevron-down toggle-dropdown"></i>
 							</a>
 							<ul>
 								<li>
-									<a href="#">Rideaux</a>
+									<a href="#">voilages, rideaux doublés et stores</a>
 								</li>
 								<li>
-									<a href="#">Téte de lit</a>
+									<a href="#">Tringlerie</a>
 								</li>
 								<li>
-									<a href="#">Abat-jour</a>
+									<a href="#">Têtes de lits et dessus de lits</a>
 								</li>
-								{# <li><a href="#">Dropdown 4</a></li> #}
+								 <li><a href="#">Abat-jour</a></li> 
 							</ul>
 						</li>
-						<li>
-							<a href="/about">Deco</a>
+						<li class="dropdown">
+							<a href="#">
+								<span>Décoration</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/banquette">Objets de décoration</a></li>
+								<li><a href="#">Mises en scene</a></li>
+							</ul>
 						</li>
 						<li>
 							<a href="/about">Livre d'or</a>
@@ -153,67 +160,66 @@
 			<!-- /Hero Section -->
 
 			{# <!-- Get Started Section -->
-			<section id="get-started" class="get-started section">
-
-				<div class="container">
-
-					<div class="row justify-content-between gy-4">
-
-						<div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
-							<div class="content">
-								<h3>Minus hic non reiciendis ea possimus at quia.</h3>
-								<p>Rem id rerum. Debitis deserunt quidem delectus expedita ducimus dolor. Aut iusto ipsa. Eos ipsum nobis ipsa soluta itaque perspiciatis fuga ipsum perspiciatis. Eum amet fugiat totam nisi possimus ut delectus dicta.
-								</p>
-								<p>Aliquam velit deserunt autem. Inventore et saepe. Tenetur suscipit eligendi labore culpa eos. Deserunt porro magni qui necessitatibus dolorem at animi cupiditate.</p>
-							</div>
-						</div>
-
-						<div class="col-lg-5" data-aos="zoom-out" data-aos-delay="200">
-							<form action="forms/quote.php" method="post" class="php-email-form">
-								<h3>Get a quote</h3>
-								<p>Vel nobis odio laboriosam et hic voluptatem. Inventore vitae totam. Rerum repellendus enim linead sero park flows.</p>
-								<div class="row gy-3">
-
-									<div class="col-12">
-										<input type="text" name="name" class="form-control" placeholder="Name" required="">
-									</div>
-
-									<div class="col-12 ">
-										<input type="email" class="form-control" name="email" placeholder="Email" required="">
-									</div>
-
-									<div class="col-12">
-										<input type="text" class="form-control" name="phone" placeholder="Phone" required="">
-									</div>
-
-									<div class="col-12">
-										<textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-									</div>
-
-									<div class="col-12 text-center">
-										<div class="loading">Loading</div>
-										<div class="error-message"></div>
-										<div class="sent-message">Your quote request has been sent successfully. Thank you!</div>
-
-										<button type="submit">Get a quote</button>
-									</div>
-
-								</div>
-							</form>
-						</div>
-						<!-- End Quote Form -->
-
-					</div>
-
-				</div>
-
-			</section>
-			<!-- /Get Started Section --> #}
+									<section id="get-started" class="get-started section">
+						
+										<div class="container">
+						
+											<div class="row justify-content-between gy-4">
+						
+												<div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+													<div class="content">
+														<h3>Minus hic non reiciendis ea possimus at quia.</h3>
+														<p>Rem id rerum. Debitis deserunt quidem delectus expedita ducimus dolor. Aut iusto ipsa. Eos ipsum nobis ipsa soluta itaque perspiciatis fuga ipsum perspiciatis. Eum amet fugiat totam nisi possimus ut delectus dicta.
+														</p>
+														<p>Aliquam velit deserunt autem. Inventore et saepe. Tenetur suscipit eligendi labore culpa eos. Deserunt porro magni qui necessitatibus dolorem at animi cupiditate.</p>
+													</div>
+												</div>
+						
+												<div class="col-lg-5" data-aos="zoom-out" data-aos-delay="200">
+													<form action="forms/quote.php" method="post" class="php-email-form">
+														<h3>Get a quote</h3>
+														<p>Vel nobis odio laboriosam et hic voluptatem. Inventore vitae totam. Rerum repellendus enim linead sero park flows.</p>
+														<div class="row gy-3">
+						
+															<div class="col-12">
+																<input type="text" name="name" class="form-control" placeholder="Name" required="">
+															</div>
+						
+															<div class="col-12 ">
+																<input type="email" class="form-control" name="email" placeholder="Email" required="">
+															</div>
+						
+															<div class="col-12">
+																<input type="text" class="form-control" name="phone" placeholder="Phone" required="">
+															</div>
+						
+															<div class="col-12">
+																<textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+															</div>
+						
+															<div class="col-12 text-center">
+																<div class="loading">Loading</div>
+																<div class="error-message"></div>
+																<div class="sent-message">Your quote request has been sent successfully. Thank you!</div>
+						
+																<button type="submit">Get a quote</button>
+															</div>
+						
+														</div>
+													</form>
+												</div>
+												<!-- End Quote Form -->
+						
+											</div>
+						
+										</div>
+						
+									</section>
+									<!-- /Get Started Section --> #}
 
 			<!-- Constructions Section -->
-			<section
-				id="constructions" class="constructions section">
-				<!-- Section Title -->
+				<section
+				id="constructions" class="constructions section"> <!-- Section Title -->
 				<div class="container section-title" data-aos="fade-up">
 					<h2>Constructions</h2>
 					<p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
@@ -515,7 +521,7 @@
 									<h3>Voluptatem dignissimos provident</h3>
 									<p class="fst-italic">
 										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-																																																																																																																																																																											magna aliqua.
+																																																																																																																																																																																															magna aliqua.
 									</p>
 									<ul>
 										<li>
@@ -545,7 +551,7 @@
 									<h3>Neque exercitationem debitis</h3>
 									<p class="fst-italic">
 										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-																																																																																																																																																																											magna aliqua.
+																																																																																																																																																																																															magna aliqua.
 									</p>
 									<ul>
 										<li>
@@ -593,7 +599,7 @@
 									</ul>
 									<p class="fst-italic">
 										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-																																																																																																																																																																											magna aliqua.
+																																																																																																																																																																																															magna aliqua.
 									</p>
 								</div>
 								<div class="col-lg-6 order-1 order-lg-2 text-center">
@@ -609,7 +615,7 @@
 									<h3>Omnis fugiat ea explicabo sunt</h3>
 									<p class="fst-italic">
 										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-																																																																																																																																																																											magna aliqua.
+																																																																																																																																																																																															magna aliqua.
 									</p>
 									<ul>
 										<li>
@@ -896,7 +902,7 @@
 					<div class="swiper init-swiper">
 						<script type="application/json" class="swiper-config">
 							{
-																																																																																													"loop": true,"speed": 600,"autoplay": {"delay": 5000},"slidesPerView": "auto","pagination": { "el": ".swiper-pagination","type": "bullets", "clickable": true},"breakpoints": {"320": {"slidesPerView": 1,"spaceBetween": 40},"1200": {"slidesPerView": 2,"spaceBetween": 20}}}
+																																																																																																											"loop": true,"speed": 600,"autoplay": {"delay": 5000},"slidesPerView": "auto","pagination": { "el": ".swiper-pagination","type": "bullets", "clickable": true},"breakpoints": {"320": {"slidesPerView": 1,"spaceBetween": 40},"1200": {"slidesPerView": 2,"spaceBetween": 20}}}
 						</script>
 						<div class="swiper-wrapper">
 
@@ -1266,7 +1272,7 @@
 		</a>
 
 		{# <!-- Preloader -->
-			<div id="preloader"></div> #}
+		<div id="preloader"></div> #}
 
 
 		{% block javascripts %}

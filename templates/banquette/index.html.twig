@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banquette index{% endblock %}
+
+{% block body %}
+    <h1>Banquette index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Image</th>
+                <th>Finition</th>
+                <th>Tissu</th>
+                <th>Usagetxt</th>
+                <th>Materiaux</th>
+                <th>Temp</th>
+                <th>Recouverture</th>
+                <th>Largeur</th>
+                <th>Profondeur</th>
+                <th>Hauteur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for banquette in banquettes %}
+            <tr>
+                <td>{{ banquette.id }}</td>
+                <td>{{ banquette.title }}</td>
+                <td>{{ banquette.image }}</td>
+                <td>{{ banquette.finition }}</td>
+                <td>{{ banquette.tissu }}</td>
+                <td>{{ banquette.usagetxt }}</td>
+                <td>{{ banquette.materiaux }}</td>
+                <td>{{ banquette.temp }}</td>
+                <td>{{ banquette.recouverture }}</td>
+                <td>{{ banquette.largeur }}</td>
+                <td>{{ banquette.profondeur }}</td>
+                <td>{{ banquette.hauteur }}</td>
+                <td>
+                    <a href="{{ path('app_banquette_show', {'id': banquette.id}) }}">show</a>
+                    <a href="{{ path('app_banquette_edit', {'id': banquette.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_banquette_new') }}">Create new</a>
+{% endblock %}
