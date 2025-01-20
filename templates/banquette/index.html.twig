@@ -1,18 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BanquetteController!
+{% block title %}Patines Et Moi | Banquettes
 {% endblock %}
 
 {% block body %}
-
-
-<!DOCTYPE html>
-<html lang="en">
-
 	<head>
 		<meta charset="utf-8">
 		<meta content="width=device-width, initial-scale=1.0" name="viewport">
-		<title>Blog - UpConstruction Bootstrap Template</title>
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 
@@ -135,31 +129,34 @@
 								<article class="card h-100">
 									<div class="post-img position-relative overflow-hidden">
 										<img src="{{ asset('uploads/images/' ~ banquette.image) }}" class="card-img-top" alt="{{ banquette.title }}">
-										<span class="post-date position-absolute top-0 end-0 bg-warning text-white px-3 py-1 m-2 rounded">
-											{{ banquette.temp }}
-										</span>
 									</div>
 									<div class="card-body d-flex flex-column">
 										<h5 class="card-title">{{ banquette.title }}</h5>
-										<div class="meta d-flex align-items-center text-muted mb-2">
+										{# <div class="meta d-flex align-items-center text-muted mb-2">
 											<div class="d-flex align-items-center me-3">
 												<i class="bi bi-person"></i>
-												<span class="ps-2">{{ banquette.usagetxt }}</span>
+												<span class="ps-2"></span>
 											</div>
 											<div class="d-flex align-items-center">
 												<i class="bi bi-folder2"></i>
-												<span class="ps-2">{{ banquette.materiaux }}</span>
+												<span class="ps-2"></span>
 											</div>
-										</div>
+										</div> #}
 										<p class="card-text flex-grow-1">
 											Finition:
 											{{ banquette.finition }}<br>
 											Tissu:
 											{{ banquette.tissu }}<br>
 											Recouverture:
-											{{ banquette.recouverture }}
+											{{ banquette.recouverture }}<br>
+											Materiaux:
+											{{ banquette.materiaux }}<br>
+											Usage:
+											{{ banquette.usagetxt }}<br>
+											Temps de réalisation:
+											{{ banquette.temp }}
 										</p>
-										<a href="{{ path('app_banquette_show', {id: banquette.id}) }}" class="btn btn-primary mt-auto">Read More</a>
+										<a href="{{ path('app_banquette_show', {id: banquette.id}) }}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
 									</div>
 								</article>
 							</div>
