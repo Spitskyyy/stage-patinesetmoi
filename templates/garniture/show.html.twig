@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Garniture{% endblock %}
+
+{% block body %}
+    <h1>Garniture</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ garniture.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ garniture.title }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ garniture.image }}</td>
+            </tr>
+            <tr>
+                <th>Detail</th>
+                <td>{{ garniture.detail }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_garniture_index') }}">back to list</a>
+
+    <a href="{{ path('app_garniture_edit', {'id': garniture.id}) }}">edit</a>
+
+    {{ include('garniture/_delete_form.html.twig') }}
+{% endblock %}

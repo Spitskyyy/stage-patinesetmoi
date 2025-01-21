@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Garniture{% endblock %}
+
+{% block body %}
+    <h1>Create new Garniture</h1>
+
+    {{ include('garniture/_form.html.twig') }}
+
+    <a href="{{ path('app_garniture_index') }}">back to list</a>
+{% endblock %}
