@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FauteuilDagrement{% endblock %}
+
+{% block body %}
+    <h1>FauteuilDagrement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fauteuil_dagrement.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ fauteuil_dagrement.title }}</td>
+            </tr>
+            <tr>
+                <th>Usagetxt</th>
+                <td>{{ fauteuil_dagrement.usagetxt }}</td>
+            </tr>
+            <tr>
+                <th>Largeur</th>
+                <td>{{ fauteuil_dagrement.largeur }}</td>
+            </tr>
+            <tr>
+                <th>Profondeur</th>
+                <td>{{ fauteuil_dagrement.profondeur }}</td>
+            </tr>
+            <tr>
+                <th>Hauteur</th>
+                <td>{{ fauteuil_dagrement.hauteur }}</td>
+            </tr>
+            <tr>
+                <th>Recouverture</th>
+                <td>{{ fauteuil_dagrement.recouverture }}</td>
+            </tr>
+            <tr>
+                <th>Materiaux</th>
+                <td>{{ fauteuil_dagrement.materiaux }}</td>
+            </tr>
+            <tr>
+                <th>Tissu</th>
+                <td>{{ fauteuil_dagrement.tissu }}</td>
+            </tr>
+            <tr>
+                <th>Finition</th>
+                <td>{{ fauteuil_dagrement.finition }}</td>
+            </tr>
+            <tr>
+                <th>Temps</th>
+                <td>{{ fauteuil_dagrement.temps }}</td>
+            </tr>
+            <tr>
+                <th>Detail</th>
+                <td>{{ fauteuil_dagrement.detail }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fauteuil_dagrement_index') }}">back to list</a>
+
+    <a href="{{ path('app_fauteuil_dagrement_edit', {'id': fauteuil_dagrement.id}) }}">edit</a>
+
+    {{ include('fauteuil_dagrement/_delete_form.html.twig') }}
+{% endblock %}

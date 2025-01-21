@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Patines Et Moi | Banquettes
+{% block title %}Patines Et Moi | Fauteuil d'agrement
 {% endblock %}
 
 {% block body %}
@@ -105,49 +105,51 @@
 			<!-- Page Title -->
 			<div class="page-title dark-background" style="background-image: url(style/img/page-title-bg.jpg);">
 				<div class="container position-relative">
-					<h1>Banquettes</h1>
+					<h1>Fauteuil d'agrement</h1>
 				</div>
 			</div>
 			<!-- End Page Title -->
 
 			<!-- Blog Posts Section -->
+            <a href="fauteuil_dagrement/new">test</a>
 			<section id="blog-posts" class="blog-posts section">
-			<a href="banquette/new">test</a>
-				<div class="container py-5">
-					<div class="row row-cols-1 row-cols-md-3 g-4">
-						{% for banquette in banquettes %}
-							<div class="col">
-								<article class="card h-100">
-									<div class="post-img position-relative overflow-hidden">
-										<img src="{{ asset('uploads/images/' ~ banquette.image) }}" class="card-img-top" alt="{{ banquette.title }}">
-									</div>
-									<div class="card-body d-flex flex-column">
-										<h5 class="card-title">{{ banquette.title }}</h5>
-										<p class="card-text flex-grow-1">
-											Finition:
-											{{ banquette.finition }}<br>
-											Tissu:
-											{{ banquette.tissu }}<br>
-											Recouverture:
-											{{ banquette.recouverture }}<br>
-											Matériaux:
-											{{ banquette.materiaux }}<br>
-											Usage:
-											{{ banquette.usagetxt }}<br>
-											Temps de réalisation:
-											{{ banquette.temp }}
-										</p>
-										<a href="{{ path('app_banquette_show', {id: banquette.id}) }}" class="readmore stretched-link">
-											<span>Read More</span>
-											<i class="bi bi-arrow-right"></i>
-										</a>
-									</div>
-								</article>
-							</div>
-						{% endfor %}
-					</div>
-				</div>
-			</section>
+    <div class="container py-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for fauteuil_dagrement in fauteuil_dagrements %}
+                <div class="col">
+                    <article class="card h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                            <img src="{{ asset('uploads/images/' ~ fauteuil_dagrement.image) }}" class="card-img-top" alt="{{ fauteuil_dagrement.title }}">
+                            
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ fauteuil_dagrement.title }}</h5>
+                            Détail: {{ fauteuil_dagrement.detail }}
+                            <p class="card-text flex-grow-1">
+                                Usage: {{ fauteuil_dagrement.usagetxt }}<br>
+                                Largeur: {{ fauteuil_dagrement.largeur }} cm<br>
+                                Profondeur: {{ fauteuil_dagrement.profondeur }} cm<br>
+                                Hauteur: {{ fauteuil_dagrement.hauteur }} cm<br>
+                                Recouverture: {{ fauteuil_dagrement.recouverture }}<br>
+                                Matériaux: {{ fauteuil_dagrement.materiaux }}<br>
+                                Tissu: {{ fauteuil_dagrement.tissu }}<br>
+                                Finition: {{ fauteuil_dagrement.finition }}<br>
+                                Temps de réalisation: {{ fauteuil_dagrement.temps }}<br>
+                                
+                            </p>
+                            <a href="{{ path('app_fauteuil_dagrement_show', {'id': fauteuil_dagrement.id}) }}" class="readmore stretched-link">
+                                <span>Voir Plus</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+                    
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 			<!-- End Blog Posts Section -->
 
 			<!-- Pagination -->

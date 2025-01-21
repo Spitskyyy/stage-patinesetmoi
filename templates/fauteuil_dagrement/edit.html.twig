@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FauteuilDagrement{% endblock %}
+
+{% block body %}
+    <h1>Edit FauteuilDagrement</h1>
+
+    {{ include('fauteuil_dagrement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_fauteuil_dagrement_index') }}">back to list</a>
+
+    {{ include('fauteuil_dagrement/_delete_form.html.twig') }}
+{% endblock %}
