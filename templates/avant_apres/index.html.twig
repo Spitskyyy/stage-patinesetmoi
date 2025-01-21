@@ -112,30 +112,31 @@
 
 			<!-- Blog Posts Section -->
 			<section id="blog-posts" class="blog-posts section">
-    <div class="container py-5">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for avant_apre in avant_apres %}
-                <div class="col">
-                    <article class="card h-100">
-                        <div class="post-img position-relative overflow-hidden">
-                            <img src="{{ asset('uploads/images/' ~ avant_apre.image) }}" class="card-img-top" alt="{{ avant_apre.title }}">
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ avant_apre.title }}</h5>
-                            <p class="card-text flex-grow-1">
-                                Details: {{ avant_apre.detail }}
-                            </p>
-                            <a href="{{ path('app_avant_apres_show', {id: avant_apre.id}) }}" class="readmore stretched-link">
-                                <span>Read More</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </article>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
+				<div class="container py-5">
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						{% for avant_apre in avant_apres %}
+							<div class="col">
+								<article class="card h-100">
+									<div class="post-img position-relative overflow-hidden">
+										<img src="{{ asset('uploads/images/' ~ avant_apre.image) }}" class="card-img-top" alt="{{ avant_apre.title }}">
+									</div>
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{ avant_apre.title }}</h5>
+										<p class="card-text flex-grow-1">
+											Details:
+											{{ avant_apre.detail }}
+										</p>
+										<a href="{{ path('app_avant_apres_show', {id: avant_apre.id}) }}" class="readmore stretched-link">
+											<span>Read More</span>
+											<i class="bi bi-arrow-right"></i>
+										</a>
+									</div>
+								</article>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
 
 			<!-- End Blog Posts Section -->
 
@@ -233,26 +234,26 @@
 					</div>
 
 					{# <div class="col-lg-2 col-md-3 footer-links">
-						<h4>Hic solutasetp</h4>
-						<ul>
-							<li><a href="#">Molestiae accusamus iure</a></li>
-							<li><a href="#">Excepturi dignissimos</a></li>
-							<li><a href="#">Suscipit distinctio</a></li>
-							<li><a href="#">Dilecta</a></li>
-							<li><a href="#">Sit quas consectetur</a></li>
-						</ul>
-					</div>
-
-					<div class="col-lg-2 col-md-3 footer-links">
-						<h4>Nobis illum</h4>
-						<ul>
-							<li><a href="#">Ipsam</a></li>
-							<li><a href="#">Laudantium dolorum</a></li>
-							<li><a href="#">Dinera</a></li>
-							<li><a href="#">Trodelas</a></li>
-							<li><a href="#">Flexo</a></li>
-						</ul>
-					</div> #}
+											<h4>Hic solutasetp</h4>
+											<ul>
+												<li><a href="#">Molestiae accusamus iure</a></li>
+												<li><a href="#">Excepturi dignissimos</a></li>
+												<li><a href="#">Suscipit distinctio</a></li>
+												<li><a href="#">Dilecta</a></li>
+												<li><a href="#">Sit quas consectetur</a></li>
+											</ul>
+										</div>
+					
+										<div class="col-lg-2 col-md-3 footer-links">
+											<h4>Nobis illum</h4>
+											<ul>
+												<li><a href="#">Ipsam</a></li>
+												<li><a href="#">Laudantium dolorum</a></li>
+												<li><a href="#">Dinera</a></li>
+												<li><a href="#">Trodelas</a></li>
+												<li><a href="#">Flexo</a></li>
+											</ul>
+										</div> #}
 
 				</div>
 			</div>
