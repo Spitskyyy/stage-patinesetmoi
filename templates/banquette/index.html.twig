@@ -124,18 +124,18 @@
 									<div class="card-body d-flex flex-column">
 										<h5 class="card-title">{{ banquette.title }}</h5>
 										<p class="card-text flex-grow-1">
-											Finition:
+											<b>Finition:</b>
 											{{ banquette.finition }}<br>
-											Tissu:
+											<b>Tissu:</b>
 											{{ banquette.tissu }}<br>
-											Recouverture:
+											<b>Recouverture:</b>
 											{{ banquette.recouverture }}<br>
-											Matériaux:
+											<b>Matériaux:</b>
 											{{ banquette.materiaux }}<br>
-											Usage:
+											<b>Usage:</b>
 											{{ banquette.usagetxt }}<br>
-											Temps de réalisation:
-											{{ banquette.temp }}
+											<b>Temps de réalisation:</b>
+											{{ banquette.temp }} h
 										</p>
 										<a href="{{ path('app_banquette_show', {id: banquette.id}) }}" class="readmore stretched-link">
 											<span>Read More</span>
