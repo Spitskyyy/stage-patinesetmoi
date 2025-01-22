@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AvantApresRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AvantApresRepository::class)]
@@ -21,8 +22,10 @@ class AvantApres
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $detail = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
 
     public function getId(): ?int
     {
@@ -64,4 +67,5 @@ class AvantApres
 
         return $this;
     }
+
 }

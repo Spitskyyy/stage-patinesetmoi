@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Tringlerie{% endblock %}
+
+{% block body %}
+    <h1>Create new Tringlerie</h1>
+
+    {{ include('tringlerie/_form.html.twig') }}
+
+    <a href="{{ path('app_tringlerie_index') }}">back to list</a>
+{% endblock %}

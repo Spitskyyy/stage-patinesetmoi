@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Tringlerie{% endblock %}
+
+{% block body %}
+    <h1>Edit Tringlerie</h1>
+
+    {{ include('tringlerie/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_tringlerie_index') }}">back to list</a>
+
+    {{ include('tringlerie/_delete_form.html.twig') }}
+{% endblock %}
