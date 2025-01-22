@@ -6,6 +6,7 @@ use App\Entity\VoilageRideauxDoubles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class VoilageRideauxDoublesType extends AbstractType
 {
@@ -13,13 +14,17 @@ class VoilageRideauxDoublesType extends AbstractType
     {
         $builder
             ->add('usagetxt')
-            ->add('image')
             ->add('largeur')
             ->add('hauteur')
             ->add('doublure')
             ->add('tissu')
             ->add('finition')
             ->add('temps')
+            ->add('image', FileType::class, [
+                'label' => 'Image (fichier JPG ou PNG)',
+                'mapped' => false,
+                'required' => false,
+            ]);
         ;
     }
 
