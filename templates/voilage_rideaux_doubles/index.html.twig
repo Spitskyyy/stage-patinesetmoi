@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VoilageRideauxDoubles index{% endblock %}
+
+{% block body %}
+    <h1>VoilageRideauxDoubles index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usagetxt</th>
+                <th>Image</th>
+                <th>Largeur</th>
+                <th>Hauteur</th>
+                <th>Doublure</th>
+                <th>Tissu</th>
+                <th>Finition</th>
+                <th>Temps</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for voilage_rideaux_double in voilage_rideaux_doubles %}
+            <tr>
+                <td>{{ voilage_rideaux_double.id }}</td>
+                <td>{{ voilage_rideaux_double.usagetxt }}</td>
+                <td>{{ voilage_rideaux_double.image }}</td>
+                <td>{{ voilage_rideaux_double.largeur }}</td>
+                <td>{{ voilage_rideaux_double.hauteur }}</td>
+                <td>{{ voilage_rideaux_double.doublure }}</td>
+                <td>{{ voilage_rideaux_double.tissu }}</td>
+                <td>{{ voilage_rideaux_double.finition }}</td>
+                <td>{{ voilage_rideaux_double.temps }}</td>
+                <td>
+                    <a href="{{ path('app_voilage_rideaux_doubles_show', {'id': voilage_rideaux_double.id}) }}">show</a>
+                    <a href="{{ path('app_voilage_rideaux_doubles_edit', {'id': voilage_rideaux_double.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_voilage_rideaux_doubles_new') }}">Create new</a>
+{% endblock %}

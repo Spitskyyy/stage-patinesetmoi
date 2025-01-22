@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit VoilageRideauxDoubles{% endblock %}
+
+{% block body %}
+    <h1>Edit VoilageRideauxDoubles</h1>
+
+    {{ include('voilage_rideaux_doubles/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_voilage_rideaux_doubles_index') }}">back to list</a>
+
+    {{ include('voilage_rideaux_doubles/_delete_form.html.twig') }}
+{% endblock %}
