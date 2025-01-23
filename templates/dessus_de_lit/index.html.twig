@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DessusDeLit index{% endblock %}
+
+{% block body %}
+    <h1>DessusDeLit index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Usetxt</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Lining</th>
+                <th>Fabric</th>
+                <th>Bedspread_finishes</th>
+                <th>Time</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dessus_de_lit in dessus_de_lits %}
+            <tr>
+                <td>{{ dessus_de_lit.id }}</td>
+                <td>{{ dessus_de_lit.title }}</td>
+                <td>{{ dessus_de_lit.usetxt }}</td>
+                <td>{{ dessus_de_lit.length }}</td>
+                <td>{{ dessus_de_lit.width }}</td>
+                <td>{{ dessus_de_lit.lining }}</td>
+                <td>{{ dessus_de_lit.fabric }}</td>
+                <td>{{ dessus_de_lit.bedspreadFinishes }}</td>
+                <td>{{ dessus_de_lit.time }}</td>
+                <td>
+                    <a href="{{ path('app_dessus_de_lit_show', {'id': dessus_de_lit.id}) }}">show</a>
+                    <a href="{{ path('app_dessus_de_lit_edit', {'id': dessus_de_lit.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dessus_de_lit_new') }}">Create new</a>
+{% endblock %}

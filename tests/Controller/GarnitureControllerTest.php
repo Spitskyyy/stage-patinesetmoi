@@ -49,7 +49,7 @@ final class GarnitureControllerTest extends WebTestCase
 
         $this->client->submitForm('Save', [
             'garniture[title]' => 'Testing',
-            'garniture[image]' => 'Testing',
+            'garniture[picture]' => 'Testing',
             'garniture[detail]' => 'Testing',
         ]);
 
@@ -63,7 +63,7 @@ final class GarnitureControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new Garniture();
         $fixture->setTitle('My Title');
-        $fixture->setImage('My Title');
+        $fixture->setPicture('My Title');
         $fixture->setDetail('My Title');
 
         $this->manager->persist($fixture);
@@ -82,7 +82,7 @@ final class GarnitureControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new Garniture();
         $fixture->setTitle('Value');
-        $fixture->setImage('Value');
+        $fixture->setPicture('Value');
         $fixture->setDetail('Value');
 
         $this->manager->persist($fixture);
@@ -92,7 +92,7 @@ final class GarnitureControllerTest extends WebTestCase
 
         $this->client->submitForm('Update', [
             'garniture[title]' => 'Something New',
-            'garniture[image]' => 'Something New',
+            'garniture[picture]' => 'Something New',
             'garniture[detail]' => 'Something New',
         ]);
 
@@ -101,7 +101,7 @@ final class GarnitureControllerTest extends WebTestCase
         $fixture = $this->repository->findAll();
 
         self::assertSame('Something New', $fixture[0]->getTitle());
-        self::assertSame('Something New', $fixture[0]->getImage());
+        self::assertSame('Something New', $fixture[0]->getPicture());
         self::assertSame('Something New', $fixture[0]->getDetail());
     }
 
@@ -110,7 +110,7 @@ final class GarnitureControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new Garniture();
         $fixture->setTitle('Value');
-        $fixture->setImage('Value');
+        $fixture->setPicture('Value');
         $fixture->setDetail('Value');
 
         $this->manager->persist($fixture);

@@ -49,16 +49,16 @@ final class BanquetteControllerTest extends WebTestCase
 
         $this->client->submitForm('Save', [
             'banquette[title]' => 'Testing',
-            'banquette[image]' => 'Testing',
-            'banquette[finition]' => 'Testing',
-            'banquette[tissu]' => 'Testing',
-            'banquette[usagetxt]' => 'Testing',
-            'banquette[materiaux]' => 'Testing',
-            'banquette[temp]' => 'Testing',
-            'banquette[recouverture]' => 'Testing',
-            'banquette[largeur]' => 'Testing',
-            'banquette[profondeur]' => 'Testing',
-            'banquette[hauteur]' => 'Testing',
+            'banquette[picture]' => 'Testing',
+            'banquette[usetxt]' => 'Testing',
+            'banquette[width]' => 'Testing',
+            'banquette[depth]' => 'Testing',
+            'banquette[height]' => 'Testing',
+            'banquette[covering_or_complete_repair]' => 'Testing',
+            'banquette[materials]' => 'Testing',
+            'banquette[fabric]' => 'Testing',
+            'banquette[finishes]' => 'Testing',
+            'banquette[time]' => 'Testing',
         ]);
 
         self::assertResponseRedirects($this->path);
@@ -71,16 +71,16 @@ final class BanquetteControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new Banquette();
         $fixture->setTitle('My Title');
-        $fixture->setImage('My Title');
-        $fixture->setFinition('My Title');
-        $fixture->setTissu('My Title');
-        $fixture->setUsagetxt('My Title');
-        $fixture->setMateriaux('My Title');
-        $fixture->setTemp('My Title');
-        $fixture->setRecouverture('My Title');
-        $fixture->setLargeur('My Title');
-        $fixture->setProfondeur('My Title');
-        $fixture->setHauteur('My Title');
+        $fixture->setPicture('My Title');
+        $fixture->setUsetxt('My Title');
+        $fixture->setWidth('My Title');
+        $fixture->setDepth('My Title');
+        $fixture->setHeight('My Title');
+        $fixture->setCovering_or_complete_repair('My Title');
+        $fixture->setMaterials('My Title');
+        $fixture->setFabric('My Title');
+        $fixture->setFinishes('My Title');
+        $fixture->setTime('My Title');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -98,16 +98,16 @@ final class BanquetteControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new Banquette();
         $fixture->setTitle('Value');
-        $fixture->setImage('Value');
-        $fixture->setFinition('Value');
-        $fixture->setTissu('Value');
-        $fixture->setUsagetxt('Value');
-        $fixture->setMateriaux('Value');
-        $fixture->setTemp('Value');
-        $fixture->setRecouverture('Value');
-        $fixture->setLargeur('Value');
-        $fixture->setProfondeur('Value');
-        $fixture->setHauteur('Value');
+        $fixture->setPicture('Value');
+        $fixture->setUsetxt('Value');
+        $fixture->setWidth('Value');
+        $fixture->setDepth('Value');
+        $fixture->setHeight('Value');
+        $fixture->setCovering_or_complete_repair('Value');
+        $fixture->setMaterials('Value');
+        $fixture->setFabric('Value');
+        $fixture->setFinishes('Value');
+        $fixture->setTime('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -116,16 +116,16 @@ final class BanquetteControllerTest extends WebTestCase
 
         $this->client->submitForm('Update', [
             'banquette[title]' => 'Something New',
-            'banquette[image]' => 'Something New',
-            'banquette[finition]' => 'Something New',
-            'banquette[tissu]' => 'Something New',
-            'banquette[usagetxt]' => 'Something New',
-            'banquette[materiaux]' => 'Something New',
-            'banquette[temp]' => 'Something New',
-            'banquette[recouverture]' => 'Something New',
-            'banquette[largeur]' => 'Something New',
-            'banquette[profondeur]' => 'Something New',
-            'banquette[hauteur]' => 'Something New',
+            'banquette[picture]' => 'Something New',
+            'banquette[usetxt]' => 'Something New',
+            'banquette[width]' => 'Something New',
+            'banquette[depth]' => 'Something New',
+            'banquette[height]' => 'Something New',
+            'banquette[covering_or_complete_repair]' => 'Something New',
+            'banquette[materials]' => 'Something New',
+            'banquette[fabric]' => 'Something New',
+            'banquette[finishes]' => 'Something New',
+            'banquette[time]' => 'Something New',
         ]);
 
         self::assertResponseRedirects('/banquette/');
@@ -133,16 +133,16 @@ final class BanquetteControllerTest extends WebTestCase
         $fixture = $this->repository->findAll();
 
         self::assertSame('Something New', $fixture[0]->getTitle());
-        self::assertSame('Something New', $fixture[0]->getImage());
-        self::assertSame('Something New', $fixture[0]->getFinition());
-        self::assertSame('Something New', $fixture[0]->getTissu());
-        self::assertSame('Something New', $fixture[0]->getUsagetxt());
-        self::assertSame('Something New', $fixture[0]->getMateriaux());
-        self::assertSame('Something New', $fixture[0]->getTemp());
-        self::assertSame('Something New', $fixture[0]->getRecouverture());
-        self::assertSame('Something New', $fixture[0]->getLargeur());
-        self::assertSame('Something New', $fixture[0]->getProfondeur());
-        self::assertSame('Something New', $fixture[0]->getHauteur());
+        self::assertSame('Something New', $fixture[0]->getPicture());
+        self::assertSame('Something New', $fixture[0]->getUsetxt());
+        self::assertSame('Something New', $fixture[0]->getWidth());
+        self::assertSame('Something New', $fixture[0]->getDepth());
+        self::assertSame('Something New', $fixture[0]->getHeight());
+        self::assertSame('Something New', $fixture[0]->getCovering_or_complete_repair());
+        self::assertSame('Something New', $fixture[0]->getMaterials());
+        self::assertSame('Something New', $fixture[0]->getFabric());
+        self::assertSame('Something New', $fixture[0]->getFinishes());
+        self::assertSame('Something New', $fixture[0]->getTime());
     }
 
     public function testRemove(): void
@@ -150,16 +150,16 @@ final class BanquetteControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new Banquette();
         $fixture->setTitle('Value');
-        $fixture->setImage('Value');
-        $fixture->setFinition('Value');
-        $fixture->setTissu('Value');
-        $fixture->setUsagetxt('Value');
-        $fixture->setMateriaux('Value');
-        $fixture->setTemp('Value');
-        $fixture->setRecouverture('Value');
-        $fixture->setLargeur('Value');
-        $fixture->setProfondeur('Value');
-        $fixture->setHauteur('Value');
+        $fixture->setPicture('Value');
+        $fixture->setUsetxt('Value');
+        $fixture->setWidth('Value');
+        $fixture->setDepth('Value');
+        $fixture->setHeight('Value');
+        $fixture->setCovering_or_complete_repair('Value');
+        $fixture->setMaterials('Value');
+        $fixture->setFabric('Value');
+        $fixture->setFinishes('Value');
+        $fixture->setTime('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TeteDeLit{% endblock %}
+
+{% block body %}
+    <h1>TeteDeLit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tete_de_lit.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ tete_de_lit.title }}</td>
+            </tr>
+            <tr>
+                <th>Picture</th>
+                <td>{{ tete_de_lit.picture }}</td>
+            </tr>
+            <tr>
+                <th>Width</th>
+                <td>{{ tete_de_lit.width }}</td>
+            </tr>
+            <tr>
+                <th>Height</th>
+                <td>{{ tete_de_lit.height }}</td>
+            </tr>
+            <tr>
+                <th>Fabric</th>
+                <td>{{ tete_de_lit.fabric }}</td>
+            </tr>
+            <tr>
+                <th>Materials</th>
+                <td>{{ tete_de_lit.materials }}</td>
+            </tr>
+            <tr>
+                <th>Support</th>
+                <td>{{ tete_de_lit.support }}</td>
+            </tr>
+            <tr>
+                <th>Headboard_finishes</th>
+                <td>{{ tete_de_lit.headboardFinishes }}</td>
+            </tr>
+            <tr>
+                <th>Time</th>
+                <td>{{ tete_de_lit.time }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_tete_de_lit_index') }}">back to list</a>
+
+    <a href="{{ path('app_tete_de_lit_edit', {'id': tete_de_lit.id}) }}">edit</a>
+
+    {{ include('tete_de_lit/_delete_form.html.twig') }}
+{% endblock %}

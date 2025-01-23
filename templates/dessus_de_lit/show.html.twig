@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DessusDeLit{% endblock %}
+
+{% block body %}
+    <h1>DessusDeLit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dessus_de_lit.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ dessus_de_lit.title }}</td>
+            </tr>
+            <tr>
+                <th>Usetxt</th>
+                <td>{{ dessus_de_lit.usetxt }}</td>
+            </tr>
+            <tr>
+                <th>Length</th>
+                <td>{{ dessus_de_lit.length }}</td>
+            </tr>
+            <tr>
+                <th>Width</th>
+                <td>{{ dessus_de_lit.width }}</td>
+            </tr>
+            <tr>
+                <th>Lining</th>
+                <td>{{ dessus_de_lit.lining }}</td>
+            </tr>
+            <tr>
+                <th>Fabric</th>
+                <td>{{ dessus_de_lit.fabric }}</td>
+            </tr>
+            <tr>
+                <th>Bedspread_finishes</th>
+                <td>{{ dessus_de_lit.bedspreadFinishes }}</td>
+            </tr>
+            <tr>
+                <th>Time</th>
+                <td>{{ dessus_de_lit.time }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dessus_de_lit_index') }}">back to list</a>
+
+    <a href="{{ path('app_dessus_de_lit_edit', {'id': dessus_de_lit.id}) }}">edit</a>
+
+    {{ include('dessus_de_lit/_delete_form.html.twig') }}
+{% endblock %}

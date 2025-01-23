@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New AbatJour{% endblock %}
+
+{% block body %}
+    <h1>Create new AbatJour</h1>
+
+    {{ include('abat_jour/_form.html.twig') }}
+
+    <a href="{{ path('app_abat_jour_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TeteDeLit index{% endblock %}
+
+{% block body %}
+    <h1>TeteDeLit index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Picture</th>
+                <th>Width</th>
+                <th>Height</th>
+                <th>Fabric</th>
+                <th>Materials</th>
+                <th>Support</th>
+                <th>Headboard_finishes</th>
+                <th>Time</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tete_de_lit in tete_de_lits %}
+            <tr>
+                <td>{{ tete_de_lit.id }}</td>
+                <td>{{ tete_de_lit.title }}</td>
+                <td>{{ tete_de_lit.picture }}</td>
+                <td>{{ tete_de_lit.width }}</td>
+                <td>{{ tete_de_lit.height }}</td>
+                <td>{{ tete_de_lit.fabric }}</td>
+                <td>{{ tete_de_lit.materials }}</td>
+                <td>{{ tete_de_lit.support }}</td>
+                <td>{{ tete_de_lit.headboardFinishes }}</td>
+                <td>{{ tete_de_lit.time }}</td>
+                <td>
+                    <a href="{{ path('app_tete_de_lit_show', {'id': tete_de_lit.id}) }}">show</a>
+                    <a href="{{ path('app_tete_de_lit_edit', {'id': tete_de_lit.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_tete_de_lit_new') }}">Create new</a>
+{% endblock %}

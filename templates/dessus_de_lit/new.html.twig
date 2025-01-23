@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DessusDeLit{% endblock %}
+
+{% block body %}
+    <h1>Create new DessusDeLit</h1>
+
+    {{ include('dessus_de_lit/_form.html.twig') }}
+
+    <a href="{{ path('app_dessus_de_lit_index') }}">back to list</a>
+{% endblock %}

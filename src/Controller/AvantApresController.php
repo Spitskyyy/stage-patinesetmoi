@@ -6,14 +6,12 @@ use App\Entity\AvantApres;
 use App\Form\AvantApresType;
 use App\Repository\AvantApresRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/avant_apres')]
+#[Route('/avant/apres')]
 final class AvantApresController extends AbstractController
 {
     #[Route(name: 'app_avant_apres_index', methods: ['GET'])]
@@ -25,50 +23,24 @@ final class AvantApresController extends AbstractController
     }
 
     #[Route('/new', name: 'app_avant_apres_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
-{
-    $avantApre = new AvantApres();
-    $form = $this->createForm(AvantApresType::class, $avantApre);
-    $form->handleRequest($request);
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $avantApre = new AvantApres();
+        $form = $this->createForm(AvantApresType::class, $avantApre);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Récupérer le fichier d'image du formulaire
-        $imageFile = $form->get('image')->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($avantApre);
+            $entityManager->flush();
 
-        if ($imageFile) {
-            // Générer un nom de fichier unique et sûr
-            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-            try {
-                // Déplacer le fichier dans le répertoire configuré
-                $imageFile->move(
-                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // Gestion des erreurs, si nécessaire
-                throw new \Exception('Erreur lors du téléchargement du fichier.');
-            }
-
-            // Enregistrer le nom du fichier dans l'entité
-            $avantApre->setImage($newFilename);
+            return $this->redirectToRoute('app_avant_apres_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        // Persister et sauvegarder l'entité
-        $entityManager->persist($avantApre);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_avant_apres_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render('avant_apres/new.html.twig', [
+            'avant_apre' => $avantApre,
+            'form' => $form,
+        ]);
     }
-
-    return $this->render('avant_apres/new.html.twig', [
-        'avant_apre' => $avantApre,
-        'form' => $form,
-    ]);
-}
-
 
     #[Route('/{id}', name: 'app_avant_apres_show', methods: ['GET'])]
     public function show(AvantApres $avantApre): Response

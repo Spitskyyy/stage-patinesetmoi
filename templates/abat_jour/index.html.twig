@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AbatJour index{% endblock %}
+
+{% block body %}
+    <h1>AbatJour index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Picture</th>
+                <th>Width</th>
+                <th>Depth</th>
+                <th>Height</th>
+                <th>Fabric</th>
+                <th>Materials</th>
+                <th>Choice_of_strucure</th>
+                <th>Lampshade_finishes</th>
+                <th>Time</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for abat_jour in abat_jours %}
+            <tr>
+                <td>{{ abat_jour.id }}</td>
+                <td>{{ abat_jour.title }}</td>
+                <td>{{ abat_jour.picture }}</td>
+                <td>{{ abat_jour.width }}</td>
+                <td>{{ abat_jour.depth }}</td>
+                <td>{{ abat_jour.height }}</td>
+                <td>{{ abat_jour.fabric }}</td>
+                <td>{{ abat_jour.materials }}</td>
+                <td>{{ abat_jour.choiceOfStrucure }}</td>
+                <td>{{ abat_jour.lampshadeFinishes }}</td>
+                <td>{{ abat_jour.time }}</td>
+                <td>
+                    <a href="{{ path('app_abat_jour_show', {'id': abat_jour.id}) }}">show</a>
+                    <a href="{{ path('app_abat_jour_edit', {'id': abat_jour.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_abat_jour_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MisesEnScene{% endblock %}
+
+{% block body %}
+    <h1>MisesEnScene</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mises_en_scene.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ mises_en_scene.title }}</td>
+            </tr>
+            <tr>
+                <th>Picture</th>
+                <td>{{ mises_en_scene.picture }}</td>
+            </tr>
+            <tr>
+                <th>Detail</th>
+                <td>{{ mises_en_scene.detail }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mises_en_scene_index') }}">back to list</a>
+
+    <a href="{{ path('app_mises_en_scene_edit', {'id': mises_en_scene.id}) }}">edit</a>
+
+    {{ include('mises_en_scene/_delete_form.html.twig') }}
+{% endblock %}

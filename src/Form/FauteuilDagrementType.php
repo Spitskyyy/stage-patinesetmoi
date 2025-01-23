@@ -6,7 +6,6 @@ use App\Entity\FauteuilDagrement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class FauteuilDagrementType extends AbstractType
 {
@@ -14,21 +13,16 @@ class FauteuilDagrementType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('usagetxt')
-            ->add('recouverture')
-            ->add('materiaux')
-            ->add('tissu')
-            ->add('finition')
-            ->add('temps')
-            ->add('detail')
-            ->add('largeur')
-            ->add('profondeur')
-            ->add('hauteur')
-            ->add('image', FileType::class, [
-                'label' => 'Image (fichier JPG ou PNG)',
-                'mapped' => false,
-                'required' => false,
-            ]);
+            ->add('picture')
+            ->add('usetxt')
+            ->add('width')
+            ->add('depth')
+            ->add('height')
+            ->add('covering_or_complete_repair')
+            ->add('materials')
+            ->add('fabric')
+            ->add('finishes')
+            ->add('time')
         ;
     }
 

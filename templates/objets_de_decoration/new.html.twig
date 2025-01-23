@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ObjetsDeDecoration{% endblock %}
+
+{% block body %}
+    <h1>Create new ObjetsDeDecoration</h1>
+
+    {{ include('objets_de_decoration/_form.html.twig') }}
+
+    <a href="{{ path('app_objets_de_decoration_index') }}">back to list</a>
+{% endblock %}

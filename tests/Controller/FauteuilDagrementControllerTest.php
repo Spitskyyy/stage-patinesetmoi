@@ -49,16 +49,16 @@ final class FauteuilDagrementControllerTest extends WebTestCase
 
         $this->client->submitForm('Save', [
             'fauteuil_dagrement[title]' => 'Testing',
-            'fauteuil_dagrement[usagetxt]' => 'Testing',
-            'fauteuil_dagrement[largeur]' => 'Testing',
-            'fauteuil_dagrement[profondeur]' => 'Testing',
-            'fauteuil_dagrement[hauteur]' => 'Testing',
-            'fauteuil_dagrement[recouverture]' => 'Testing',
-            'fauteuil_dagrement[materiaux]' => 'Testing',
-            'fauteuil_dagrement[tissu]' => 'Testing',
-            'fauteuil_dagrement[finition]' => 'Testing',
-            'fauteuil_dagrement[temps]' => 'Testing',
-            'fauteuil_dagrement[detail]' => 'Testing',
+            'fauteuil_dagrement[picture]' => 'Testing',
+            'fauteuil_dagrement[usetxt]' => 'Testing',
+            'fauteuil_dagrement[width]' => 'Testing',
+            'fauteuil_dagrement[depth]' => 'Testing',
+            'fauteuil_dagrement[height]' => 'Testing',
+            'fauteuil_dagrement[covering_or_complete_repair]' => 'Testing',
+            'fauteuil_dagrement[materials]' => 'Testing',
+            'fauteuil_dagrement[fabric]' => 'Testing',
+            'fauteuil_dagrement[finishes]' => 'Testing',
+            'fauteuil_dagrement[time]' => 'Testing',
         ]);
 
         self::assertResponseRedirects($this->path);
@@ -71,16 +71,16 @@ final class FauteuilDagrementControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new FauteuilDagrement();
         $fixture->setTitle('My Title');
-        $fixture->setUsagetxt('My Title');
-        $fixture->setLargeur('My Title');
-        $fixture->setProfondeur('My Title');
-        $fixture->setHauteur('My Title');
-        $fixture->setRecouverture('My Title');
-        $fixture->setMateriaux('My Title');
-        $fixture->setTissu('My Title');
-        $fixture->setFinition('My Title');
-        $fixture->setTemps('My Title');
-        $fixture->setDetail('My Title');
+        $fixture->setPicture('My Title');
+        $fixture->setUsetxt('My Title');
+        $fixture->setWidth('My Title');
+        $fixture->setDepth('My Title');
+        $fixture->setHeight('My Title');
+        $fixture->setCovering_or_complete_repair('My Title');
+        $fixture->setMaterials('My Title');
+        $fixture->setFabric('My Title');
+        $fixture->setFinishes('My Title');
+        $fixture->setTime('My Title');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -98,16 +98,16 @@ final class FauteuilDagrementControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new FauteuilDagrement();
         $fixture->setTitle('Value');
-        $fixture->setUsagetxt('Value');
-        $fixture->setLargeur('Value');
-        $fixture->setProfondeur('Value');
-        $fixture->setHauteur('Value');
-        $fixture->setRecouverture('Value');
-        $fixture->setMateriaux('Value');
-        $fixture->setTissu('Value');
-        $fixture->setFinition('Value');
-        $fixture->setTemps('Value');
-        $fixture->setDetail('Value');
+        $fixture->setPicture('Value');
+        $fixture->setUsetxt('Value');
+        $fixture->setWidth('Value');
+        $fixture->setDepth('Value');
+        $fixture->setHeight('Value');
+        $fixture->setCovering_or_complete_repair('Value');
+        $fixture->setMaterials('Value');
+        $fixture->setFabric('Value');
+        $fixture->setFinishes('Value');
+        $fixture->setTime('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -116,16 +116,16 @@ final class FauteuilDagrementControllerTest extends WebTestCase
 
         $this->client->submitForm('Update', [
             'fauteuil_dagrement[title]' => 'Something New',
-            'fauteuil_dagrement[usagetxt]' => 'Something New',
-            'fauteuil_dagrement[largeur]' => 'Something New',
-            'fauteuil_dagrement[profondeur]' => 'Something New',
-            'fauteuil_dagrement[hauteur]' => 'Something New',
-            'fauteuil_dagrement[recouverture]' => 'Something New',
-            'fauteuil_dagrement[materiaux]' => 'Something New',
-            'fauteuil_dagrement[tissu]' => 'Something New',
-            'fauteuil_dagrement[finition]' => 'Something New',
-            'fauteuil_dagrement[temps]' => 'Something New',
-            'fauteuil_dagrement[detail]' => 'Something New',
+            'fauteuil_dagrement[picture]' => 'Something New',
+            'fauteuil_dagrement[usetxt]' => 'Something New',
+            'fauteuil_dagrement[width]' => 'Something New',
+            'fauteuil_dagrement[depth]' => 'Something New',
+            'fauteuil_dagrement[height]' => 'Something New',
+            'fauteuil_dagrement[covering_or_complete_repair]' => 'Something New',
+            'fauteuil_dagrement[materials]' => 'Something New',
+            'fauteuil_dagrement[fabric]' => 'Something New',
+            'fauteuil_dagrement[finishes]' => 'Something New',
+            'fauteuil_dagrement[time]' => 'Something New',
         ]);
 
         self::assertResponseRedirects('/fauteuil/dagrement/');
@@ -133,16 +133,16 @@ final class FauteuilDagrementControllerTest extends WebTestCase
         $fixture = $this->repository->findAll();
 
         self::assertSame('Something New', $fixture[0]->getTitle());
-        self::assertSame('Something New', $fixture[0]->getUsagetxt());
-        self::assertSame('Something New', $fixture[0]->getLargeur());
-        self::assertSame('Something New', $fixture[0]->getProfondeur());
-        self::assertSame('Something New', $fixture[0]->getHauteur());
-        self::assertSame('Something New', $fixture[0]->getRecouverture());
-        self::assertSame('Something New', $fixture[0]->getMateriaux());
-        self::assertSame('Something New', $fixture[0]->getTissu());
-        self::assertSame('Something New', $fixture[0]->getFinition());
-        self::assertSame('Something New', $fixture[0]->getTemps());
-        self::assertSame('Something New', $fixture[0]->getDetail());
+        self::assertSame('Something New', $fixture[0]->getPicture());
+        self::assertSame('Something New', $fixture[0]->getUsetxt());
+        self::assertSame('Something New', $fixture[0]->getWidth());
+        self::assertSame('Something New', $fixture[0]->getDepth());
+        self::assertSame('Something New', $fixture[0]->getHeight());
+        self::assertSame('Something New', $fixture[0]->getCovering_or_complete_repair());
+        self::assertSame('Something New', $fixture[0]->getMaterials());
+        self::assertSame('Something New', $fixture[0]->getFabric());
+        self::assertSame('Something New', $fixture[0]->getFinishes());
+        self::assertSame('Something New', $fixture[0]->getTime());
     }
 
     public function testRemove(): void
@@ -150,16 +150,16 @@ final class FauteuilDagrementControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new FauteuilDagrement();
         $fixture->setTitle('Value');
-        $fixture->setUsagetxt('Value');
-        $fixture->setLargeur('Value');
-        $fixture->setProfondeur('Value');
-        $fixture->setHauteur('Value');
-        $fixture->setRecouverture('Value');
-        $fixture->setMateriaux('Value');
-        $fixture->setTissu('Value');
-        $fixture->setFinition('Value');
-        $fixture->setTemps('Value');
-        $fixture->setDetail('Value');
+        $fixture->setPicture('Value');
+        $fixture->setUsetxt('Value');
+        $fixture->setWidth('Value');
+        $fixture->setDepth('Value');
+        $fixture->setHeight('Value');
+        $fixture->setCovering_or_complete_repair('Value');
+        $fixture->setMaterials('Value');
+        $fixture->setFabric('Value');
+        $fixture->setFinishes('Value');
+        $fixture->setTime('Value');
 
         $this->manager->persist($fixture);
         $this->manager->flush();

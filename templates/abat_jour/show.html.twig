@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AbatJour{% endblock %}
+
+{% block body %}
+    <h1>AbatJour</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ abat_jour.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ abat_jour.title }}</td>
+            </tr>
+            <tr>
+                <th>Picture</th>
+                <td>{{ abat_jour.picture }}</td>
+            </tr>
+            <tr>
+                <th>Width</th>
+                <td>{{ abat_jour.width }}</td>
+            </tr>
+            <tr>
+                <th>Depth</th>
+                <td>{{ abat_jour.depth }}</td>
+            </tr>
+            <tr>
+                <th>Height</th>
+                <td>{{ abat_jour.height }}</td>
+            </tr>
+            <tr>
+                <th>Fabric</th>
+                <td>{{ abat_jour.fabric }}</td>
+            </tr>
+            <tr>
+                <th>Materials</th>
+                <td>{{ abat_jour.materials }}</td>
+            </tr>
+            <tr>
+                <th>Choice_of_strucure</th>
+                <td>{{ abat_jour.choiceOfStrucure }}</td>
+            </tr>
+            <tr>
+                <th>Lampshade_finishes</th>
+                <td>{{ abat_jour.lampshadeFinishes }}</td>
+            </tr>
+            <tr>
+                <th>Time</th>
+                <td>{{ abat_jour.time }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_abat_jour_index') }}">back to list</a>
+
+    <a href="{{ path('app_abat_jour_edit', {'id': abat_jour.id}) }}">edit</a>
+
+    {{ include('abat_jour/_delete_form.html.twig') }}
+{% endblock %}

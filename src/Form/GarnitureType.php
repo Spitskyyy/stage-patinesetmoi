@@ -6,7 +6,6 @@ use App\Entity\Garniture;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class GarnitureType extends AbstractType
 {
@@ -14,12 +13,8 @@ class GarnitureType extends AbstractType
     {
         $builder
             ->add('title')
+            ->add('picture')
             ->add('detail')
-            ->add('image', FileType::class, [
-                'label' => 'Image (fichier JPG ou PNG)',
-                'mapped' => false,
-                'required' => false,
-            ]);
         ;
     }
 

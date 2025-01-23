@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ObjetsDeDecoration{% endblock %}
+
+{% block body %}
+    <h1>Edit ObjetsDeDecoration</h1>
+
+    {{ include('objets_de_decoration/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_objets_de_decoration_index') }}">back to list</a>
+
+    {{ include('objets_de_decoration/_delete_form.html.twig') }}
+{% endblock %}

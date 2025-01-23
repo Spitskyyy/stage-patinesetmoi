@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit LivreDor{% endblock %}
+
+{% block body %}
+    <h1>Edit LivreDor</h1>
+
+    {{ include('livre_dor/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_livre_dor_index') }}">back to list</a>
+
+    {{ include('livre_dor/_delete_form.html.twig') }}
+{% endblock %}

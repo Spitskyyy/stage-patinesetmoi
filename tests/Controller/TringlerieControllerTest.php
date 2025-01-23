@@ -48,8 +48,8 @@ final class TringlerieControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
 
         $this->client->submitForm('Save', [
-            'tringlerie[image]' => 'Testing',
             'tringlerie[title]' => 'Testing',
+            'tringlerie[picture]' => 'Testing',
             'tringlerie[detail]' => 'Testing',
         ]);
 
@@ -62,8 +62,8 @@ final class TringlerieControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Tringlerie();
-        $fixture->setImage('My Title');
         $fixture->setTitle('My Title');
+        $fixture->setPicture('My Title');
         $fixture->setDetail('My Title');
 
         $this->manager->persist($fixture);
@@ -81,8 +81,8 @@ final class TringlerieControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Tringlerie();
-        $fixture->setImage('Value');
         $fixture->setTitle('Value');
+        $fixture->setPicture('Value');
         $fixture->setDetail('Value');
 
         $this->manager->persist($fixture);
@@ -91,8 +91,8 @@ final class TringlerieControllerTest extends WebTestCase
         $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
 
         $this->client->submitForm('Update', [
-            'tringlerie[image]' => 'Something New',
             'tringlerie[title]' => 'Something New',
+            'tringlerie[picture]' => 'Something New',
             'tringlerie[detail]' => 'Something New',
         ]);
 
@@ -100,8 +100,8 @@ final class TringlerieControllerTest extends WebTestCase
 
         $fixture = $this->repository->findAll();
 
-        self::assertSame('Something New', $fixture[0]->getImage());
         self::assertSame('Something New', $fixture[0]->getTitle());
+        self::assertSame('Something New', $fixture[0]->getPicture());
         self::assertSame('Something New', $fixture[0]->getDetail());
     }
 
@@ -109,8 +109,8 @@ final class TringlerieControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Tringlerie();
-        $fixture->setImage('Value');
         $fixture->setTitle('Value');
+        $fixture->setPicture('Value');
         $fixture->setDetail('Value');
 
         $this->manager->persist($fixture);

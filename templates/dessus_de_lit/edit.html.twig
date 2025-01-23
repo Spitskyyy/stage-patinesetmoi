@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DessusDeLit{% endblock %}
+
+{% block body %}
+    <h1>Edit DessusDeLit</h1>
+
+    {{ include('dessus_de_lit/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_dessus_de_lit_index') }}">back to list</a>
+
+    {{ include('dessus_de_lit/_delete_form.html.twig') }}
+{% endblock %}

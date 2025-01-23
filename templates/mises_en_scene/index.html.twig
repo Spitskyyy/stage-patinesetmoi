@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MisesEnScene index{% endblock %}
+
+{% block body %}
+    <h1>MisesEnScene index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Picture</th>
+                <th>Detail</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mises_en_scene in mises_en_scenes %}
+            <tr>
+                <td>{{ mises_en_scene.id }}</td>
+                <td>{{ mises_en_scene.title }}</td>
+                <td>{{ mises_en_scene.picture }}</td>
+                <td>{{ mises_en_scene.detail }}</td>
+                <td>
+                    <a href="{{ path('app_mises_en_scene_show', {'id': mises_en_scene.id}) }}">show</a>
+                    <a href="{{ path('app_mises_en_scene_edit', {'id': mises_en_scene.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mises_en_scene_new') }}">Create new</a>
+{% endblock %}
