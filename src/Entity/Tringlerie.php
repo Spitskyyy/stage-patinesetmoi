@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TringlerieRepository::class)]
+#[ORM\Table(name: 'tbl_tringlerie')]
 class Tringlerie
 {
     #[ORM\Id]
@@ -14,32 +15,18 @@ class Tringlerie
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $title = null;
+    private ?string $picture = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $detail = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -50,6 +37,18 @@ class Tringlerie
     public function setTitle(?string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
@@ -65,5 +64,4 @@ class Tringlerie
 
         return $this;
     }
-
 }

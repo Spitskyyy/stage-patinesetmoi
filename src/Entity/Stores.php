@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\VoilageRideauxDoublesRepository;
+use App\Repository\StoresRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VoilageRideauxDoublesRepository::class)]
-#[ORM\Table(name: 'tbl_voilage_rideaux_doubles')]
-class VoilageRideauxDoubles
+#[ORM\Entity(repositoryClass: StoresRepository::class)]
+#[ORM\Table(name: 'tbl_store')]
+class Stores
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -35,9 +35,6 @@ class VoilageRideauxDoubles
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $fabric = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $curtain_head_finishing = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $time = null;
@@ -127,18 +124,6 @@ class VoilageRideauxDoubles
     public function setFabric(?string $fabric): static
     {
         $this->fabric = $fabric;
-
-        return $this;
-    }
-
-    public function getCurtainHeadFinishing(): ?string
-    {
-        return $this->curtain_head_finishing;
-    }
-
-    public function setCurtainHeadFinishing(?string $curtain_head_finishing): static
-    {
-        $this->curtain_head_finishing = $curtain_head_finishing;
 
         return $this;
     }

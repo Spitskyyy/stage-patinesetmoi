@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\VoilageRideauxDoublesRepository;
+use App\Repository\DessusDeLitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VoilageRideauxDoublesRepository::class)]
-#[ORM\Table(name: 'tbl_voilage_rideaux_doubles')]
-class VoilageRideauxDoubles
+#[ORM\Entity(repositoryClass: DessusDeLitRepository::class)]
+#[ORM\Table(name: 'tbl_dessus_de_lit')]
+class DessusDeLit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,17 +18,14 @@ class VoilageRideauxDoubles
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $picture = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $usetxt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $width = null;
+    private ?float $length = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $height = null;
+    private ?float $width = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $lining = null;
@@ -37,7 +34,7 @@ class VoilageRideauxDoubles
     private ?string $fabric = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $curtain_head_finishing = null;
+    private ?string $bedspread_finishes = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $time = null;
@@ -59,18 +56,6 @@ class VoilageRideauxDoubles
         return $this;
     }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): static
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getUsetxt(): ?string
     {
         return $this->usetxt;
@@ -83,6 +68,18 @@ class VoilageRideauxDoubles
         return $this;
     }
 
+    public function getLength(): ?float
+    {
+        return $this->length;
+    }
+
+    public function setLength(?float $length): static
+    {
+        $this->length = $length;
+
+        return $this;
+    }
+
     public function getWidth(): ?float
     {
         return $this->width;
@@ -91,18 +88,6 @@ class VoilageRideauxDoubles
     public function setWidth(?float $width): static
     {
         $this->width = $width;
-
-        return $this;
-    }
-
-    public function getHeight(): ?float
-    {
-        return $this->height;
-    }
-
-    public function setHeight(?float $height): static
-    {
-        $this->height = $height;
 
         return $this;
     }
@@ -131,14 +116,14 @@ class VoilageRideauxDoubles
         return $this;
     }
 
-    public function getCurtainHeadFinishing(): ?string
+    public function getBedspreadFinishes(): ?string
     {
-        return $this->curtain_head_finishing;
+        return $this->bedspread_finishes;
     }
 
-    public function setCurtainHeadFinishing(?string $curtain_head_finishing): static
+    public function setBedspreadFinishes(?string $bedspread_finishes): static
     {
-        $this->curtain_head_finishing = $curtain_head_finishing;
+        $this->bedspread_finishes = $bedspread_finishes;
 
         return $this;
     }

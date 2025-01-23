@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\VoilageRideauxDoublesRepository;
+use App\Repository\TeteDeLitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VoilageRideauxDoublesRepository::class)]
-#[ORM\Table(name: 'tbl_voilage_rideaux_doubles')]
-class VoilageRideauxDoubles
+#[ORM\Entity(repositoryClass: TeteDeLitRepository::class)]
+class TeteDeLit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,9 +20,6 @@ class VoilageRideauxDoubles
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $usetxt = null;
-
     #[ORM\Column(nullable: true)]
     private ?float $width = null;
 
@@ -31,13 +27,16 @@ class VoilageRideauxDoubles
     private ?float $height = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $lining = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $fabric = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $curtain_head_finishing = null;
+    private ?string $materials = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $support = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $headboard_finishes = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $time = null;
@@ -71,18 +70,6 @@ class VoilageRideauxDoubles
         return $this;
     }
 
-    public function getUsetxt(): ?string
-    {
-        return $this->usetxt;
-    }
-
-    public function setUsetxt(?string $usetxt): static
-    {
-        $this->usetxt = $usetxt;
-
-        return $this;
-    }
-
     public function getWidth(): ?float
     {
         return $this->width;
@@ -107,18 +94,6 @@ class VoilageRideauxDoubles
         return $this;
     }
 
-    public function getLining(): ?string
-    {
-        return $this->lining;
-    }
-
-    public function setLining(?string $lining): static
-    {
-        $this->lining = $lining;
-
-        return $this;
-    }
-
     public function getFabric(): ?string
     {
         return $this->fabric;
@@ -131,14 +106,38 @@ class VoilageRideauxDoubles
         return $this;
     }
 
-    public function getCurtainHeadFinishing(): ?string
+    public function getMaterials(): ?string
     {
-        return $this->curtain_head_finishing;
+        return $this->materials;
     }
 
-    public function setCurtainHeadFinishing(?string $curtain_head_finishing): static
+    public function setMaterials(?string $materials): static
     {
-        $this->curtain_head_finishing = $curtain_head_finishing;
+        $this->materials = $materials;
+
+        return $this;
+    }
+
+    public function getSupport(): ?string
+    {
+        return $this->support;
+    }
+
+    public function setSupport(?string $support): static
+    {
+        $this->support = $support;
+
+        return $this;
+    }
+
+    public function getHeadboardFinishes(): ?string
+    {
+        return $this->headboard_finishes;
+    }
+
+    public function setHeadboardFinishes(?string $headboard_finishes): static
+    {
+        $this->headboard_finishes = $headboard_finishes;
 
         return $this;
     }

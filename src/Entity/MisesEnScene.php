@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\GarnitureRepository;
+use App\Repository\MisesEnSceneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GarnitureRepository::class)]
-#[ORM\Table(name: 'tbl_garniture')]
-class Garniture
+#[ORM\Entity(repositoryClass: MisesEnSceneRepository::class)]
+#[ORM\Table(name: 'tbl_mises_en_scene')]
+class MisesEnScene
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

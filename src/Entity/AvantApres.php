@@ -7,8 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AvantApresRepository::class)]
-#[ORM\Table(name: '`tbl_avantapres`')]
-
+#[ORM\Table(name: 'tbl_avant_apres')]
 class AvantApres
 {
     #[ORM\Id]
@@ -16,16 +15,14 @@ class AvantApres
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
+    private ?string $picture = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $detail = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
 
     public function getId(): ?int
     {
@@ -44,14 +41,14 @@ class AvantApres
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getPicture(): ?string
     {
-        return $this->image;
+        return $this->picture;
     }
 
-    public function setImage(?string $image): static
+    public function setPicture(?string $picture): static
     {
-        $this->image = $image;
+        $this->picture = $picture;
 
         return $this;
     }
@@ -67,5 +64,4 @@ class AvantApres
 
         return $this;
     }
-
 }

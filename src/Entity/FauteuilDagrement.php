@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\FauteuilDagrementRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FauteuilDagrementRepository::class)]
-#[ORM\Table(name: '`tbl_fauteuildagrement`')]
+#[ORM\Table(name: 'tbl_fauteuil_d_agrement')]
 class FauteuilDagrement
 {
     #[ORM\Id]
@@ -14,41 +15,38 @@ class FauteuilDagrement
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $usagetxt = null;
+    private ?string $picture = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $usetxt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $largeur = null;
+    private ?float $width = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $profondeur = null;
+    private ?float $depth = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $hauteur = null;
+    private ?float $height = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $recouverture = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $covering_or_complete_repair = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $materiaux = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $materials = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $tissu = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $fabric = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $finition = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $finishes = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $temps = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $detail = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $time = null;
 
     public function getId(): ?int
     {
@@ -60,141 +58,129 @@ class FauteuilDagrement
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getUsagetxt(): ?string
+    public function getPicture(): ?string
     {
-        return $this->usagetxt;
+        return $this->picture;
     }
 
-    public function setUsagetxt(?string $usagetxt): static
+    public function setPicture(?string $picture): static
     {
-        $this->usagetxt = $usagetxt;
+        $this->picture = $picture;
 
         return $this;
     }
 
-    public function getLargeur(): ?float
+    public function getUsetxt(): ?string
     {
-        return $this->largeur;
+        return $this->usetxt;
     }
 
-    public function setLargeur(?float $largeur): static
+    public function setUsetxt(?string $usetxt): static
     {
-        $this->largeur = $largeur;
+        $this->usetxt = $usetxt;
 
         return $this;
     }
 
-    public function getProfondeur(): ?float
+    public function getWidth(): ?float
     {
-        return $this->profondeur;
+        return $this->width;
     }
 
-    public function setProfondeur(?float $profondeur): static
+    public function setWidth(?float $width): static
     {
-        $this->profondeur = $profondeur;
+        $this->width = $width;
 
         return $this;
     }
 
-    public function getHauteur(): ?float
+    public function getDepth(): ?float
     {
-        return $this->hauteur;
+        return $this->depth;
     }
 
-    public function setHauteur(?float $hauteur): static
+    public function setDepth(?float $depth): static
     {
-        $this->hauteur = $hauteur;
+        $this->depth = $depth;
 
         return $this;
     }
 
-    public function getRecouverture(): ?string
+    public function getHeight(): ?float
     {
-        return $this->recouverture;
+        return $this->height;
     }
 
-    public function setRecouverture(?string $recouverture): static
+    public function setHeight(?float $height): static
     {
-        $this->recouverture = $recouverture;
+        $this->height = $height;
 
         return $this;
     }
 
-    public function getMateriaux(): ?string
+    public function getCoveringOrCompleteRepair(): ?string
     {
-        return $this->materiaux;
+        return $this->covering_or_complete_repair;
     }
 
-    public function setMateriaux(?string $materiaux): static
+    public function setCoveringOrCompleteRepair(?string $covering_or_complete_repair): static
     {
-        $this->materiaux = $materiaux;
+        $this->covering_or_complete_repair = $covering_or_complete_repair;
 
         return $this;
     }
 
-    public function getTissu(): ?string
+    public function getMaterials(): ?string
     {
-        return $this->tissu;
+        return $this->materials;
     }
 
-    public function setTissu(?string $tissu): static
+    public function setMaterials(?string $materials): static
     {
-        $this->tissu = $tissu;
+        $this->materials = $materials;
 
         return $this;
     }
 
-    public function getFinition(): ?string
+    public function getFabric(): ?string
     {
-        return $this->finition;
+        return $this->fabric;
     }
 
-    public function setFinition(?string $finition): static
+    public function setFabric(?string $fabric): static
     {
-        $this->finition = $finition;
+        $this->fabric = $fabric;
 
         return $this;
     }
 
-    public function getTemps(): ?string
+    public function getFinishes(): ?string
     {
-        return $this->temps;
+        return $this->finishes;
     }
 
-    public function setTemps(?string $temps): static
+    public function setFinishes(?string $finishes): static
     {
-        $this->temps = $temps;
+        $this->finishes = $finishes;
 
         return $this;
     }
 
-    public function getDetail(): ?string
+    public function getTime(): ?string
     {
-        return $this->detail;
+        return $this->time;
     }
 
-    public function setDetail(?string $detail): static
+    public function setTime(?string $time): static
     {
-        $this->detail = $detail;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
+        $this->time = $time;
 
         return $this;
     }
