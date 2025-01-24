@@ -1,55 +1,309 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}FauteuilDagrement index{% endblock %}
+{% block title %}Patines Et Moi | Fauteuil d'agrements
+{% endblock %}
 
 {% block body %}
-    <h1>FauteuilDagrement index</h1>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Picture</th>
-                <th>Usetxt</th>
-                <th>Width</th>
-                <th>Depth</th>
-                <th>Height</th>
-                <th>Covering_or_complete_repair</th>
-                <th>Materials</th>
-                <th>Fabric</th>
-                <th>Finishes</th>
-                <th>Time</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for fauteuil_dagrement in fauteuil_dagrements %}
-            <tr>
-                <td>{{ fauteuil_dagrement.id }}</td>
-                <td>{{ fauteuil_dagrement.title }}</td>
-                <td>{{ fauteuil_dagrement.picture }}</td>
-                <td>{{ fauteuil_dagrement.usetxt }}</td>
-                <td>{{ fauteuil_dagrement.width }}</td>
-                <td>{{ fauteuil_dagrement.depth }}</td>
-                <td>{{ fauteuil_dagrement.height }}</td>
-                <td>{{ fauteuil_dagrement.coveringOrCompleteRepair }}</td>
-                <td>{{ fauteuil_dagrement.materials }}</td>
-                <td>{{ fauteuil_dagrement.fabric }}</td>
-                <td>{{ fauteuil_dagrement.finishes }}</td>
-                <td>{{ fauteuil_dagrement.time }}</td>
-                <td>
-                    <a href="{{ path('app_fauteuil_dagrement_show', {'id': fauteuil_dagrement.id}) }}">show</a>
-                    <a href="{{ path('app_fauteuil_dagrement_edit', {'id': fauteuil_dagrement.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="13">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		{% block stylesheets %}
+			<!-- Favicons -->
+			<link href="{{ asset('style/img/favicon.png') }}" rel="icon">
+			<link
+			href="{{ asset('style/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
-    <a href="{{ path('app_fauteuil_dagrement_new') }}">Create new</a>
+			<!-- Fonts -->
+			<link href="https://fonts.googleapis.com" rel="preconnect">
+			<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+			<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+			<!-- Vendor CSS Files -->
+			<link href="{{ asset('style/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/aos/aos.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+			<link
+			href="{{ asset('style/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+			<!-- Main CSS File -->
+			<link href="{{ asset('style/css/main.css') }}" rel="stylesheet">
+		{% endblock %}
+	</head>
+
+	<body class="blog-page">
+
+		<header id="header" class="header d-flex align-items-center fixed-top">
+			<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+				<a href="/" class="logo d-flex align-items-center">
+					<h1 class="sitename">Patines Et Moi</h1>
+				</a>
+				<nav id="navmenu" class="navmenu">
+					<ul>
+						<li>
+							<a href="/" class="active">Accueil</a>
+						</li>
+						<li>
+							<a href="/about">Présentation</a>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/banquette">Banquette</a></li>
+								<li><a href="/fauteuil_dagrement">Fauteuil d'agrément</a></li>
+								<li><a href="/garniture">Garniture</a></li>
+								<li><a href="/avant_apres">Avant / Après</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Couture d'ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="#">Voilages, rideaux doublés et stores</a></li>
+								<li><a href="#">Tringlerie</a></li>
+								<li><a href="#">Têtes de lits et dessus de lits</a></li>
+								<li><a href="#">Abat-jour</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Décoration</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/fauteuil_dagrement">Objets de décoration</a></li>
+								<li><a href="#">Mises en scène</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="/about">Livre d'or</a>
+						</li>
+						<li>
+							<a href="contact.html">Contact</a>
+						</li>
+						<li>
+							<a href="/login">Connexion</a>
+						</li>
+					</ul>
+					<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+				</nav>
+			</div>
+		</header>
+
+		<main
+			class="main">
+
+			<!-- Page Title -->
+			<div class="page-title dark-background" style="background-image: url(style/img/page-title-bg.jpg);">
+				<div class="container position-relative">
+					<h1>Fauteuil d'agrements</h1>
+				</div>
+			</div>
+			<!-- End Page Title -->
+
+			<!-- Blog Posts Section -->
+			<section id="blog-posts" class="blog-posts section">
+			<a href="fauteuil_dagrement/new">test</a>
+				<div class="container py-5">
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						{% for fauteuil_dagrement in fauteuil_dagrements %}
+							<div class="col">
+								<article class="card h-100">
+									<div class="post-img position-relative overflow-hidden">
+										<img src="{{ asset('uploads/images/' ~ fauteuil_dagrement.picture) }}" class="card-img-top" alt="{{ fauteuil_dagrement.title }}">
+									</div>
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{ fauteuil_dagrement.title }}</h5>
+										<p class="card-text flex-grow-1">
+											<b>Finition:</b>
+											{{ fauteuil_dagrement.finishes }}<br>
+											<b>Tissu:</b>
+											{{ fauteuil_dagrement.fabric }}<br>
+											<b>Recouverture:</b>
+											{{ fauteuil_dagrement.coveringOrCompleteRepair }}<br>
+											<b>Matériaux:</b>
+											{{ fauteuil_dagrement.materials }}<br>
+											<b>Usage:</b>
+											{{ fauteuil_dagrement.usetxt }}<br>
+											<b>Largeur: </b>
+											{{ fauteuil_dagrement.width }}<br>
+											<b>Profondeur: </b>
+											{{ fauteuil_dagrement.depth }}<br>
+											<b>Hauteur: </b>
+											{{ fauteuil_dagrement.height }}<br>
+											<b>Temps de réalisation:</b>
+											{{ fauteuil_dagrement.time }} h
+										</p>
+										<a href="{{ path('app_fauteuil_dagrement_show', {id: fauteuil_dagrement.id}) }}" class="readmore stretched-link">
+											<span>Read More</span>
+											<i class="bi bi-arrow-right"></i>
+										</a>
+									</div>
+								</article>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+			<!-- End Blog Posts Section -->
+
+			<!-- Pagination -->
+			<section id="blog-pagination" class="blog-pagination section">
+				<div class="container">
+					<div class="d-flex justify-content-center">
+						<ul>
+							<li>
+								<a href="#">
+									<i class="bi bi-chevron-left"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">1</a>
+							</li>
+							<li>
+								<a href="#" class="active">2</a>
+							</li>
+							<li>
+								<a href="#">3</a>
+							</li>
+							<li>
+								<a href="#">4</a>
+							</li>
+							<li>...</li>
+							<li>
+								<a href="#">10</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="bi bi-chevron-right"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<!-- End Pagination -->
+
+		</main>
+
+		<!-- Footer -->
+		<footer id="footer" class="footer dark-background">
+
+			<div class="container footer-top">
+				<div class="row gy-4">
+					<div class="col-lg-4 col-md-6 footer-about">
+						<a href="index.html" class="logo d-flex align-items-center">
+							<span class="sitename">Patines Et Moi</span>
+						</a>
+						<div class="footer-contact pt-3">
+							<p>A108 Adam Street</p>
+							<p>New York, NY 535022</p>
+							<p class="mt-3">
+								<strong>Téléphone :</strong>
+								<span>06-77-80-97-17</span>
+							</p>
+							<p>
+								<strong>Mail:</strong>
+								<span>gusorel@laposte.net</span>
+							</p>
+						</div>
+						<div class="social-links d-flex mt-4">
+							<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
+								<i class="bi bi-facebook"></i>
+							</a>
+							<a href="patines_et_moi_restaurations">
+								<i class="bi bi-instagram"></i>
+							</a>
+
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+							<li><a href="/">Home</a></li>
+							<li><a href="/about">Détail de l'entreprise</a></li>
+							<li><a href="#">Services</a></li>
+							<li><a href="#">Terms of service</a></li>
+							<li><a href="#">Privacy policy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Our Services</h4>
+						<ul>
+							<li><a href="/fauteuil_dagrement">fauteuil_dagrements</a></li>
+							<li><a href="#">Web Development</a></li>
+							<li><a href="#">Product Management</a></li>
+							<li><a href="#">Marketing</a></li>
+							<li><a href="#">Graphic Design</a></li>
+						</ul>
+					</div>
+
+					{# <div class="col-lg-2 col-md-3 footer-links">
+						<h4>Hic solutasetp</h4>
+						<ul>
+							<li><a href="#">Molestiae accusamus iure</a></li>
+							<li><a href="#">Excepturi dignissimos</a></li>
+							<li><a href="#">Suscipit distinctio</a></li>
+							<li><a href="#">Dilecta</a></li>
+							<li><a href="#">Sit quas consectetur</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Nobis illum</h4>
+						<ul>
+							<li><a href="#">Ipsam</a></li>
+							<li><a href="#">Laudantium dolorum</a></li>
+							<li><a href="#">Dinera</a></li>
+							<li><a href="#">Trodelas</a></li>
+							<li><a href="#">Flexo</a></li>
+						</ul>
+					</div> #}
+
+				</div>
+			</div>
+
+			<div class="container copyright text-center mt-4">
+				<p>©
+					<span>Copyright</span>
+					<strong class="px-1 sitename">UpConstruction</strong>
+					<span>All Rights Reserved</span>
+				</p>
+				<div class="credits">
+					<!-- All the links in the footer should remain intact. -->
+					<!-- You can delete the links only if you've purchased the pro version. -->
+					<!-- Licensing information: https://bootstrapmade.com/license/ -->
+					<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+					Designed by
+						<a href="https://bootstrapmade.com/"> BootstrapMade</a>
+				</div>
+			</div>
+
+		</footer>
+
+		<!-- Scroll Top -->
+		<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+			<i class="bi bi-arrow-up-short"></i>
+		</a>
+
+		{% block javascripts %}
+			<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+			<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+			<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+			<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+			<script src="{{ asset('style/js/main.js') }}"></script>
+		{% endblock %}
+
+	</body>
 {% endblock %}

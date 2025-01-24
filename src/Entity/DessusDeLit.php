@@ -39,6 +39,9 @@ class DessusDeLit
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $time = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +139,18 @@ class DessusDeLit
     public function setTime(?string $time): static
     {
         $this->time = $time;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }

@@ -4,14 +4,16 @@ namespace App\Controller;
 
 use App\Entity\ObjetsDeDecoration;
 use App\Form\ObjetsDeDecorationType;
-use App\Repository\ObjetsDeDecorationRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\ObjetsDeDecorationRepository;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/objets/de/decoration')]
+#[Route('/objets_de_decoration')]
 final class ObjetsDeDecorationController extends AbstractController
 {
     #[Route(name: 'app_objets_de_decoration_index', methods: ['GET'])]
@@ -23,24 +25,51 @@ final class ObjetsDeDecorationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_objets_de_decoration_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $objetsDeDecoration = new ObjetsDeDecoration();
-        $form = $this->createForm(ObjetsDeDecorationType::class, $objetsDeDecoration);
-        $form->handleRequest($request);
+    #[Route('/new', name: 'app_objets_de_decoration_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $objetsDeDecoration = new ObjetsDeDecoration();
+    $form = $this->createForm(ObjetsDeDecorationType::class, $objetsDeDecoration);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($objetsDeDecoration);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Récupérer le fichier de l'image depuis le formulaire (champ "picture")
+        $pictureFile = $form->get('picture')->getData();
 
-            return $this->redirectToRoute('app_objets_de_decoration_index', [], Response::HTTP_SEE_OTHER);
+        if ($pictureFile) {
+            // Générer un nom de fichier unique et sûr
+            $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+
+            try {
+                // Déplacer le fichier dans le répertoire configuré
+                $pictureFile->move(
+                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Gestion des erreurs si le fichier ne peut pas être déplacé
+                throw new \Exception('Erreur lors du téléchargement du fichier.');
+            }
+
+            // Enregistrer le nom du fichier dans l'entité
+            $objetsDeDecoration->setPicture($newFilename); // Assure-toi que l'entité a une méthode setPicture()
         }
 
-        return $this->render('objets_de_decoration/new.html.twig', [
-            'objets_de_decoration' => $objetsDeDecoration,
-            'form' => $form,
-        ]);
+        // Persister et sauvegarder l'entité
+        $entityManager->persist($objetsDeDecoration);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_objets_de_decoration_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('objets_de_decoration/new.html.twig', [
+        'objets_de_decoration' => $objetsDeDecoration,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_objets_de_decoration_show', methods: ['GET'])]
     public function show(ObjetsDeDecoration $objetsDeDecoration): Response

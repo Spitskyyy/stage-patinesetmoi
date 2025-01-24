@@ -1,49 +1,307 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}DessusDeLit index{% endblock %}
+{% block title %}Patines Et Moi | Banquettes
+{% endblock %}
 
 {% block body %}
-    <h1>DessusDeLit index</h1>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Usetxt</th>
-                <th>Length</th>
-                <th>Width</th>
-                <th>Lining</th>
-                <th>Fabric</th>
-                <th>Bedspread_finishes</th>
-                <th>Time</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for dessus_de_lit in dessus_de_lits %}
-            <tr>
-                <td>{{ dessus_de_lit.id }}</td>
-                <td>{{ dessus_de_lit.title }}</td>
-                <td>{{ dessus_de_lit.usetxt }}</td>
-                <td>{{ dessus_de_lit.length }}</td>
-                <td>{{ dessus_de_lit.width }}</td>
-                <td>{{ dessus_de_lit.lining }}</td>
-                <td>{{ dessus_de_lit.fabric }}</td>
-                <td>{{ dessus_de_lit.bedspreadFinishes }}</td>
-                <td>{{ dessus_de_lit.time }}</td>
-                <td>
-                    <a href="{{ path('app_dessus_de_lit_show', {'id': dessus_de_lit.id}) }}">show</a>
-                    <a href="{{ path('app_dessus_de_lit_edit', {'id': dessus_de_lit.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		{% block stylesheets %}
+			<!-- Favicons -->
+			<link href="{{ asset('style/img/favicon.png') }}" rel="icon">
+			<link
+			href="{{ asset('style/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
-    <a href="{{ path('app_dessus_de_lit_new') }}">Create new</a>
+			<!-- Fonts -->
+			<link href="https://fonts.googleapis.com" rel="preconnect">
+			<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+			<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+			<!-- Vendor CSS Files -->
+			<link href="{{ asset('style/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/aos/aos.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+			<link
+			href="{{ asset('style/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+			<!-- Main CSS File -->
+			<link href="{{ asset('style/css/main.css') }}" rel="stylesheet">
+		{% endblock %}
+	</head>
+
+	<body class="blog-page">
+
+		<header id="header" class="header d-flex align-items-center fixed-top">
+			<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+				<a href="/" class="logo d-flex align-items-center">
+					<h1 class="sitename">Patines Et Moi</h1>
+				</a>
+				<nav id="navmenu" class="navmenu">
+					<ul>
+						<li>
+							<a href="/" class="active">Accueil</a>
+						</li>
+						<li>
+							<a href="/about">Présentation</a>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/banquette">Banquettes</a></li>
+								<li><a href="/fauteuil_dagrement">Fauteuil d'agrément</a></li>
+								<li><a href="/garniture">Garniture</a></li>
+								<li><a href="/avant_apres">Avant / Après</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Couture d'ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="#">Voilages, rideaux doublés et stores</a></li>
+								<li><a href="#">Tringlerie</a></li>
+								<li><a href="#">Têtes de lits et dessus de lits</a></li>
+								<li><a href="#">Abat-jour</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Décoration</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/banquette">Objets de décoration</a></li>
+								<li><a href="#">Mises en scène</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="/about">Livre d'or</a>
+						</li>
+						<li>
+							<a href="contact.html">Contact</a>
+						</li>
+						<li>
+							<a href="/login">Connexion</a>
+						</li>
+					</ul>
+					<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+				</nav>
+			</div>
+		</header>
+
+		<main
+			class="main">
+
+			<!-- Page Title -->
+			<div class="page-title dark-background" style="background-image: url(style/img/page-title-bg.jpg);">
+				<div class="container position-relative">
+					<h1>Banquettes</h1>
+				</div>
+			</div>
+			<!-- End Page Title -->
+
+			<!-- Blog Posts Section -->
+			<section id="dessus-de-lits" class="dessus-de-lits section">
+				<a href="{{ path('app_dessus_de_lit_new') }}" class="btn btn-primary mb-4">Create New</a>
+				<div class="container py-5">
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						{% for dessus_de_lit in dessus_de_lits %}
+							<div class="col">
+								<article class="card h-100">
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{ dessus_de_lit.title }}</h5>
+										<p class="card-text flex-grow-1">
+											Usage:
+											{{ dessus_de_lit.usetxt }}<br>
+											Length:
+											{{ dessus_de_lit.length }}<br>
+											Width:
+											{{ dessus_de_lit.width }}<br>
+											Lining:
+											{{ dessus_de_lit.lining }}<br>
+											Fabric:
+											{{ dessus_de_lit.fabric }}<br>
+											Bedspread Finishes:
+											{{ dessus_de_lit.bedspreadFinishes }}<br>
+											Time:
+											{{ dessus_de_lit.time }}
+										</p>
+										<a href="{{ path('app_banquette_show', {id: banquette.id}) }}" class="readmore stretched-link">
+											<span>Read More</span>
+											<i class="bi bi-arrow-right"></i>
+										</a>
+									</div>
+								</article>
+							</div>
+						{% else %}
+							<div class="col-12">
+								<p class="text-center">No records found</p>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+
+			<!-- End Blog Posts Section -->
+
+			<!-- Pagination -->
+			<section id="blog-pagination" class="blog-pagination section">
+				<div class="container">
+					<div class="d-flex justify-content-center">
+						<ul>
+							<li>
+								<a href="#">
+									<i class="bi bi-chevron-left"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">1</a>
+							</li>
+							<li>
+								<a href="#" class="active">2</a>
+							</li>
+							<li>
+								<a href="#">3</a>
+							</li>
+							<li>
+								<a href="#">4</a>
+							</li>
+							<li>...</li>
+							<li>
+								<a href="#">10</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="bi bi-chevron-right"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<!-- End Pagination -->
+
+		</main>
+
+		<!-- Footer -->
+		<footer id="footer" class="footer dark-background">
+
+			<div class="container footer-top">
+				<div class="row gy-4">
+					<div class="col-lg-4 col-md-6 footer-about">
+						<a href="index.html" class="logo d-flex align-items-center">
+							<span class="sitename">Patines Et Moi</span>
+						</a>
+						<div class="footer-contact pt-3">
+							<p>A108 Adam Street</p>
+							<p>New York, NY 535022</p>
+							<p class="mt-3">
+								<strong>Téléphone :</strong>
+								<span>06-77-80-97-17</span>
+							</p>
+							<p>
+								<strong>Mail:</strong>
+								<span>gusorel@laposte.net</span>
+							</p>
+						</div>
+						<div class="social-links d-flex mt-4">
+							<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
+								<i class="bi bi-facebook"></i>
+							</a>
+							<a href="patines_et_moi_restaurations">
+								<i class="bi bi-instagram"></i>
+							</a>
+
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+							<li><a href="/">Home</a></li>
+							<li><a href="/about">Détail de l'entreprise</a></li>
+							<li><a href="#">Services</a></li>
+							<li><a href="#">Terms of service</a></li>
+							<li><a href="#">Privacy policy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Our Services</h4>
+						<ul>
+							<li><a href="/banquette">Banquettes</a></li>
+							<li><a href="#">Web Development</a></li>
+							<li><a href="#">Product Management</a></li>
+							<li><a href="#">Marketing</a></li>
+							<li><a href="#">Graphic Design</a></li>
+						</ul>
+					</div>
+
+					{# <div class="col-lg-2 col-md-3 footer-links">
+											<h4>Hic solutasetp</h4>
+											<ul>
+												<li><a href="#">Molestiae accusamus iure</a></li>
+												<li><a href="#">Excepturi dignissimos</a></li>
+												<li><a href="#">Suscipit distinctio</a></li>
+												<li><a href="#">Dilecta</a></li>
+												<li><a href="#">Sit quas consectetur</a></li>
+											</ul>
+										</div>
+					
+										<div class="col-lg-2 col-md-3 footer-links">
+											<h4>Nobis illum</h4>
+											<ul>
+												<li><a href="#">Ipsam</a></li>
+												<li><a href="#">Laudantium dolorum</a></li>
+												<li><a href="#">Dinera</a></li>
+												<li><a href="#">Trodelas</a></li>
+												<li><a href="#">Flexo</a></li>
+											</ul>
+										</div> #}
+
+				</div>
+			</div>
+
+			<div class="container copyright text-center mt-4">
+				<p>©
+					<span>Copyright</span>
+					<strong class="px-1 sitename">UpConstruction</strong>
+					<span>All Rights Reserved</span>
+				</p>
+				<div class="credits">
+					<!-- All the links in the footer should remain intact. -->
+					<!-- You can delete the links only if you've purchased the pro version. -->
+					<!-- Licensing information: https://bootstrapmade.com/license/ -->
+					<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+					Designed by
+						<a href="https://bootstrapmade.com/"> BootstrapMade</a>
+				</div>
+			</div>
+
+		</footer>
+
+		<!-- Scroll Top -->
+		<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+			<i class="bi bi-arrow-up-short"></i>
+		</a>
+
+		{% block javascripts %}
+			<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+			<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+			<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+			<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+			<script src="{{ asset('style/js/main.js') }}"></script>
+		{% endblock %}
+
+	</body>
 {% endblock %}

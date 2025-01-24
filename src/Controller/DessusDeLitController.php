@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\DessusDeLit;
 use App\Form\DessusDeLitType;
-use App\Repository\DessusDeLitRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\DessusDeLitRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/dessus/de/lit')]
 final class DessusDeLitController extends AbstractController
@@ -23,24 +25,50 @@ final class DessusDeLitController extends AbstractController
     }
 
     #[Route('/new', name: 'app_dessus_de_lit_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $dessusDeLit = new DessusDeLit();
-        $form = $this->createForm(DessusDeLitType::class, $dessusDeLit);
-        $form->handleRequest($request);
+public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $dessusDeLit = new DessusDeLit();
+    $form = $this->createForm(DessusDeLitType::class, $dessusDeLit);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($dessusDeLit);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Récupérer le fichier de l'image depuis le formulaire (champ "picture")
+        $pictureFile = $form->get('picture')->getData();
 
-            return $this->redirectToRoute('app_dessus_de_lit_index', [], Response::HTTP_SEE_OTHER);
+        if ($pictureFile) {
+            // Générer un nom de fichier unique et sûr
+            $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+
+            try {
+                // Déplacer le fichier dans le répertoire configuré
+                $pictureFile->move(
+                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Gestion des erreurs si le fichier ne peut pas être déplacé
+                throw new \Exception('Erreur lors du téléchargement du fichier.');
+            }
+
+            // Enregistrer le nom du fichier dans l'entité
+            $dessusDeLit->setPicture($newFilename); // Assure-toi que l'entité a une méthode setPicture()
         }
 
-        return $this->render('dessus_de_lit/new.html.twig', [
-            'dessus_de_lit' => $dessusDeLit,
-            'form' => $form,
-        ]);
+        // Persister et sauvegarder l'entité
+        $entityManager->persist($dessusDeLit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_dessus_de_lit_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('dessus_de_lit/new.html.twig', [
+        'dessus_de_lit' => $dessusDeLit,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_dessus_de_lit_show', methods: ['GET'])]
     public function show(DessusDeLit $dessusDeLit): Response

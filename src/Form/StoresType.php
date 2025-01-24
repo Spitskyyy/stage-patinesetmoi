@@ -6,6 +6,7 @@ use App\Entity\Stores;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class StoresType extends AbstractType
 {
@@ -13,13 +14,17 @@ class StoresType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('picture')
             ->add('usetxt')
             ->add('width')
             ->add('height')
             ->add('lining')
             ->add('fabric')
             ->add('time')
+            ->add('picture', FileType::class, [
+                'label' => 'Image (fichier JPG ou PNG)',
+                'mapped' => false,
+                'required' => false,
+            ]);
         ;
     }
 
