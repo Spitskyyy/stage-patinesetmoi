@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 #[Route('/stores')]
 final class StoresController extends AbstractController
@@ -23,24 +26,50 @@ final class StoresController extends AbstractController
     }
 
     #[Route('/new', name: 'app_stores_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $store = new Stores();
-        $form = $this->createForm(StoresType::class, $store);
-        $form->handleRequest($request);
+public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $store = new Stores();
+    $form = $this->createForm(StoresType::class, $store);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($store);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Récupérer le fichier de l'image depuis le formulaire (champ "picture")
+        $pictureFile = $form->get('picture')->getData();
 
-            return $this->redirectToRoute('app_stores_index', [], Response::HTTP_SEE_OTHER);
+        if ($pictureFile) {
+            // Générer un nom de fichier unique et sûr
+            $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+
+            try {
+                // Déplacer le fichier dans le répertoire configuré
+                $pictureFile->move(
+                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Gestion des erreurs si le fichier ne peut pas être déplacé
+                throw new \Exception('Erreur lors du téléchargement du fichier.');
+            }
+
+            // Enregistrer le nom du fichier dans l'entité
+            $store->setPicture($newFilename); // Assure-toi que l'entité a une méthode setPicture()
         }
 
-        return $this->render('stores/new.html.twig', [
-            'store' => $store,
-            'form' => $form,
-        ]);
+        // Persister et sauvegarder l'entité
+        $entityManager->persist($store);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_stores_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('stores/new.html.twig', [
+        'store' => $store,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_stores_show', methods: ['GET'])]
     public function show(Stores $store): Response
