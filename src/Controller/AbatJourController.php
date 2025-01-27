@@ -13,7 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/abat/jour')]
+#[Route('/abat_jour')]
 final class AbatJourController extends AbstractController
 {
     #[Route(name: 'app_abat_jour_index', methods: ['GET'])]
