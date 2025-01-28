@@ -26,49 +26,54 @@ final class StoresController extends AbstractController
     }
 
     #[Route('/new', name: 'app_stores_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
-{
-    $store = new Stores();
-    $form = $this->createForm(StoresType::class, $store);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Récupérer le fichier de l'image depuis le formulaire (champ "picture")
-        $pictureFile = $form->get('picture')->getData();
-
-        if ($pictureFile) {
-            // Générer un nom de fichier unique et sûr
-            $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
-
-            try {
-                // Déplacer le fichier dans le répertoire configuré
-                $pictureFile->move(
-                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // Gestion des erreurs si le fichier ne peut pas être déplacé
-                throw new \Exception('Erreur lors du téléchargement du fichier.');
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    {
+        $store = new Stores(); // Le tableau $pictures est initialisé dans l'entité
+    
+        $form = $this->createForm(StoresType::class, $store);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion des fichiers uploadés
+            $pictureFiles = $form->get('pictures')->getData();
+    
+            if ($pictureFiles) {
+                foreach ($pictureFiles as $pictureFile) {
+                    // Générer un nom unique pour chaque fichier
+                    $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+    
+                    try {
+                        // Déplacer chaque fichier vers le répertoire configuré
+                        $pictureFile->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+    
+                        // Ajouter le nom du fichier au tableau `$pictures` dans l'entité
+                        $store->addPicture($newFilename);
+                    } catch (FileException $e) {
+                        // Gestion des erreurs si nécessaire
+                        throw new \Exception('Erreur lors du téléchargement d\'un fichier.');
+                    }
+                }
             }
-
-            // Enregistrer le nom du fichier dans l'entité
-            $store->setPicture($newFilename); // Assure-toi que l'entité a une méthode setPicture()
+    
+            // Persister et sauvegarder l'entité
+            $entityManager->persist($store);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_stores_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        // Persister et sauvegarder l'entité
-        $entityManager->persist($store);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_stores_index', [], Response::HTTP_SEE_OTHER);
+    
+        return $this->render('stores/new.html.twig', [
+            'store' => $store,
+            'form' => $form,
+        ]);
     }
-
-    return $this->render('stores/new.html.twig', [
-        'store' => $store,
-        'form' => $form,
-    ]);
-}
+    
+    
 
 
     #[Route('/{id}', name: 'app_stores_show', methods: ['GET'])]

@@ -19,7 +19,7 @@ class LivreDor
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $picture = null;
+    private array $pictures = [];
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $detail = null;
@@ -41,18 +41,31 @@ class LivreDor
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getPictures(): array
     {
-        return $this->picture;
+        return $this->pictures;
     }
 
-    public function setPicture(?string $picture): static
+    public function setPictures(?array $pictures): self
     {
-        $this->picture = $picture;
+        $this->pictures = $pictures;
 
         return $this;
     }
 
+    public function addPicture(string $picture): self
+    {
+        $this->pictures[] = $picture;
+
+        return $this;
+    }
+
+    public function removePicture(string $picture): self
+    {
+        $this->pictures = array_filter($this->pictures, fn($p) => $p !== $picture);
+
+        return $this;
+    }
     public function getDetail(): ?string
     {
         return $this->detail;

@@ -22,9 +22,10 @@ class AbatJourType extends AbstractType
             ->add('choice_of_strucure')
             ->add('lampshade_finishes')
             ->add('time')
-            ->add('picture', FileType::class, [
-                'label' => 'Image (fichier JPG ou PNG)',
-                'mapped' => false,
+            ->add('pictures', FileType::class, [
+                'label' => 'Upload des images',
+                'multiple' => true, // Permet l'upload de plusieurs fichiers
+                'mapped' => false, // Non lié directement à l'entité
                 'required' => false,
             ]);
         ;

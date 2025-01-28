@@ -25,50 +25,53 @@ final class BanquetteController extends AbstractController
     }
 
     #[Route('/new', name: 'app_banquette_new', methods: ['GET', 'POST'])]
-    
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
-{
-    $banquette = new Banquette();
-    $form = $this->createForm(BanquetteType::class, $banquette);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Récupérer le fichier d'image du formulaire
-        $imageFile = $form->get('picture')->getData();
-
-        if ($imageFile) {
-            // Générer un nom de fichier unique et sûr
-            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-            try {
-                // Déplacer le fichier dans le répertoire configuré
-                $imageFile->move(
-                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // Gestion des erreurs, si nécessaire
-                throw new \Exception('Erreur lors du téléchargement du fichier.');
+    {
+        $banquette = new Banquette(); // Le tableau $pictures est initialisé dans l'entité
+    
+        $form = $this->createForm(BanquetteType::class, $banquette);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion des fichiers uploadés
+            $pictureFiles = $form->get('pictures')->getData();
+    
+            if ($pictureFiles) {
+                foreach ($pictureFiles as $pictureFile) {
+                    // Générer un nom unique pour chaque fichier
+                    $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+    
+                    try {
+                        // Déplacer chaque fichier vers le répertoire configuré
+                        $pictureFile->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+    
+                        // Ajouter le nom du fichier au tableau `$pictures` dans l'entité
+                        $banquette->addPicture($newFilename);
+                    } catch (FileException $e) {
+                        // Gestion des erreurs si nécessaire
+                        throw new \Exception('Erreur lors du téléchargement d\'un fichier.');
+                    }
+                }
             }
-
-            // Enregistrer le nom du fichier dans l'entité
-            $banquette->setPicture($newFilename);
+    
+            // Persister et sauvegarder l'entité
+            $entityManager->persist($banquette);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_banquette_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        // Persister et sauvegarder l'entité
-        $entityManager->persist($banquette);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_banquette_index', [], Response::HTTP_SEE_OTHER);
+    
+        return $this->render('banquette/new.html.twig', [
+            'banquette' => $banquette,
+            'form' => $form,
+        ]);
     }
-
-    return $this->render('banquette/new.html.twig', [
-        'banquette' => $banquette,
-        'form' => $form,
-    ]);
-}
+    
 
     #[Route('/{id}', name: 'app_banquette_show', methods: ['GET'])]
     public function show(Banquette $banquette): Response

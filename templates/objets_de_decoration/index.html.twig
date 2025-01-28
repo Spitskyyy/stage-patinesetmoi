@@ -112,36 +112,61 @@
 
 			<!-- Blog Posts Section -->
 			<section id="blog-posts" class="blog-posts section">
-				<a href="{{ path('app_objets_de_decoration_new') }}" class="btn btn-primary mb-4">Create New</a>
-				<div class="container py-5">
-					<div class="row row-cols-1 row-cols-md-3 g-4">
-						{% for objets_de_decoration in objets_de_decorations %}
-							<div class="col">
-								<article class="card h-100">
-									<div class="post-img position-relative overflow-hidden">
-										<img src="{{ asset('uploads/images/' ~ objets_de_decoration.picture) }}" class="card-img-top" alt="{{ objets_de_decoration.title }}">
-									</div>
-									<div class="card-body d-flex flex-column">
-										<h5 class="card-title">{{ objets_de_decoration.title }}</h5>
-										<p class="card-text flex-grow-1">
+    <a href="{{ path('app_objets_de_decoration_new') }}" class="btn btn-primary mb-4">Create New</a>
+    <div class="container py-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for objets_de_decoration in objets_de_decorations %}
+                <div class="col">
+                    <article class="card h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                            <!-- Carrousel d'images -->
+                            <div id="carousel-{{ objets_de_decoration.id }}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% if objets_de_decoration.pictures is not empty %}
+                                        {% for picture in objets_de_decoration.pictures %}
+                                            <div class="carousel-item {% if loop.first %} active {% endif %}">
+                                                <img src="{{ asset('uploads/images/' ~ picture) }}" class="d-block w-100" alt="{{ objets_de_decoration.title }}">
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="carousel-item active">
+                                            <img src="{{ asset('uploads/images/' ~ objets_de_decoration.picture) }}" class="d-block w-100" alt="{{ objets_de_decoration.title }}">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <!-- Contrôles du carrousel -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ objets_de_decoration.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ objets_de_decoration.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ objets_de_decoration.title }}</h5>
+                           <p class="card-text flex-grow-1">
 											Detail:
 											{{ objets_de_decoration.detail }}
 										</p>
-										<a href="{{ path('app_objets_de_decoration_show', {id: objets_de_decoration.id}) }}" class="readmore stretched-link">
-											<span>Read More</span>
-											<i class="bi bi-arrow-right"></i>
-										</a>
-									</div>
-								</article>
-							</div>
-						{% else %}
-							<div class="col-12">
-								<p class="text-center">No records found</p>
-							</div>
-						{% endfor %}
-					</div>
-				</div>
-			</section>
+                            <div class="actions mt-auto">
+                                <a href="{{ path('app_objets_de_decoration_show', {'id': objets_de_decoration.id}) }}" class="btn btn-info">Show</a>
+                                <a href="{{ path('app_objets_de_decoration_edit', {'id': objets_de_decoration.id}) }}" class="btn btn-warning">Edit</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">No records found</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 
 
 			<!-- End Blog Posts Section -->

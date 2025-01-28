@@ -21,9 +21,10 @@ class VoilageRideauxDoublesType extends AbstractType
             ->add('fabric')
             ->add('curtain_head_finishing')
             ->add('time')
-            ->add('picture', FileType::class, [
-                'label' => 'Image (fichier JPG ou PNG)',
-                'mapped' => false,
+            ->add('pictures', FileType::class, [
+                'label' => 'Upload des images',
+                'multiple' => true, // Permet l'upload de plusieurs fichiers
+                'mapped' => false, // Non lié directement à l'entité
                 'required' => false,
             ]);
         ;

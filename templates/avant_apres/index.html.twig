@@ -71,7 +71,7 @@
 								<li><a href="/voilage_rideaux_doubles">voilages, rideaux doublés et stores</a></li>
 								<li><a href="/tringlerie">Tringlerie</a></li>
 								<li><a href="/tete_de_lit">Têtes de lits et dessus de lits</a></li>
-								<li><a href="/abat_jour">Abat-jour</a></li> 
+								<li><a href="/abat_jour">Abat-jour</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -90,9 +90,7 @@
 						<li>
 							<a href="contact.html">Contact</a>
 						</li>
-						<li>
-							
-						</li>
+						<li></li>
 					</ul>
 					<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 				</nav>
@@ -118,19 +116,44 @@
 						{% for avant_apre in avant_apres %}
 							<div class="col">
 								<article class="card h-100">
-									<div class="post-img position-relative overflow-hidden">
-										<img src="{{ asset('uploads/images/' ~ avant_apre.picture) }}" class="card-img-top" alt="{{ avant_apre.title }}">
+									<div
+										class="post-img position-relative overflow-hidden">
+										<!-- Carrousel d'images -->
+										<div id="carousel-{{ avant_apre.id }}" class="carousel slide" data-bs-ride="carousel">
+											<div class="carousel-inner">
+												{% if avant_apre.pictures is not empty %}
+													{% for picture in avant_apre.pictures %}
+														<div class="carousel-item {% if loop.first %} active {% endif %}">
+															<img src="{{ asset('uploads/images/' ~ picture) }}" class="d-block w-100" alt="{{ avant_apre.title }}">
+														</div>
+													{% endfor %}
+												{% else %}
+													<div class="carousel-item active">
+														<img src="{{ asset('uploads/images/' ~ avant_apre.picture) }}" class="d-block w-100" alt="{{ avant_apre.title }}">
+													</div>
+												{% endif %}
+											</div>
+											<!-- Contrôles du carrousel -->
+											<button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ avant_apre.id }}" data-bs-slide="prev">
+												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												<span class="visually-hidden">Previous</span>
+											</button>
+											<button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ avant_apre.id }}" data-bs-slide="next">
+												<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												<span class="visually-hidden">Next</span>
+											</button>
+										</div>
 									</div>
 									<div class="card-body d-flex flex-column">
 										<h5 class="card-title">{{ avant_apre.title }}</h5>
 										<p class="card-text flex-grow-1">
-											Detail:
+											<b>Detail:</b>
 											{{ avant_apre.detail }}
 										</p>
-										<a href="{{ path('app_avant_apres_show', {id: avant_apre.id}) }}" class="readmore stretched-link">
-											<span>Read More</span>
-											<i class="bi bi-arrow-right"></i>
-										</a>
+										<div class="actions mt-auto">
+											<a href="{{ path('app_avant_apres_show', {'id': avant_apre.id}) }}" class="btn btn-info">Show</a>
+											<a href="{{ path('app_avant_apres_edit', {'id': avant_apre.id}) }}" class="btn btn-warning">Edit</a>
+										</div>
 									</div>
 								</article>
 							</div>
@@ -240,26 +263,26 @@
 					</div>
 
 					{# <div class="col-lg-2 col-md-3 footer-links">
-																<h4>Hic solutasetp</h4>
-																<ul>
-																	<li><a href="#">Molestiae accusamus iure</a></li>
-																	<li><a href="#">Excepturi dignissimos</a></li>
-																	<li><a href="#">Suscipit distinctio</a></li>
-																	<li><a href="#">Dilecta</a></li>
-																	<li><a href="#">Sit quas consectetur</a></li>
-																</ul>
-															</div>
-										
-															<div class="col-lg-2 col-md-3 footer-links">
-																<h4>Nobis illum</h4>
-																<ul>
-																	<li><a href="#">Ipsam</a></li>
-																	<li><a href="#">Laudantium dolorum</a></li>
-																	<li><a href="#">Dinera</a></li>
-																	<li><a href="#">Trodelas</a></li>
-																	<li><a href="#">Flexo</a></li>
-																</ul>
-															</div> #}
+																															<h4>Hic solutasetp</h4>
+																															<ul>
+																																<li><a href="#">Molestiae accusamus iure</a></li>
+																																<li><a href="#">Excepturi dignissimos</a></li>
+																																<li><a href="#">Suscipit distinctio</a></li>
+																																<li><a href="#">Dilecta</a></li>
+																																<li><a href="#">Sit quas consectetur</a></li>
+																															</ul>
+																														</div>
+																									
+																														<div class="col-lg-2 col-md-3 footer-links">
+																															<h4>Nobis illum</h4>
+																															<ul>
+																																<li><a href="#">Ipsam</a></li>
+																																<li><a href="#">Laudantium dolorum</a></li>
+																																<li><a href="#">Dinera</a></li>
+																																<li><a href="#">Trodelas</a></li>
+																																<li><a href="#">Flexo</a></li>
+																															</ul>
+																														</div> #}
 
 				</div>
 			</div>

@@ -112,15 +112,42 @@
 
 			<!-- Blog Posts Section -->
 			<section id="blog-posts" class="blog-posts section">
-				<a href="{{ path('app_dessus_de_lit_new') }}" class="btn btn-primary mb-4">Create New</a>
-				<div class="container py-5">
-					<div class="row row-cols-1 row-cols-md-3 g-4">
-						{% for dessus_de_lit in dessus_de_lits %}
-							<div class="col">
-								<article class="card h-100">
-									<div class="card-body d-flex flex-column">
-										<h5 class="card-title">{{ dessus_de_lit.title }}</h5>
-										<p class="card-text flex-grow-1">
+    <a href="{{ path('app_dessus_de_lit_new') }}" class="btn btn-primary mb-4">Create New</a>
+    <div class="container py-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for dessus_de_lit in dessus_de_lits %}
+                <div class="col">
+                    <article class="card h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                            <!-- Carrousel d'images -->
+                            <div id="carousel-{{ dessus_de_lit.id }}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% if dessus_de_lit.pictures is not empty %}
+                                        {% for picture in dessus_de_lit.pictures %}
+                                            <div class="carousel-item {% if loop.first %} active {% endif %}">
+                                                <img src="{{ asset('uploads/images/' ~ picture) }}" class="d-block w-100" alt="{{ dessus_de_lit.title }}">
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="carousel-item active">
+                                            <img src="{{ asset('uploads/images/' ~ dessus_de_lit.picture) }}" class="d-block w-100" alt="{{ dessus_de_lit.title }}">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <!-- Contrôles du carrousel -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ dessus_de_lit.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ dessus_de_lit.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ dessus_de_lit.title }}</h5>
+                            <p class="card-text flex-grow-1">
 											<b>Usage:</b>
 											{{ dessus_de_lit.usetxt }}<br>
 											<b>Longueur:</b>
@@ -136,21 +163,22 @@
 											<b>Temps de réalisation nécessaire:</b>
 											{{ dessus_de_lit.time }} h
 										</p>
-										<a href="{{ path('app_banquette_show', {id: banquette.id}) }}" class="readmore stretched-link">
-											<span>Read More</span>
-											<i class="bi bi-arrow-right"></i>
-										</a>
-									</div>
-								</article>
-							</div>
-						{% else %}
-							<div class="col-12">
-								<p class="text-center">No records found</p>
-							</div>
-						{% endfor %}
-					</div>
-				</div>
-			</section>
+                            <div class="actions mt-auto">
+                                <a href="{{ path('app_dessus_de_lit_show', {'id': dessus_de_lit.id}) }}" class="btn btn-info">Show</a>
+                                <a href="{{ path('app_dessus_de_lit_edit', {'id': dessus_de_lit.id}) }}" class="btn btn-warning">Edit</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">No records found</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 
 			<!-- End Blog Posts Section -->
 
@@ -247,27 +275,7 @@
 						</ul>
 					</div>
 
-					{# <div class="col-lg-2 col-md-3 footer-links">
-																<h4>Hic solutasetp</h4>
-																<ul>
-																	<li><a href="#">Molestiae accusamus iure</a></li>
-																	<li><a href="#">Excepturi dignissimos</a></li>
-																	<li><a href="#">Suscipit distinctio</a></li>
-																	<li><a href="#">Dilecta</a></li>
-																	<li><a href="#">Sit quas consectetur</a></li>
-																</ul>
-															</div>
-										
-															<div class="col-lg-2 col-md-3 footer-links">
-																<h4>Nobis illum</h4>
-																<ul>
-																	<li><a href="#">Ipsam</a></li>
-																	<li><a href="#">Laudantium dolorum</a></li>
-																	<li><a href="#">Dinera</a></li>
-																	<li><a href="#">Trodelas</a></li>
-																	<li><a href="#">Flexo</a></li>
-																</ul>
-															</div> #}
+					
 
 				</div>
 			</div>

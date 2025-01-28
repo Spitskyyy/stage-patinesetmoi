@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SecteurPubliqueMonumentHistorique{% endblock %}
+
+{% block body %}
+    <h1>Create new SecteurPubliqueMonumentHistorique</h1>
+
+    {{ include('secteur_publique_monument_historique/_form.html.twig') }}
+
+    <a href="{{ path('app_secteur_publique_monument_historique_index') }}">back to list</a>
+{% endblock %}

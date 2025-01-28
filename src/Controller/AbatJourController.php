@@ -27,33 +27,36 @@ final class AbatJourController extends AbstractController
     #[Route('/new', name: 'app_abat_jour_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
-    $abatJour = new AbatJour();
+    $abatJour = new AbatJour(); // Pas besoin d'initialiser $pictures ici, c'est fait dans l'entité
+
     $form = $this->createForm(AbatJourType::class, $abatJour);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Récupérer le fichier de l'image depuis le formulaire (champ "picture")
-        $pictureFile = $form->get('picture')->getData();
+        // Gestion des fichiers uploadés
+        $pictureFiles = $form->get('pictures')->getData();
 
-        if ($pictureFile) {
-            // Générer un nom de fichier unique et sûr
-            $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+        if ($pictureFiles) {
+            foreach ($pictureFiles as $pictureFile) {
+                // Générer un nom unique pour chaque fichier
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
 
-            try {
-                // Déplacer le fichier dans le répertoire configuré
-                $pictureFile->move(
-                    $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // Gestion des erreurs si le fichier ne peut pas être déplacé
-                throw new \Exception('Erreur lors du téléchargement du fichier.');
+                try {
+                    // Déplacer chaque fichier vers le répertoire configuré
+                    $pictureFile->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+
+                    // Ajouter le nom du fichier au tableau `$pictures` dans l'entité
+                    $abatJour->addPicture($newFilename);
+                } catch (FileException $e) {
+                    // Gestion des erreurs si nécessaire
+                    throw new \Exception('Erreur lors du téléchargement d\'un fichier.');
+                }
             }
-
-            // Enregistrer le nom du fichier dans l'entité
-            $abatJour->setPicture($newFilename); // Assure-toi que l'entité a une méthode setPicture()
         }
 
         // Persister et sauvegarder l'entité
@@ -68,6 +71,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
         'form' => $form,
     ]);
 }
+
 
 
     #[Route('/{id}', name: 'app_abat_jour_show', methods: ['GET'])]

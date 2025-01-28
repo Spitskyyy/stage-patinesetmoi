@@ -24,49 +24,53 @@ final class MisesEnSceneController extends AbstractController
     }
 
     #[Route('/new', name: 'app_mises_en_scene_new', methods: ['GET', 'POST'])]
-    public function new (Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
-    {
-        $misesEnScene = new MisesEnScene();
-        $form         = $this->createForm(MisesEnSceneType::class, $misesEnScene);
-        $form->handleRequest($request);
+public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $misesEnScene = new MisesEnScene(); // Le tableau $pictures est initialisé dans l'entité
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer le fichier de l'image depuis le formulaire (champ "picture")
-            $pictureFile = $form->get('picture')->getData();
+    $form = $this->createForm(MisesEnSceneType::class, $misesEnScene);
+    $form->handleRequest($request);
 
-            if ($pictureFile) {
-                // Générer un nom de fichier unique et sûr
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Gestion des fichiers uploadés
+        $pictureFiles = $form->get('pictures')->getData();
+
+        if ($pictureFiles) {
+            foreach ($pictureFiles as $pictureFile) {
+                // Générer un nom unique pour chaque fichier
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename     = $slugger->slug($originalFilename);
-                $newFilename      = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
 
                 try {
-                    // Déplacer le fichier dans le répertoire configuré
+                    // Déplacer chaque fichier vers le répertoire configuré
                     $pictureFile->move(
-                        $this->getParameter('images_directory'), // Paramètre défini dans config/services.yaml
+                        $this->getParameter('pictures_directory'),
                         $newFilename
                     );
+
+                    // Ajouter le nom du fichier au tableau `$pictures` dans l'entité
+                    $misesEnScene->addPicture($newFilename);
                 } catch (FileException $e) {
-                    // Gestion des erreurs si le fichier ne peut pas être déplacé
-                    throw new \Exception('Erreur lors du téléchargement du fichier.');
+                    // Gestion des erreurs si nécessaire
+                    throw new \Exception('Erreur lors du téléchargement d\'un fichier.');
                 }
-
-                                                         // Enregistrer le nom du fichier dans l'entité
-                $misesEnScene->setPicture($newFilename); // Assure-toi que l'entité a une méthode setPicture()
             }
-
-            // Persister et sauvegarder l'entité
-            $entityManager->persist($misesEnScene);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_mises_en_scene_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('mises_en_scene/new.html.twig', [
-            'mises_en_scene' => $misesEnScene,
-            'form'           => $form,
-        ]);
+        // Persister et sauvegarder l'entité
+        $entityManager->persist($misesEnScene);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_mises_en_scene_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('mises_en_scene/new.html.twig', [
+        'mises_en_scene' => $misesEnScene,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_mises_en_scene_show', methods: ['GET'])]
     public function show(MisesEnScene $misesEnScene): Response
