@@ -38,10 +38,14 @@
 	<body class="blog-page">
 
 		<header id="header" class="header d-flex align-items-center fixed-top">
-			<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-				<a href="/" class="logo d-flex align-items-center">
-					<h1 class="sitename">Patines Et Moi</h1>
+			<div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+				<a href="index.html" class="logo d-flex align-items-center">
+					<!-- Uncomment the line below if you also wish to use an image logo -->
+					<!-- <img src="style/img/logo.png" alt=""> -->
+						<h1 class="sitename"> Patines Et Moi</h1>
 				</a>
+
 				<nav id="navmenu" class="navmenu">
 					<ul>
 						<li>
@@ -50,6 +54,8 @@
 						<li>
 							<a href="/detail">Présentation</a>
 						</li>
+
+
 						<li class="dropdown">
 							<a href="#">
 								<span>Ameublement</span>
@@ -57,21 +63,24 @@
 							</a>
 							<ul>
 								<li><a href="/banquette">Banquettes</a></li>
-								<li><a href="/fauteuil_dagrement">Fauteuil d'agrément</a></li>
+								<li><a href="/fauteuil_dagrement">Fauteuil d'agrement</a></li>
 								<li><a href="/garniture">Garniture</a></li>
 								<li><a href="/avant_apres">Avant / Après</a></li>
+								<li><a href="/secteur_publique_monument_historique">Travaux secteur public</a></li>
 							</ul>
 						</li>
+
 						<li class="dropdown">
 							<a href="#">
-								<span>Couture d'ameublement</span>
+								<span>Couture d'ameublement
+								</span>
 								<i class="bi bi-chevron-down toggle-dropdown"></i>
 							</a>
 							<ul>
 								<li><a href="/voilage_rideaux_doubles">voilages, rideaux doublés et stores</a></li>
 								<li><a href="/tringlerie">Tringlerie</a></li>
 								<li><a href="/tete_de_lit">Têtes de lits et dessus de lits</a></li>
-								<li><a href="/abat_jour">Abat-jour</a></li> 
+								<li><a href="/abat_jour">Abat-jour</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -90,12 +99,11 @@
 						<li>
 							<a href="contact.html">Contact</a>
 						</li>
-						<li>
-							
-						</li>
+						<li></li>
 					</ul>
 					<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 				</nav>
+
 			</div>
 		</header>
 
@@ -112,205 +120,230 @@
 			<!-- End Page Title -->
 
 			<!-- Blog Posts Section -->
+			<style>
+				.post-img {
+					height: 450px;
+
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					overflow: hidden;
+					border-radius: 8px;
+					box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+				}
+
+				.post-img img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					transition: transform 0.2s ease-in-out;
+				}
+
+				.post-img img:hover {
+					transform: scale(1.05);
+				}
+
+				.pagination .page-link {
+					color: #333;
+					background-color: transparent;
+					border: 1px solid #ddd;
+				}
+
+				.pagination .page-link:hover {
+					color: #fff;
+					background-color: #ffc107;
+					border-color: #ffc107;
+				}
+
+				.pagination .page-item.active .page-link {
+					color: #fff;
+					background-color: #ffc107;
+					border-color: #ffc107;
+				}
+
+				.pagination .page-link i {
+					color: #333;
+				}
+			</style>
+			<!-- Blog Posts Section -->
 			<section id="blog-posts" class="blog-posts section">
-    <a href="{{ path('app_tete_de_lit_new') }}" class="btn btn-primary mb-4">Create New</a>
-    <div class="container py-5">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for tete_de_lit in tete_de_lits %}
-                <div class="col">
-                    <article class="card h-100">
-                        <div class="post-img position-relative overflow-hidden">
-                            <!-- Carrousel d'images -->
-                            <div id="carousel-{{ tete_de_lit.id }}" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    {% if tete_de_lit.pictures is not empty %}
-                                        {% for picture in tete_de_lit.pictures %}
-                                            <div class="carousel-item {% if loop.first %} active {% endif %}">
-                                                <img src="{{ asset('uploads/images/' ~ picture) }}" class="d-block w-100" alt="{{ tete_de_lit.title }}">
-                                            </div>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="carousel-item active">
-                                            <img src="{{ asset('uploads/images/' ~ tete_de_lit.picture) }}" class="d-block w-100" alt="{{ tete_de_lit.title }}">
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <!-- Contrôles du carrousel -->
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ tete_de_lit.id }}" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ tete_de_lit.id }}" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ tete_de_lit.title }}</h5>
-                           <p class="card-text flex-grow-1">
-											<b>Largeur:</b>
-											{{ tete_de_lit.width }} cm<br>
-											<b>Hauteur:</b>
-											{{ tete_de_lit.height }} cm<br>
-											<b>Tissu:</b>
-											{{ tete_de_lit.fabric }}<br>
-											<b>Materiaux:</b>
-											{{ tete_de_lit.materials }}<br>
-											<b>Support:</b>
-											{{ tete_de_lit.support }}<br>
-											<b>Finitions de la tête de lit:</b>
-											{{ tete_de_lit.headboardFinishes }}<br>
-											<b>Temps de réalisation nécessaire:</b>
-											{{ tete_de_lit.time }}
-										</p>
-                            <div class="actions mt-auto">
-                                <a href="{{ path('app_tete_de_lit_show', {'id': tete_de_lit.id}) }}" class="btn btn-info">Show</a>
-                                <a href="{{ path('app_tete_de_lit_edit', {'id': tete_de_lit.id}) }}" class="btn btn-warning">Edit</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            {% else %}
-                <div class="col-12">
-                    <p class="text-center">No records found</p>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-
-			<!-- End Blog Posts Section -->
-
-			<!-- Pagination -->
-			<section id="blog-pagination" class="blog-pagination section">
-				<div class="container">
-					<div class="d-flex justify-content-center">
-						<ul>
-							<li>
-								<a href="#">
-									<i class="bi bi-chevron-left"></i>
-								</a>
-							</li>
-							<li>
-								<a href="#">1</a>
-							</li>
-							<li>
-								<a href="#" class="active">2</a>
-							</li>
-							<li>
-								<a href="#">3</a>
-							</li>
-							<li>
-								<a href="#">4</a>
-							</li>
-							<li>...</li>
-							<li>
-								<a href="#">10</a>
-							</li>
-							<li>
-								<a href="#">
-									<i class="bi bi-chevron-right"></i>
-								</a>
-							</li>
-						</ul>
+				<a href="{{ path('app_tete_de_lit_new') }}" class="btn btn-primary mb-4">Create New</a>
+				<div class="container py-5">
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						{% for tete_de_lit in tete_de_lit %}
+							<div class="col">
+								<article class="card h-100" style="width : 80%; height:70%;">
+									<div
+										class="post-img">
+										<!-- Carrousel d'images -->
+										<div id="carousel-{{ tete_de_lit.id }}" class="carousel slide" data-bs-ride="carousel">
+											<div class="carousel-inner">
+												{% if tete_de_lit.pictures is not empty %}
+													{% for picture in tete_de_lit.pictures %}
+														<div class="carousel-item {% if loop.first %} active {% endif %}">
+															<img src="{{ asset('uploads/images/' ~ picture) }}" class="d-block w-100" alt="{{ tete_de_lit.title }}">
+														</div>
+													{% endfor %}
+												{% else %}
+													<div class="carousel-item active">
+														<img src="{{ asset('uploads/images/' ~ tete_de_lit.picture) }}" class="d-block w-100" alt="{{ tete_de_lit.title }}">
+													</div>
+												{% endif %}
+											</div>
+											<button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ tete_de_lit.id }}" data-bs-slide="prev">
+												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												<span class="visually-hidden">Previous</span>
+											</button>
+											<button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ tete_de_lit.id }}" data-bs-slide="next">
+												<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												<span class="visually-hidden">Next</span>
+											</button>
+										</div>
+									</div>
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{ tete_de_lit.title }}</h5>
+										<div class="actions mt-auto">
+											<a href="{{ path('app_tete_de_lit_show', {'id': tete_de_lit.id}) }}" class="btn btn-info">Show</a>
+											<a href="{{ path('app_tete_de_lit_edit', {'id': tete_de_lit.id}) }}" class="btn btn-warning">Edit</a>
+										</div>
+									</div>
+								</article>
+							</div>
+						{% else %}
+							<div class="col-12">
+								<p class="text-center">No records found</p>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
-			</section>
-			<!-- End Pagination -->
 
-		</main>
+				<!-- End Blog Posts Section -->
 
-		<!-- Footer -->
-		<footer id="footer" class="footer dark-background">
+				<!-- Pagination -->
 
-			<div class="container footer-top">
-				<div class="row gy-4">
-					<div class="col-lg-4 col-md-6 footer-about">
-						<a href="index.html" class="logo d-flex align-items-center">
-							<span class="sitename">Patines Et Moi</span>
-						</a>
-						<div class="footer-contact pt-3">
-							<p>A108 Adam Street</p>
-							<p>New York, NY 535022</p>
-							<p class="mt-3">
-								<strong>Téléphone :</strong>
-								<span>06-77-80-97-17</span>
-							</p>
-							<p>
-								<strong>Mail:</strong>
-								<span>gusorel@laposte.net</span>
-							</p>
-						</div>
-						<div class="social-links d-flex mt-4">
-							<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
-								<i class="bi bi-facebook"></i>
-							</a>
-							<a href="patines_et_moi_restaurations">
-								<i class="bi bi-instagram"></i>
-							</a>
+				<section id="blog-pagination" class="blog-pagination section">
+					<div class="container">
+						<div class="d-flex justify-content-center">
+							<ul class="pagination">
+								{% if currentPage > 1 %}
+									<li class="page-item">
+										<a class="page-link" href="{{ path('app_tete_de_lit_index', {'page': currentPage - 1}) }}">
+											<i class="bi bi-chevron-left"></i>
+										</a>
+									</li>
+								{% endif %}
 
+								{% for page in 1..totalPages %}
+									<li class="page-item {% if page == currentPage %} active {% endif %}">
+										<a class="page-link" href="{{ path('app_tete_de_lit_index', {'page': page}) }}">{{ page }}</a>
+									</li>
+								{% endfor %}
+
+								{% if currentPage < totalPages %}
+									<li class="page-item">
+										<a class="page-link" href="{{ path('app_tete_de_lit_index', {'page': currentPage + 1}) }}">
+											<i class="bi bi-chevron-right"></i>
+										</a>
+									</li>
+								{% endif %}
+							</ul>
 						</div>
 					</div>
+				</section>
 
-					<div class="col-lg-2 col-md-3 footer-links">
-						<h4>Useful Links</h4>
-						<ul>
-							<li><a href="/">Home</a></li>
-							<li><a href="/detail">Détail de l'entreprise</a></li>
-							<li><a href="#">Services</a></li>
-							<li><a href="#">Terms of service</a></li>
-							<li><a href="#">Privacy policy</a></li>
-						</ul>
+				<!-- End Pagination -->
+
+			</main>
+
+			<!-- Footer -->
+			<footer id="footer" class="footer dark-background">
+
+				<div class="container footer-top">
+					<div class="row gy-4">
+						<div class="col-lg-4 col-md-6 footer-about">
+							<a href="index.html" class="logo d-flex align-items-center">
+								<span class="sitename">Patines Et Moi</span>
+							</a>
+							<div class="footer-contact pt-3">
+								<p>A108 Adam Street</p>
+								<p>New York, NY 535022</p>
+								<p class="mt-3">
+									<strong>Téléphone :</strong>
+									<span>06-77-80-97-17</span>
+								</p>
+								<p>
+									<strong>Mail:</strong>
+									<span>gusorel@laposte.net</span>
+								</p>
+							</div>
+							<div class="social-links d-flex mt-4">
+								<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
+									<i class="bi bi-facebook"></i>
+								</a>
+								<a href="patines_et_moi_restaurations">
+									<i class="bi bi-instagram"></i>
+								</a>
+
+							</div>
+						</div>
+
+						<div class="col-lg-2 col-md-3 footer-links">
+							<h4>Useful Links</h4>
+							<ul>
+								<li><a href="/">Home</a></li>
+								<li><a href="/detail">Détail de l'entreprise</a></li>
+								<li><a href="#">Services</a></li>
+								<li><a href="#">Terms of service</a></li>
+								<li><a href="#">Privacy policy</a></li>
+							</ul>
+						</div>
+
+						<div class="col-lg-2 col-md-3 footer-links">
+							<h4>Our Services</h4>
+							<ul>
+								<li><a href="/banquette">Banquettes</a></li>
+								<li><a href="#">Web Development</a></li>
+								<li><a href="#">Product Management</a></li>
+								<li><a href="#">Marketing</a></li>
+								<li><a href="#">Graphic Design</a></li>
+							</ul>
+						</div>
+
+
 					</div>
+				</div>
 
-					<div class="col-lg-2 col-md-3 footer-links">
-						<h4>Our Services</h4>
-						<ul>
-							<li><a href="/banquette">Banquettes</a></li>
-							<li><a href="#">Web Development</a></li>
-							<li><a href="#">Product Management</a></li>
-							<li><a href="#">Marketing</a></li>
-							<li><a href="#">Graphic Design</a></li>
-						</ul>
+				<div class="container copyright text-center mt-4">
+					<p>©
+						<span>Copyright</span>
+						<strong class="px-1 sitename">UpConstruction</strong>
+						<span>All Rights Reserved</span>
+					</p>
+					<div class="credits">
+						<!-- All the links in the footer should remain intact. -->
+						<!-- You can delete the links only if you've purchased the pro version. -->
+						<!-- Licensing information: https://bootstrapmade.com/license/ -->
+						<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+						Designed by
+							<a href="https://bootstrapmade.com/"> BootstrapMade</a>
 					</div>
-
-					
-
 				</div>
-			</div>
 
-			<div class="container copyright text-center mt-4">
-				<p>©
-					<span>Copyright</span>
-					<strong class="px-1 sitename">UpConstruction</strong>
-					<span>All Rights Reserved</span>
-				</p>
-				<div class="credits">
-					<!-- All the links in the footer should remain intact. -->
-					<!-- You can delete the links only if you've purchased the pro version. -->
-					<!-- Licensing information: https://bootstrapmade.com/license/ -->
-					<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-					Designed by
-						<a href="https://bootstrapmade.com/"> BootstrapMade</a>
-				</div>
-			</div>
+			</footer>
 
-		</footer>
+			<!-- Scroll Top -->
+			<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+				<i class="bi bi-arrow-up-short"></i>
+			</a>
 
-		<!-- Scroll Top -->
-		<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
-			<i class="bi bi-arrow-up-short"></i>
-		</a>
+			{% block javascripts %}
+				<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+				<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+				<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+				<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+				<script src="{{ asset('style/js/main.js') }}"></script>
+			{% endblock %}
 
-		{% block javascripts %}
-			<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-			<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
-			<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
-			<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
-			<script src="{{ asset('style/js/main.js') }}"></script>
-		{% endblock %}
-
-	</body>
-{% endblock %}
+		</body>
+	{% endblock %}
+</body>

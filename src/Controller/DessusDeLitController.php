@@ -13,14 +13,40 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/dessus/de/lit')]
+#[Route('/dessus_de_lit')]
 final class DessusDeLitController extends AbstractController
 {
     #[Route(name: 'app_dessus_de_lit_index', methods: ['GET'])]
-    public function index(DessusDeLitRepository $dessusDeLitRepository): Response
+    public function index(Request $request, DessusDeLitRepository $dessus_de_litRepository): Response
     {
+        // Nombre d'éléments par page
+        $limit = 6;
+    
+        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
+        $page = $request->query->getInt('page', 1);
+    
+        // Calcul de l'offset (la ligne de départ pour la requête)
+        $offset = ($page - 1) * $limit;
+    
+        // Récupérer les éléments de la page actuelle
+        $dessus_de_lits = $dessus_de_litRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
+            ->setFirstResult($offset)  // Définir l'offset
+            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->getQuery()
+            ->getResult();
+    
+        // Calcul du nombre total d'éléments
+        $totalItems = count($dessus_de_litRepository->findAll()); // Nombre total d'éléments sans pagination
+    
+        // Calcul du nombre total de pages
+        $totalPages = ceil($totalItems / $limit);
+    
+        // Passer les données à la vue
         return $this->render('dessus_de_lit/index.html.twig', [
-            'dessus_de_lits' => $dessusDeLitRepository->findAll(),
+            'dessus_de_lit' => $dessus_de_lits,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
 

@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SecteurPubliqueMonumentHistoriqueRepository::class)]
+#[ORM\Table(name: 'tbl_secteur_publique_monument_historique')]
 class SecteurPubliqueMonumentHistorique
 {
     #[ORM\Id]

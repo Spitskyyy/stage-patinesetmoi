@@ -17,10 +17,38 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 final class LivreDorController extends AbstractController
 {
     #[Route(name: 'app_livre_dor_index', methods: ['GET'])]
-    public function index(LivreDorRepository $livreDorRepository): Response
+
+
+public function index(Request $request, LivreDorRepository $livreDorRepository): Response
     {
+        // Nombre d'éléments par page
+        $limit = 6;
+    
+        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
+        $page = $request->query->getInt('page', 1);
+    
+        // Calcul de l'offset (la ligne de départ pour la requête)
+        $offset = ($page - 1) * $limit;
+    
+        // Récupérer les éléments de la page actuelle
+        $livre_dors = $livreDorRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
+            ->setFirstResult($offset)  // Définir l'offset
+            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->getQuery()
+            ->getResult();
+    
+        // Calcul du nombre total d'éléments
+        $totalItems = count($livreDorRepository->findAll()); // Nombre total d'éléments sans pagination
+    
+        // Calcul du nombre total de pages
+        $totalPages = ceil($totalItems / $limit);
+    
+        // Passer les données à la vue
         return $this->render('livre_dor/index.html.twig', [
-            'livre_dors' => $livreDorRepository->findAll(),
+            'livre_dor' => $livre_dors,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
 

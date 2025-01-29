@@ -17,12 +17,39 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 final class AbatJourController extends AbstractController
 {
     #[Route(name: 'app_abat_jour_index', methods: ['GET'])]
-    public function index(AbatJourRepository $abatJourRepository): Response
-    {
-        return $this->render('abat_jour/index.html.twig', [
-            'abat_jours' => $abatJourRepository->findAll(),
-        ]);
-    }
+public function index(Request $request, AbatJourRepository $abatJourRepository): Response
+{
+    // Nombre d'éléments par page
+    $limit = 6;
+
+    // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
+    $page = $request->query->getInt('page', 1);
+
+    // Calcul de l'offset (la ligne de départ pour la requête)
+    $offset = ($page - 1) * $limit;
+
+    // Récupérer les éléments de la page actuelle
+    $abatJours = $abatJourRepository->createQueryBuilder('a')
+        ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
+        ->setFirstResult($offset)  // Définir l'offset
+        ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+        ->getQuery()
+        ->getResult();
+
+    // Calcul du nombre total d'éléments
+    $totalItems = count($abatJourRepository->findAll()); // Nombre total d'éléments sans pagination
+
+    // Calcul du nombre total de pages
+    $totalPages = ceil($totalItems / $limit);
+
+    // Passer les données à la vue
+    return $this->render('abat_jour/index.html.twig', [
+        'abat_jours' => $abatJours,
+        'currentPage' => $page,
+        'totalPages' => $totalPages,
+    ]);
+}
+
 
     #[Route('/new', name: 'app_abat_jour_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response

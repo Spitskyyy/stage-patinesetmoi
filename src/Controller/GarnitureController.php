@@ -17,10 +17,36 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 final class GarnitureController extends AbstractController
 {
     #[Route(name: 'app_garniture_index', methods: ['GET'])]
-    public function index(GarnitureRepository $garnitureRepository): Response
+    public function index(Request $request, GarnitureRepository $garnitureRepository): Response
     {
+        // Nombre d'éléments par page
+        $limit = 6;
+    
+        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
+        $page = $request->query->getInt('page', 1);
+    
+        // Calcul de l'offset (la ligne de départ pour la requête)
+        $offset = ($page - 1) * $limit;
+    
+        // Récupérer les éléments de la page actuelle
+        $garnitures = $garnitureRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
+            ->setFirstResult($offset)  // Définir l'offset
+            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->getQuery()
+            ->getResult();
+    
+        // Calcul du nombre total d'éléments
+        $totalItems = count($garnitureRepository->findAll()); // Nombre total d'éléments sans pagination
+    
+        // Calcul du nombre total de pages
+        $totalPages = ceil($totalItems / $limit);
+    
+        // Passer les données à la vue
         return $this->render('garniture/index.html.twig', [
-            'garnitures' => $garnitureRepository->findAll(),
+            'garniture' => $garnitures,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
 

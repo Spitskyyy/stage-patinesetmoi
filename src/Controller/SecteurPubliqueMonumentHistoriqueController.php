@@ -17,10 +17,36 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 final class SecteurPubliqueMonumentHistoriqueController extends AbstractController
 {
     #[Route(name: 'app_secteur_publique_monument_historique_index', methods: ['GET'])]
-    public function index(SecteurPubliqueMonumentHistoriqueRepository $secteurPubliqueMonumentHistoriqueRepository): Response
+    public function index(Request $request, SecteurPubliqueMonumentHistoriqueRepository $secteurPubliqueMonumentHistoriqueRepository): Response
     {
+        // Nombre d'éléments par page
+        $limit = 6;
+    
+        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
+        $page = $request->query->getInt('page', 1);
+    
+        // Calcul de l'offset (la ligne de départ pour la requête)
+        $offset = ($page - 1) * $limit;
+    
+        // Récupérer les éléments de la page actuelle
+        $secteur_publique_monument_historiques = $secteurPubliqueMonumentHistoriqueRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
+            ->setFirstResult($offset)  // Définir l'offset
+            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->getQuery()
+            ->getResult();
+    
+        // Calcul du nombre total d'éléments
+        $totalItems = count($secteurPubliqueMonumentHistoriqueRepository->findAll()); // Nombre total d'éléments sans pagination
+    
+        // Calcul du nombre total de pages
+        $totalPages = ceil($totalItems / $limit);
+    
+        // Passer les données à la vue
         return $this->render('secteur_publique_monument_historique/index.html.twig', [
-            'secteur_publique_monument_historiques' => $secteurPubliqueMonumentHistoriqueRepository->findAll(),
+            'secteur_publique_monument_historique' => $secteur_publique_monument_historiques,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
 

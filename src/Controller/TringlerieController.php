@@ -17,12 +17,41 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class TringlerieController extends AbstractController
 {
     #[Route(name: 'app_tringlerie_index', methods: ['GET'])]
-    public function index(TringlerieRepository $tringlerieRepository): Response
+    public function index(Request $request, TringlerieRepository $tringlerieRepository): Response
     {
+        // Nombre d'éléments par page
+        $limit = 6;
+    
+        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
+        $page = $request->query->getInt('page', 1);
+    
+        // Calcul de l'offset (la ligne de départ pour la requête)
+        $offset = ($page - 1) * $limit;
+    
+        // Récupérer les éléments de la page actuelle
+        $tringleries = $tringlerieRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
+            ->setFirstResult($offset)  // Définir l'offset
+            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->getQuery()
+            ->getResult();
+    
+        // Calcul du nombre total d'éléments
+        $totalItems = count($tringlerieRepository->findAll()); // Nombre total d'éléments sans pagination
+    
+        // Calcul du nombre total de pages
+        $totalPages = ceil($totalItems / $limit);
+    
+        // Passer les données à la vue
         return $this->render('tringlerie/index.html.twig', [
-            'tringleries' => $tringlerieRepository->findAll(),
+            'tringlerie' => $tringleries,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
+
+
+
 
     #[Route('/new', name: 'app_tringlerie_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
