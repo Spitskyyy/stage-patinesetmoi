@@ -107,7 +107,29 @@
 				</div>
 			</div>
 			<!-- End Page Title -->
+			<style>
+				.post-img {
+					height: 450px; 
+					
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					overflow: hidden; 
+					border-radius: 8px; 
+					box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+				}
 
+				.post-img img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover; 
+					transition: transform 0.2s ease-in-out;
+				}
+
+				.post-img img:hover {
+					transform: scale(1.05); 
+				}
+			</style>
 			<!-- Blog Posts Section -->
 			<section id="blog-posts" class="blog-posts section">
 				<a href="{{ path('app_abat_jour_new') }}" class="btn btn-primary mb-4">Create New</a>
@@ -115,9 +137,9 @@
 					<div class="row row-cols-1 row-cols-md-3 g-4">
 						{% for abat_jour in abat_jours %}
 							<div class="col">
-								<article class="card h-100">
+								<article class="card h-100" style="width : 80%; height:70%;">
 									<div
-										class="post-img position-relative overflow-hidden">
+										class="post-img">
 										<!-- Carrousel d'images -->
 										<div id="carousel-{{ abat_jour.id }}" class="carousel slide" data-bs-ride="carousel">
 											<div class="carousel-inner">
@@ -146,28 +168,6 @@
 									</div>
 									<div class="card-body d-flex flex-column">
 										<h5 class="card-title">{{ abat_jour.title }}</h5>
-										<p class="card-text flex-grow-1">
-											<b>Largeur:</b>
-											{{ abat_jour.width }}
-											cm<br>
-											<b>Profondeur:</b>
-											{{ abat_jour.depth }}
-											cm
-											<br>
-											<b>Hauteur:</b>
-											{{ abat_jour.height }}
-											cm<br>
-											<b>Tissu:</b>
-											{{ abat_jour.fabric }}<br>
-											<b>Matériaux:</b>
-											{{ abat_jour.materials }}<br>
-											<b>Choix de la structure:</b>
-											{{ abat_jour.choiceOfStrucure }}<br>
-											<b>Finitions de l'abat jour:</b>
-											{{ abat_jour.lampshadeFinishes }}<br>
-											<b>Temps de réalisation:</b>
-											{{ abat_jour.time }}
-										</p>
 										<div class="actions mt-auto">
 											<a href="{{ path('app_abat_jour_show', {'id': abat_jour.id}) }}" class="btn btn-info">Show</a>
 											<a href="{{ path('app_abat_jour_edit', {'id': abat_jour.id}) }}" class="btn btn-warning">Edit</a>
@@ -279,28 +279,6 @@
 							<li><a href="#">Graphic Design</a></li>
 						</ul>
 					</div>
-
-					{# <div class="col-lg-2 col-md-3 footer-links">
-																					<h4>Hic solutasetp</h4>
-																					<ul>
-																						<li><a href="#">Molestiae accusamus iure</a></li>
-																						<li><a href="#">Excepturi dignissimos</a></li>
-																						<li><a href="#">Suscipit distinctio</a></li>
-																						<li><a href="#">Dilecta</a></li>
-																						<li><a href="#">Sit quas consectetur</a></li>
-																					</ul>
-																				</div>
-															
-																				<div class="col-lg-2 col-md-3 footer-links">
-																					<h4>Nobis illum</h4>
-																					<ul>
-																						<li><a href="#">Ipsam</a></li>
-																						<li><a href="#">Laudantium dolorum</a></li>
-																						<li><a href="#">Dinera</a></li>
-																						<li><a href="#">Trodelas</a></li>
-																						<li><a href="#">Flexo</a></li>
-																					</ul>
-																				</div> #}
 
 				</div>
 			</div>

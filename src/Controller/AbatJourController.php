@@ -74,13 +74,15 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
 
 
 
-    #[Route('/{id}', name: 'app_abat_jour_show', methods: ['GET'])]
-    public function show(AbatJour $abatJour): Response
-    {
-        return $this->render('abat_jour/show.html.twig', [
-            'abat_jour' => $abatJour,
-        ]);
-    }
+#[Route('/{id}', name: 'app_abat_jour_show', methods: ['GET'])]
+public function show(AbatJour $abatJour): Response
+{
+    return $this->render('abat_jour/show.html.twig', [
+        'abat_jour' => $abatJour,
+        'pictures' => $abatJour->getPictures(), // Récupération des images
+    ]);
+}
+
 
     #[Route('/{id}/edit', name: 'app_abat_jour_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager): Response
