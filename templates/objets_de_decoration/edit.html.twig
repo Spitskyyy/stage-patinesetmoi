@@ -5,6 +5,19 @@
 {% block body %}
     <h1>Edit ObjetsDeDecoration</h1>
 
+    <div>
+		<label>Images actuelles :</label>
+		<div class="d-flex flex-wrap">
+			{% for picture in object_de_decoration.pictures %}
+				<div class="m-2 position-relative">
+					<img src="{{ asset('uploads/images/' ~ picture) }}" width="100" class="rounded shadow">
+					<input type="checkbox" name="delete_pictures[]" value="{{ picture }}">
+					Supprimer
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
     {{ include('objets_de_decoration/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_objets_de_decoration_index') }}">back to list</a>

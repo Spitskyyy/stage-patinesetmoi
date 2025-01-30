@@ -5,6 +5,19 @@
 {% block body %}
     <h1>Edit SecteurPubliqueMonumentHistorique</h1>
 
+    <div>
+		<label>Images actuelles :</label>
+		<div class="d-flex flex-wrap">
+			{% for picture in secteur_publique_monument_historique.pictures %}
+				<div class="m-2 position-relative">
+					<img src="{{ asset('uploads/images/' ~ picture) }}" width="100" class="rounded shadow">
+					<input type="checkbox" name="delete_pictures[]" value="{{ picture }}">
+					Supprimer
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
     {{ include('secteur_publique_monument_historique/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_secteur_publique_monument_historique_index') }}">back to list</a>

@@ -25,10 +25,9 @@ final class AbatJourController extends AbstractController
         // Page actuelle, avec une valeur minimale de 1
         $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul du nombre total d'éléments
+       
         $totalItems = $abatJourRepository->count([]); // Optimisation pour éviter un chargement massif en mémoire
     
-        // Calcul du nombre total de pages, avec un minimum de 1
         $totalPages = max(1, ceil($totalItems / $limit));
     
         // Vérifie que la page courante ne dépasse pas le total des pages
@@ -45,7 +44,7 @@ final class AbatJourController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Passer les données à la vue
+        
         return $this->render('abat_jour/index.html.twig', [
             'abat_jours' => $abatJours,
             'currentPage' => $page,
@@ -114,31 +113,86 @@ public function show(AbatJour $abatJour): Response
 
 
     #[Route('/{id}/edit', name: 'app_abat_jour_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(AbatJourType::class, $abatJour);
-        $form->handleRequest($request);
+    public function edit(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $form = $this->createForm(AbatJourType::class, $abatJour);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $deletePictures = $request->request->all('delete_pictures');
 
-            return $this->redirectToRoute('app_abat_jour_index', [], Response::HTTP_SEE_OTHER);
+        if (!empty($deletePictures)) {
+            $picturesArray = $abatJour->getPictures();
+            
+            foreach ($deletePictures as $pictureToDelete) {
+                $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                
+                if (file_exists($filePath)) {
+                    unlink($filePath); 
+                }
+                
+                $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+            }
+            
+            $abatJour->setPictures(array_values($picturesArray)); 
         }
 
-        return $this->render('abat_jour/edit.html.twig', [
-            'abat_jour' => $abatJour,
-            'form' => $form,
-        ]);
-    }
+        $newPictures = $form->get('pictures')->getData();
+        if ($newPictures) {
+            $picturesArray = $abatJour->getPictures();
+            foreach ($newPictures as $newPicture) {
+                $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
 
-    #[Route('/{id}', name: 'app_abat_jour_delete', methods: ['POST'])]
-    public function delete(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$abatJour->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($abatJour);
-            $entityManager->flush();
+                try {
+                    $newPicture->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                    $picturesArray[] = $newFilename;
+                } catch (FileException $e) {
+                }
+            }
+
+            $abatJour->setPictures($picturesArray);
         }
+
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_abat_jour_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('abat_jour/edit.html.twig', [
+        'abat_jour' => $abatJour,
+        'form' => $form,
+    ]);
+}
+
+    #[Route('/{id}', name: 'app_abat_jour_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_abat_jour_delete', methods: ['POST'])]
+public function delete(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete' . $abatJour->getId(), $request->request->get('_token'))) {
+        // Supprimer les images associées
+        $pictures = $abatJour->getPictures();
+
+        if (!empty($pictures)) {
+            foreach ($pictures as $picture) {
+                $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+        }
+
+        // Supprimer l'entité de la base de données
+        $entityManager->remove($abatJour);
+        $entityManager->flush();
+    }
+
+    return $this->redirectToRoute('app_abat_jour_index', [], Response::HTTP_SEE_OTHER);
+}
+
 }

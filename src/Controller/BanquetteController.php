@@ -36,13 +36,13 @@ final class BanquetteController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($banquetteRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($banquetteRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('banquette/index.html.twig', [
             'banquette' => $banquettes,
             'currentPage' => $page,
@@ -108,31 +108,84 @@ final class BanquetteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_banquette_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Banquette $banquette, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(BanquetteType::class, $banquette);
-        $form->handleRequest($request);
+    public function edit(Request $request, Banquette $banquette, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $form = $this->createForm(BanquetteType::class, $banquette);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $deletePictures = $request->request->all('delete_pictures');
 
-            return $this->redirectToRoute('app_banquette_index', [], Response::HTTP_SEE_OTHER);
+        if (!empty($deletePictures)) {
+            $picturesArray = $banquette->getPictures();
+            
+            foreach ($deletePictures as $pictureToDelete) {
+                $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                
+                if (file_exists($filePath)) {
+                    unlink($filePath); 
+                }
+                
+                $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+            }
+            
+            $banquette->setPictures(array_values($picturesArray)); 
         }
 
-        return $this->render('banquette/edit.html.twig', [
-            'banquette' => $banquette,
-            'form' => $form,
-        ]);
+        $newPictures = $form->get('pictures')->getData();
+        if ($newPictures) {
+            $picturesArray = $banquette->getPictures();
+            foreach ($newPictures as $newPicture) {
+                $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+
+                try {
+                    $newPicture->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                    $picturesArray[] = $newFilename;
+                } catch (FileException $e) {
+                }
+            }
+
+            $banquette->setPictures($picturesArray);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_banquette_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    return $this->render('banquette/edit.html.twig', [
+        'banquette' => $banquette,
+        'form' => $form,
+    ]);
+}
+    
     #[Route('/{id}', name: 'app_banquette_delete', methods: ['POST'])]
     public function delete(Request $request, Banquette $banquette, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$banquette->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $banquette->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $banquette->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($banquette);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_banquette_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,13 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit AbatJour{% endblock %}
-
 {% block body %}
-    <h1>Edit AbatJour</h1>
+    <h1>Modifier Abat-Jour</h1>
 
-    {{ include('abat_jour/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-    <a href="{{ path('app_abat_jour_index') }}">back to list</a>
+    <div>
+        <label>Images actuelles :</label>
+        <div class="d-flex flex-wrap">
+            {% for picture in abat_jour.pictures %}
+                <div class="m-2 position-relative">
+                    <img src="{{ asset('uploads/images/' ~ picture) }}" width="100" class="rounded shadow">
+                    <input type="checkbox" name="delete_pictures[]" value="{{ picture }}"> Supprimer
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-    {{ include('abat_jour/_delete_form.html.twig') }}
+    {{ form_row(form.pictures) }}
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+    {{ form_end(form) }}
 {% endblock %}

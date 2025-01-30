@@ -1,13 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit DessusDeLit{% endblock %}
+{% block title %}Edit DessusDeLit
+{% endblock %}
 
 {% block body %}
-    <h1>Edit DessusDeLit</h1>
+	<h1>Edit DessusDeLit</h1>.
 
-    {{ include('dessus_de_lit/_form.html.twig', {'button_label': 'Update'}) }}
+	<div>
+		<label>Images actuelles :</label>
+		<div class="d-flex flex-wrap">
+			{% for picture in dessus_de_lit.pictures %}
+				<div class="m-2 position-relative">
+					<img src="{{ asset('uploads/images/' ~ picture) }}" width="100" class="rounded shadow">
+					<input type="checkbox" name="delete_pictures[]" value="{{ picture }}">
+					Supprimer
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 
-    <a href="{{ path('app_dessus_de_lit_index') }}">back to list</a>
+	{{ include('dessus_de_lit/_form.html.twig', {'button_label': 'Update'}) }}
 
-    {{ include('dessus_de_lit/_delete_form.html.twig') }}
+	<a href="{{ path('app_dessus_de_lit_index') }}">back to list</a>
+
+	{{ include('dessus_de_lit/_delete_form.html.twig') }}
 {% endblock %}

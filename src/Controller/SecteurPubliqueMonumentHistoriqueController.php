@@ -36,13 +36,13 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($secteurPubliqueMonumentHistoriqueRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($secteurPubliqueMonumentHistoriqueRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('secteur_publique_monument_historique/index.html.twig', [
             'secteur_publique_monument_historique' => $secteur_publique_monument_historiques,
             'currentPage' => $page,
@@ -110,17 +110,56 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
     }
 
     #[Route('/{id}/edit', name: 'app_secteur_publique_monument_historique_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, SecteurPubliqueMonumentHistorique $secteurPubliqueMonumentHistorique, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, SecteurPubliqueMonumentHistorique $secteurPubliqueMonumentHistorique, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(SecteurPubliqueMonumentHistoriqueType::class, $secteurPubliqueMonumentHistorique);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $secteurPubliqueMonumentHistorique->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $secteurPubliqueMonumentHistorique->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $secteurPubliqueMonumentHistorique->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $secteurPubliqueMonumentHistorique->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_secteur_publique_monument_historique_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('secteur_publique_monument_historique/edit.html.twig', [
             'secteur_publique_monument_historique' => $secteurPubliqueMonumentHistorique,
             'form' => $form,
@@ -130,11 +169,25 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
     #[Route('/{id}', name: 'app_secteur_publique_monument_historique_delete', methods: ['POST'])]
     public function delete(Request $request, SecteurPubliqueMonumentHistorique $secteurPubliqueMonumentHistorique, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$secteurPubliqueMonumentHistorique->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $secteurPubliqueMonumentHistorique->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $secteurPubliqueMonumentHistorique->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($secteurPubliqueMonumentHistorique);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_secteur_publique_monument_historique_index', [], Response::HTTP_SEE_OTHER);
     }
 }

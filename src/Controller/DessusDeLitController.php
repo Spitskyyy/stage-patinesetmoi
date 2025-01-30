@@ -25,10 +25,8 @@ final class DessusDeLitController extends AbstractController
     // Page actuelle, avec une valeur minimale de 1
     $page = max(1, $request->query->getInt('page', 1));
 
-    // Calcul du nombre total d'éléments
+   
     $totalItems = $dessus_de_litRepository->count([]); // Optimisé pour éviter de charger tous les éléments
-
-    // Calcul du nombre total de pages, avec un minimum de 1
     $totalPages = max(1, ceil($totalItems / $limit));
 
     // Vérifie que la page courante ne dépasse pas le total des pages
@@ -45,7 +43,7 @@ final class DessusDeLitController extends AbstractController
         ->getQuery()
         ->getResult();
 
-    // Passer les données à la vue
+    
     return $this->render('dessus_de_lit/index.html.twig', [
         'dessus_de_lit' => $dessus_de_lits,
         'currentPage' => $page,
@@ -113,31 +111,84 @@ final class DessusDeLitController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_dessus_de_lit_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, DessusDeLit $dessusDeLit, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(DessusDeLitType::class, $dessusDeLit);
-        $form->handleRequest($request);
+    public function edit(Request $request, DessusDeLit $dessusDeLit, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+{
+    $form = $this->createForm(DessusDeLitType::class, $dessusDeLit);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $deletePictures = $request->request->all('delete_pictures');
 
-            return $this->redirectToRoute('app_dessus_de_lit_index', [], Response::HTTP_SEE_OTHER);
+        if (!empty($deletePictures)) {
+            $picturesArray = $dessusDeLit->getPictures();
+            
+            foreach ($deletePictures as $pictureToDelete) {
+                $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                
+                if (file_exists($filePath)) {
+                    unlink($filePath); 
+                }
+                
+                $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+            }
+            
+            $dessusDeLit->setPictures(array_values($picturesArray)); 
         }
 
-        return $this->render('dessus_de_lit/edit.html.twig', [
-            'dessus_de_lit' => $dessusDeLit,
-            'form' => $form,
-        ]);
+        $newPictures = $form->get('pictures')->getData();
+        if ($newPictures) {
+            $picturesArray = $dessusDeLit->getPictures();
+            foreach ($newPictures as $newPicture) {
+                $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+
+                try {
+                    $newPicture->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                    $picturesArray[] = $newFilename;
+                } catch (FileException $e) {
+                }
+            }
+
+            $dessusDeLit->setPictures($picturesArray);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_dessus_de_lit_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('dessus_de_lit/edit.html.twig', [
+        'dessus_de_lit' => $dessusDeLit,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_dessus_de_lit_delete', methods: ['POST'])]
     public function delete(Request $request, DessusDeLit $dessusDeLit, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$dessusDeLit->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $dessusDeLit->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $dessusDeLit->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($dessusDeLit);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_dessus_de_lit_index', [], Response::HTTP_SEE_OTHER);
     }
 }

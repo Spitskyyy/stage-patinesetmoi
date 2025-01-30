@@ -36,13 +36,13 @@ final class GarnitureController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($garnitureRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($garnitureRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('garniture/index.html.twig', [
             'garniture' => $garnitures,
             'currentPage' => $page,
@@ -98,8 +98,6 @@ final class GarnitureController extends AbstractController
         ]);
     }
     
-
-
     #[Route('/{id}', name: 'app_garniture_show', methods: ['GET'])]
     public function show(Garniture $garniture): Response
     {
@@ -109,17 +107,56 @@ final class GarnitureController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_garniture_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Garniture $garniture, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Garniture $garniture, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(GarnitureType::class, $garniture);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $garniture->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $garniture->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $garniture->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $garniture->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_garniture_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('garniture/edit.html.twig', [
             'garniture' => $garniture,
             'form' => $form,

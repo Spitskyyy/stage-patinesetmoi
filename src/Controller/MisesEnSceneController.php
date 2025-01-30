@@ -35,13 +35,13 @@ final class MisesEnSceneController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($misesEnSceneRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($misesEnSceneRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('mises_en_scene/index.html.twig', [
             'mises_en_scene' => $mises_en_scenes,
             'currentPage' => $page,
@@ -107,31 +107,84 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}/edit', name: 'app_mises_en_scene_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, MisesEnScene $misesEnScene, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, MisesEnScene $misesEnScene, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(MisesEnSceneType::class, $misesEnScene);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $misesEnScene->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $misesEnScene->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $misesEnScene->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $misesEnScene->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_mises_en_scene_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('mises_en_scene/edit.html.twig', [
             'mises_en_scene' => $misesEnScene,
-            'form'           => $form,
+            'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_mises_en_scene_delete', methods: ['POST'])]
     public function delete(Request $request, MisesEnScene $misesEnScene, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $misesEnScene->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $misesEnScene->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $misesEnScene->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($misesEnScene);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_mises_en_scene_index', [], Response::HTTP_SEE_OTHER);
     }
 }

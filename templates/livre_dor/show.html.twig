@@ -1,34 +1,277 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}LivreDor{% endblock %}
+{% block title %}Livre d'or
+{% endblock %}
 
 {% block body %}
-    <h1>LivreDor</h1>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ livre_dor.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ livre_dor.title }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ livre_dor.picture }}</td>
-            </tr>
-            <tr>
-                <th>Detail</th>
-                <td>{{ livre_dor.detail }}</td>
-            </tr>
-        </tbody>
-    </table>
+		{% block stylesheets %}
+			<!-- Favicons -->
+			<link href="{{ asset('style/img/favicon.png') }}" rel="icon">
+			<link
+			href="{{ asset('style/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
-    <a href="{{ path('app_livre_dor_index') }}">back to list</a>
+			<!-- Fonts -->
+			<link href="https://fonts.googleapis.com" rel="preconnect">
+			<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+			<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <a href="{{ path('app_livre_dor_edit', {'id': livre_dor.id}) }}">edit</a>
+			<!-- Vendor CSS Files -->
+			<link href="{{ asset('style/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/aos/aos.css') }}" rel="stylesheet">
+			<link href="{{ asset('style/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+			<link
+			href="{{ asset('style/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
-    {{ include('livre_dor/_delete_form.html.twig') }}
+			<!-- Main CSS File -->
+			<link href="{{ asset('style/css/main.css') }}" rel="stylesheet">
+
+
+		{% endblock %}
+	</head>
+
+	<body class="blog-page">
+
+		<header id="header" class="header d-flex align-items-center fixed-top">
+			<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+				<a href="/" class="logo d-flex align-items-center">
+					<h1 class="sitename">Patines Et Moi</h1>
+				</a>
+				<nav id="navmenu" class="navmenu">
+					<ul>
+						<li>
+							<a href="/" class="active">Accueil</a>
+						</li>
+						<li>
+							<a href="/detail">Présentation</a>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/banquette">Banquettes</a></li>
+								<li><a href="/fauteuil_dagrement">Fauteuil d'agrément</a></li>
+								<li><a href="/garniture">Garniture</a></li>
+								<li><a href="/avant_apres">Avant / Après</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Couture d'ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/voilage_rideaux_doubles">voilages, rideaux doublés et stores</a></li>
+								<li><a href="/tringlerie">Tringlerie</a></li>
+								<li><a href="/tete_de_lit">Têtes de lits et dessus de lits</a></li>
+								<li><a href="/avant_apre">Abat-jour</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Décoration</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/objets_de_decoration">Objets de décoration</a></li>
+								<li><a href="/mises_en_scene">Mises en scène</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="/livre_dor">Livre d'or</a>
+						</li>
+						<li>
+							<a href="contact.html">Contact</a>
+						</li>
+						<li></li>
+					</ul>
+					<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+				</nav>
+			</div>
+		</header>
+
+		<!-- Page Title -->
+		<div class="page-title dark-background" style="background-image: url(style/img/page-title-bg.jpg);">
+			<div class="container position-relative">
+				<h1>Livre d'or</h1>
+			</div>
+		</div>
+		<!-- End Page Title -->
+
+		<style>
+			/* Styles pour uniformiser les miniatures */
+			.img-thumbnail {
+				width: 100px;
+				height: 100px;
+				object-fit: contain; /* Affiche l’image entière sans la couper */
+				border: 2px solid #ddd;
+				cursor: pointer;
+				transition: transform 0.2s ease-in-out, border-color 0.2s;
+			}
+
+			.img-thumbnail:hover {
+				border-color: #007bff;
+				transform: scale(1.1);
+			}
+
+			/* Image principale avec ombre */
+			.main-product-image {
+				width: 100%;
+				height: 600px; /* Taille fixe */
+				object-fit: contain; /* Affiche toute l’image sans zoom */
+				border-radius: 10px;
+				box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+				background-color: #fff; /* Ajoute un fond blanc pour éviter les espaces vides */
+			}
+
+			/* Conteneur des miniatures */
+			.thumbnail-container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+				padding: 10px;
+			}
+
+			/* Conteneur des détails */
+			.product-details {
+				background: #f8f9fa;
+				padding: 20px;
+				border-radius: 10px;
+				box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+			}
+		</style>
+
+		<div class="container py-5">
+			<div
+				class="row">
+				<!-- Galerie d'images -->
+				<div class="col-md-2 thumbnail-container">
+					{% for image in livre_dor.pictures %}
+						<img src="{{ asset('uploads/images/' ~ image) }}" class="img-thumbnail img-preview" onclick="changeMainImage(this.src)" alt="{{ livre_dor.title }}">
+					{% endfor %}
+				</div>
+
+				<!-- Image principale -->
+				<div class="col-md-6">
+					<img id="main-image" src="{{ asset('uploads/images/' ~ livre_dor.pictures[0]) }}" class="img-fluid main-product-image" alt="{{ livre_dor.title }}">
+				</div>
+
+				<!-- Détails du produit -->
+				<div class="col-md-4 product-details">
+					<h2>{{ livre_dor.title }}</h2>
+					<p>
+						<b>Detail:</b><br>
+						{{ livre_dor.detail }}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			function changeMainImage(src) {
+document.getElementById("main-image").src = src;
+}
+		</script>
+
+
+		<script>
+			function changeMainImage(src) {
+document.getElementById("main-image").src = src;
+}
+		</script>
+
+
+		<a href="{{ path('app_livre_dor_index') }}">back to list</a>
+
+		<a href="{{ path('app_livre_dor_edit', {'id': livre_dor.id}) }}">edit</a>
+
+		{{ include('livre_dor/_delete_form.html.twig') }}
+
+
+		<footer id="footer" class="footer dark-background">
+
+			<div class="container footer-top">
+				<div class="row gy-4">
+					<div class="col-lg-4 col-md-6 footer-about">
+						<a href="/" class="logo d-flex align-items-center">
+							<span class="sitename">Patines Et Moi</span>
+						</a>
+						<div class="footer-contact pt-3">
+							<p>A108 Adam Street</p>
+							<p>New York, NY 535022</p>
+							<p class="mt-3">
+								<strong>Téléphone :</strong>
+								<span>06-77-80-97-17</span>
+							</p>
+							<p>
+								<strong>Mail:</strong>
+								<span>gusorel@laposte.net</span>
+							</p>
+						</div>
+						<div class="social-links d-flex mt-4">
+							<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
+								<i class="bi bi-facebook"></i>
+							</a>
+							<a href="patines_et_moi_restaurations">
+								<i class="bi bi-instagram"></i>
+							</a>
+
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+							<li><a href="/">Home</a></li>
+							<li><a href="/detail">Détail de l'entreprise</a></li>
+							<li><a href="#">Services</a></li>
+							<li><a href="#">Terms of service</a></li>
+							<li><a href="#">Privacy policy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Our Services</h4>
+						<ul>
+							<li><a href="/banquette">Banquettes</a></li>
+							<li><a href="#">Web Development</a></li>
+							<li><a href="#">Product Management</a></li>
+							<li><a href="#">Marketing</a></li>
+							<li><a href="#">Graphic Design</a></li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="container copyright text-center mt-4">
+				<p>©
+					<span>Copyright</span>
+					<strong class="px-1 sitename">UpConstruction</strong>
+					<span>All Rights Reserved</span>
+				</p>
+				<div class="credits">
+					<!-- All the links in the footer should remain intact. -->
+					<!-- You can delete the links only if you've purchased the pro version. -->
+					<!-- Licensing information: https://bootstrapmade.com/license/ -->
+					<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+					Designed by
+						<a href="https://bootstrapmade.com/"> BootstrapMade</a>
+				</div>
+			</div>
+
+		</footer>
+
+
+	</body>
 {% endblock %}

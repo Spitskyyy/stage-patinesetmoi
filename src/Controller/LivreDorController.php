@@ -38,13 +38,13 @@ public function index(Request $request, LivreDorRepository $livreDorRepository):
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($livreDorRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($livreDorRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('livre_dor/index.html.twig', [
             'livre_dor' => $livre_dors,
             'currentPage' => $page,
@@ -100,8 +100,6 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     ]);
 }
 
-
-
     #[Route('/{id}', name: 'app_livre_dor_show', methods: ['GET'])]
     public function show(LivreDor $livreDor): Response
     {
@@ -111,17 +109,56 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}/edit', name: 'app_livre_dor_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, LivreDor $livreDor, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, LivreDor $livreDor, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(LivreDorType::class, $livreDor);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $livreDor->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $livreDor->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $livreDor->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $livreDor->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_livre_dor_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('livre_dor/edit.html.twig', [
             'livre_dor' => $livreDor,
             'form' => $form,
@@ -131,11 +168,26 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     #[Route('/{id}', name: 'app_livre_dor_delete', methods: ['POST'])]
     public function delete(Request $request, LivreDor $livreDor, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$livreDor->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $livreDor->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $livreDor->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($livreDor);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_livre_dor_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

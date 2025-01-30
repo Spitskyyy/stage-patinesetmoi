@@ -36,13 +36,13 @@ final class ObjetsDeDecorationController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($objetsDeDecorationRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($objetsDeDecorationRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('objets_de_decoration/index.html.twig', [
             'objets_de_decoration' => $objets_de_decorations,
             'currentPage' => $page,
@@ -111,31 +111,88 @@ final class ObjetsDeDecorationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_objets_de_decoration_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, ObjetsDeDecoration $objetsDeDecoration, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, ObjetsDeDecoration $objetsDeDecoration, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ObjetsDeDecorationType::class, $objetsDeDecoration);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $objetsDeDecoration->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $objetsDeDecoration->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $objetsDeDecoration->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $objetsDeDecoration->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_objets_de_decoration_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('objets_de_decoration/edit.html.twig', [
             'objets_de_decoration' => $objetsDeDecoration,
             'form' => $form,
         ]);
     }
 
+
+
+
+
     #[Route('/{id}', name: 'app_objets_de_decoration_delete', methods: ['POST'])]
     public function delete(Request $request, ObjetsDeDecoration $objetsDeDecoration, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$objetsDeDecoration->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $objetsDeDecoration->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $objetsDeDecoration->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($objetsDeDecoration);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_objets_de_decoration_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -36,13 +36,13 @@ final class FauteuilDagrementController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($fauteuilDagrementRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($fauteuilDagrementRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('fauteuil_dagrement/index.html.twig', [
             'fauteuil_dagrement' => $fauteuil_dagrements,
             'currentPage' => $page,
@@ -100,9 +100,6 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     ]);
 }
 
-
-
-
     #[Route('/{id}', name: 'app_fauteuil_dagrement_show', methods: ['GET'])]
     public function show(FauteuilDagrement $fauteuilDagrement): Response
     {
@@ -112,17 +109,56 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}/edit', name: 'app_fauteuil_dagrement_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, FauteuilDagrement $fauteuilDagrement, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, FauteuilDagrement $fauteuilDagrement, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(FauteuilDagrementType::class, $fauteuilDagrement);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $fauteuilDagrement->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $fauteuilDagrement->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $fauteuilDagrement->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $fauteuilDagrement->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_fauteuil_dagrement_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('fauteuil_dagrement/edit.html.twig', [
             'fauteuil_dagrement' => $fauteuilDagrement,
             'form' => $form,
@@ -131,12 +167,26 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
 
     #[Route('/{id}', name: 'app_fauteuil_dagrement_delete', methods: ['POST'])]
     public function delete(Request $request, FauteuilDagrement $fauteuilDagrement, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$fauteuilDagrement->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($fauteuilDagrement);
-            $entityManager->flush();
+{
+    if ($this->isCsrfTokenValid('delete' . $fauteuilDagrement->getId(), $request->request->get('_token'))) {
+        // Supprimer les images associées
+        $pictures = $fauteuilDagrement->getPictures();
+
+        if (!empty($pictures)) {
+            foreach ($pictures as $picture) {
+                $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
         }
 
-        return $this->redirectToRoute('app_fauteuil_dagrement_index', [], Response::HTTP_SEE_OTHER);
+        // Supprimer l'entité de la base de données
+        $entityManager->remove($fauteuilDagrement);
+        $entityManager->flush();
     }
+
+    return $this->redirectToRoute('app_fauteuil_dagrement_index', [], Response::HTTP_SEE_OTHER);
+}
 }

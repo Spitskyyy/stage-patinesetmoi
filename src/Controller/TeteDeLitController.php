@@ -36,13 +36,13 @@ final class TeteDeLitController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($teteDeLitRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($teteDeLitRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('tete_de_lit/index.html.twig', [
             'tete_de_lit' => $tete_de_lits,
             'currentPage' => $page,
@@ -110,17 +110,56 @@ final class TeteDeLitController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_tete_de_lit_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, TeteDeLit $teteDeLit, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, TeteDeLit $teteDeLit, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(TeteDeLitType::class, $teteDeLit);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $teteDeLit->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $teteDeLit->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $teteDeLit->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $teteDeLit->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_tete_de_lit_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('tete_de_lit/edit.html.twig', [
             'tete_de_lit' => $teteDeLit,
             'form' => $form,
@@ -130,11 +169,25 @@ final class TeteDeLitController extends AbstractController
     #[Route('/{id}', name: 'app_tete_de_lit_delete', methods: ['POST'])]
     public function delete(Request $request, TeteDeLit $teteDeLit, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$teteDeLit->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $teteDeLit->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $teteDeLit->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($teteDeLit);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_tete_de_lit_index', [], Response::HTTP_SEE_OTHER);
     }
 }

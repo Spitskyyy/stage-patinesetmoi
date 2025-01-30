@@ -36,13 +36,13 @@ final class VoilageRideauxDoublesController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        // Calcul du nombre total d'éléments
-        $totalItems = count($voilageRideauxDoublesRepository->findAll()); // Nombre total d'éléments sans pagination
+       
+        $totalItems = count($voilageRideauxDoublesRepository->findAll()); 
     
-        // Calcul du nombre total de pages
+        
         $totalPages = ceil($totalItems / $limit);
     
-        // Passer les données à la vue
+        
         return $this->render('voilage_rideaux_doubles/index.html.twig', [
             'voilage_rideaux_doubles' => $voilage_rideaux_doubless,
             'currentPage' => $page,
@@ -111,18 +111,57 @@ final class VoilageRideauxDoublesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_voilage_rideaux_doubles_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(VoilageRideauxDoublesType::class, $voilageRideauxDouble);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $deletePictures = $request->request->all('delete_pictures');
+    
+            if (!empty($deletePictures)) {
+                $picturesArray = $voilageRideauxDouble->getPictures();
+                
+                foreach ($deletePictures as $pictureToDelete) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $pictureToDelete;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath); 
+                    }
+                    
+                    $picturesArray = array_diff($picturesArray, [$pictureToDelete]);
+                }
+                
+                $voilageRideauxDouble->setPictures(array_values($picturesArray)); 
+            }
+    
+            $newPictures = $form->get('pictures')->getData();
+            if ($newPictures) {
+                $picturesArray = $voilageRideauxDouble->getPictures();
+                foreach ($newPictures as $newPicture) {
+                    $originalFilename = pathinfo($newPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $newPicture->guessExtension();
+    
+                    try {
+                        $newPicture->move(
+                            $this->getParameter('pictures_directory'),
+                            $newFilename
+                        );
+                        $picturesArray[] = $newFilename;
+                    } catch (FileException $e) {
+                    }
+                }
+    
+                $voilageRideauxDouble->setPictures($picturesArray);
+            }
+    
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_voilage_rideaux_doubles_index', [], Response::HTTP_SEE_OTHER);
+    
+            return $this->redirectToRoute('app_voilage_rideaux_double_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('voilage_rideaux_doubles/edit.html.twig', [
+    
+        return $this->render('voilage_rideaux_double/edit.html.twig', [
             'voilage_rideaux_double' => $voilageRideauxDouble,
             'form' => $form,
         ]);
@@ -131,11 +170,25 @@ final class VoilageRideauxDoublesController extends AbstractController
     #[Route('/{id}', name: 'app_voilage_rideaux_doubles_delete', methods: ['POST'])]
     public function delete(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$voilageRideauxDouble->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $voilageRideauxDouble->getId(), $request->request->get('_token'))) {
+            // Supprimer les images associées
+            $pictures = $voilageRideauxDouble->getPictures();
+    
+            if (!empty($pictures)) {
+                foreach ($pictures as $picture) {
+                    $filePath = $this->getParameter('pictures_directory') . '/' . $picture;
+                    
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+    
+            // Supprimer l'entité de la base de données
             $entityManager->remove($voilageRideauxDouble);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_voilage_rideaux_doubles_index', [], Response::HTTP_SEE_OTHER);
     }
 }
