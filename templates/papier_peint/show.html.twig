@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AbatJour
+{% block title %}Papier peint
 {% endblock %}
 
 {% block body %}
@@ -73,7 +73,7 @@
 								<li><a href="/voilage_rideaux_doubles">voilages, rideaux doublés et stores</a></li>
 								<li><a href="/tringlerie">Tringlerie</a></li>
 								<li><a href="/tete_de_lit">Têtes de lits et dessus de lits</a></li>
-								<li><a href="/abat_jour">Abat-jour</a></li>
+								<li><a href="/avant_apre">Abat-jour</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -102,7 +102,7 @@
 		<!-- Page Title -->
 		<div class="page-title dark-background" style="background-image: url(style/img/page-title-bg.jpg);">
 			<div class="container position-relative">
-				<h1>Abat-jour</h1>
+				<h1>Papier peint</h1>
 			</div>
 		</div>
 		<!-- End Page Title -->
@@ -156,148 +156,122 @@
 				class="row">
 				<!-- Galerie d'images -->
 				<div class="col-md-2 thumbnail-container">
-					{% for image in banquette.pictures %}
-						<img src="{{ asset('uploads/images/' ~ image) }}" class="img-thumbnail img-preview" onclick="changeMainImage(this.src)" alt="{{ banquette.title }}">
+					{% for image in papier_peint.pictures %}
+						<img src="{{ asset('uploads/images/' ~ image) }}" class="img-thumbnail img-preview" onclick="changeMainImage(this.src)" alt="{{ papier_peint.title }}">
 					{% endfor %}
 				</div>
 
 				<!-- Image principale -->
 				<div class="col-md-6">
-					<img id="main-image" src="{{ asset('uploads/images/' ~ banquette.pictures[0]) }}" class="img-fluid main-product-image" alt="{{ banquette.title }}">
+					<img id="main-image" src="{{ asset('uploads/images/' ~ papier_peint.pictures[0]) }}" class="img-fluid main-product-image" alt="{{ papier_peint.title }}">
 				</div>
 
 				<!-- Détails du produit -->
 				<div class="col-md-4 product-details">
-					<h2>{{ banquette.title }}</h2>
+					<h2>{{ papier_peint.title }}</h2>
 					<p>
-						<b>Usage / Destination:</b><br>
-						{{ banquette.usetxt }}
-						</p>
-					<p>
-						<b>Largeur:</b><br>
-						{{ banquette.width }}
-						cm</p>
-					<p>
-						<b>Profondeur:</b><br>
-						{{ banquette.depth }}
-						cm</p>
-					<p>
-						<b>Hauteur:</b><br>
-						{{ banquette.height }}
-						cm</p>
-					<p>
-						<b>Recouverture ou réfection complète :</b><br>
-						{{ banquette.coveringOrCompleteRepair }}
-						</p>
-					<p>
-						<b>Matériaux utilisé:</b><br>
-						{{ banquette.materials }}</p>
-					<p>
-						<b>Tissu utilisé:</b><br>
-						{{ banquette.fabric }}</p>
-
-					<b>Finitions:</b><br>
-					{{ banquette.finishes }}</p>
-				<p>
-					<b>Temps de réalisation nécessaire:</b><br>
-					{{ banquette.time }} h</p>
-					
+						<b>Detail:</b><br>
+						{{ papier_peint.detail }}
+					</p>
+				</div>
 			</div>
 		</div>
+
+		<script>
+			function changeMainImage(src) {
+document.getElementById("main-image").src = src;
+}
+		</script>
+
+
+		<script>
+			function changeMainImage(src) {
+document.getElementById("main-image").src = src;
+}
+		</script>
+
+
+		<a href="{{ path('app_papier_peint_index') }}">back to list</a>
+
+		<a href="{{ path('app_papier_peint_edit', {'id': papier_peint.id}) }}">edit</a>
+
+		{{ include('papier_peint/_delete_form.html.twig') }}
+
+
+		<footer id="footer" class="footer dark-background">
+
+			<div class="container footer-top">
+				<div class="row gy-4">
+					<div class="col-lg-4 col-md-6 footer-about">
+						<a href="/" class="logo d-flex align-items-center">
+							<span class="sitename">Patines Et Moi</span>
+						</a>
+						<div class="footer-contact pt-3">
+							<p>A108 Adam Street</p>
+							<p>New York, NY 535022</p>
+							<p class="mt-3">
+								<strong>Téléphone :</strong>
+								<span>06-77-80-97-17</span>
+							</p>
+							<p>
+								<strong>Mail:</strong>
+								<span>gusorel@laposte.net</span>
+							</p>
+						</div>
+						<div class="social-links d-flex mt-4">
+							<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
+								<i class="bi bi-facebook"></i>
+							</a>
+							<a href="patines_et_moi_restaurations">
+								<i class="bi bi-instagram"></i>
+							</a>
+
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+							<li><a href="/">Home</a></li>
+							<li><a href="/detail">Détail de l'entreprise</a></li>
+							<li><a href="#">Services</a></li>
+							<li><a href="#">Terms of service</a></li>
+							<li><a href="#">Privacy policy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-2 col-md-3 footer-links">
+						<h4>Our Services</h4>
+						<ul>
+							<li><a href="/banquette">Banquettes</a></li>
+							<li><a href="#">Web Development</a></li>
+							<li><a href="#">Product Management</a></li>
+							<li><a href="#">Marketing</a></li>
+							<li><a href="#">Graphic Design</a></li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="container copyright text-center mt-4">
+				<p>©
+					<span>Copyright</span>
+					<strong class="px-1 sitename">UpConstruction</strong>
+					<span>All Rights Reserved</span>
+				</p>
+				<div class="credits">
+					<!-- All the links in the footer should remain intact. -->
+					<!-- You can delete the links only if you've purchased the pro version. -->
+					<!-- Licensing information: https://bootstrapmade.com/license/ -->
+					<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+					Designed by
+						<a href="https://bootstrapmade.com/"> BootstrapMade</a>
+				</div>
+			</div>
+
+		</footer>
+
+
 	</body>
-</div>
-
-<script>
-	function changeMainImage(src) {
-document.getElementById("main-image").src = src;
-}
-</script>
-
-
-<script>
-	function changeMainImage(src) {
-document.getElementById("main-image").src = src;
-}
-</script>
-
-
-<a href="{{ path('app_banquette_index') }}">back to list</a>
-
-<a href="{{ path('app_banquette_edit', {'id': banquette.id}) }}">edit</a>
-
-{{ include('banquette/_delete_form.html.twig') }}
-
-
-<footer id="footer" class="footer dark-background">
-
-	<div class="container footer-top">
-		<div class="row gy-4">
-			<div class="col-lg-4 col-md-6 footer-about">
-				<a href="/" class="logo d-flex align-items-center">
-					<span class="sitename">Patines Et Moi</span>
-				</a>
-				<div class="footer-contact pt-3">
-					<p>A108 Adam Street</p>
-					<p>New York, NY 535022</p>
-					<p class="mt-3">
-						<strong>Téléphone :</strong>
-						<span>06-77-80-97-17</span>
-					</p>
-					<p>
-						<strong>Mail:</strong>
-						<span>gusorel@laposte.net</span>
-					</p>
-				</div>
-				<div class="social-links d-flex mt-4">
-					<a href="https://www.facebook.com/Patinesetmoi.GuillaumeSorel">
-						<i class="bi bi-facebook"></i>
-					</a>
-					<a href="patines_et_moi_restaurations">
-						<i class="bi bi-instagram"></i>
-					</a>
-
-				</div>
-			</div>
-
-			<div class="col-lg-2 col-md-3 footer-links">
-				<h4>Useful Links</h4>
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/detail">Détail de l'entreprise</a></li>
-					<li><a href="#">Services</a></li>
-					<li><a href="#">Terms of service</a></li>
-					<li><a href="#">Privacy policy</a></li>
-				</ul>
-			</div>
-
-			<div class="col-lg-2 col-md-3 footer-links">
-				<h4>Our Services</h4>
-				<ul>
-					<li><a href="/banquette">Banquettes</a></li>
-					<li><a href="#">Web Development</a></li>
-					<li><a href="#">Product Management</a></li>
-					<li><a href="#">Marketing</a></li>
-					<li><a href="#">Graphic Design</a></li>
-				</ul>
-			</div>
-
-		</div>
-	</div>
-
-	<div class="container copyright text-center mt-4">
-		<p>©
-			<span>Copyright</span>
-			<strong class="px-1 sitename">UpConstruction</strong>
-			<span>All Rights Reserved</span>
-		</p>
-		<div class="credits">
-			<!-- All the links in the footer should remain intact. -->
-			<!-- You can delete the links only if you've purchased the pro version. -->
-			<!-- Licensing information: https://bootstrapmade.com/license/ -->
-			<!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-			Designed by
-				<a href="https://bootstrapmade.com/"> BootstrapMade</a>
-		</div>
-	</div>
-
-</footer></body>{% endblock %}
+{% endblock %}

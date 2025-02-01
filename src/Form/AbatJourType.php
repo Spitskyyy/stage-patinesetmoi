@@ -7,26 +7,27 @@ use PhpParser\Node\Stmt\Label;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AbatJourType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', FileType::class, [ 'label' => 'Titre'])
-            ->add('width', FileType::class, [ 'label' => 'Largeur'])
-            ->add('depth', FileType::class, [ 'label' => 'Profondeur'])
-            ->add('height', FileType::class, [ 'label' => 'Hauteur'])
-            ->add('fabric', FileType::class, [ 'label' => 'Tissu(s) utilisé(s)'])
-            ->add('materials', FileType::class, [ 'label' => 'Materiaux'])
-            ->add('choice_of_strucure', FileType::class, [ 'label' => 'Titre'])
-            ->add('lampshade_finishes', FileType::class, [ 'label' => 'Titre'])
-            ->add('time', FileType::class, [ 'label' => 'Temps'])
+            ->add('title', TextType::class, [ 'label' => 'Titre'])
+            ->add('width', TextType::class, [ 'label' => 'Largeur'])
+            ->add('depth', TextType::class, [ 'label' => 'Profondeur'])
+            ->add('height', TextType::class, [ 'label' => 'Hauteur'])
+            ->add('fabric', TextType::class, [ 'label' => 'Tissu(s) utilisé(s)'])
+            ->add('materials', TextType::class, [ 'label' => 'Materiaux'])
+            ->add('choice_of_strucure', TextType::class, [ 'label' => 'Choix de la structure'])
+            ->add('lampshade_finishes', TextType::class, [ 'label' => 'Finitions abat jour  (bordures)'])
+            ->add('time', TextType::class, [ 'label' => 'Temps de réalisation nécessaire'])
             ->add('pictures', FileType::class, [
-                'label' => 'Upload des images',
+                'label' => 'Téléchargement des images',
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,

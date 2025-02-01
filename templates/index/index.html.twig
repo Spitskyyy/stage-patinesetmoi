@@ -34,6 +34,7 @@
 
 		<!-- Main CSS File -->
 		<link href="{{ asset('style/css/main.css') }}" rel="stylesheet">
+		<style></style>
 	{% endblock %}
 </head>
 
@@ -165,6 +166,30 @@
 		</section>
 		<!-- /Hero Section -->
 
+		<style>
+			#services {
+				background-color: #d4b895; /* Beige Sable */
+				color: #2c2c2c; /* Texte gris foncé pour meilleur contraste */
+			}
+
+			#services h2,
+			#services h3,
+			#services p {
+				color: #2c2c2c;
+			}
+
+			#services a {
+				color: #2c2c2c;
+				text-decoration: none;
+				transition: color 0.3s ease, background-color 0.3s ease;
+			}
+
+			#services a:hover {
+				color: #f4c542; /* Jaune doré élégant */
+				padding: 2px 5px;
+				border-radius: 5px;
+			}
+		</style>
 		<!-- Services Section -->
 		<section
 			id="services" class="services section light-background">
@@ -329,11 +354,11 @@
 			<div class="container">
 
 				<div class="row justify-content-around gy-4">
-					<div class="features-image col-lg-6" data-aos="fade-up" data-aos-delay="100"><img src="style/img/alt-services.jpg" alt=""></div>
+					<div class="features-image col-lg-6" data-aos="fade-up" data-aos-delay="100"><img src="/image/artisan2.png" alt=""></div>
 
 					<div class="col-lg-5 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-						<h3>Enim quis est voluptatibus aliquid consequatur fugiat</h3>
-						<p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi</p>
+						<h3>Artisan</h3>
+						<p>Artisan diplômé et inscrit à la chambre des métier et de l'artisanat</p>
 
 						<div class="icon-box d-flex position-relative" data-aos="fade-up" data-aos-delay="300">
 							<i class="bi bi-easel flex-shrink-0"></i>
@@ -387,7 +412,7 @@
 		</section>
 		<!-- /Alt Services Section -->
 
-		<!-- Features Section -->
+		{# <!-- Features Section -->
 		<section id="features" class="features section">
 
 			<div class="container">
@@ -461,7 +486,7 @@
 								<h3>Neque exercitationem debitis</h3>
 								<p class="fst-italic">
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-																																																																									magna aliqua.
+									magna aliqua.
 								</p>
 								<ul>
 									<li>
@@ -552,7 +577,7 @@
 			</div>
 
 		</section>
-		<!-- /Features Section -->
+		<!-- /Features Section --> #}
 
 		<!-- Projects Section -->
 		<section
@@ -878,7 +903,7 @@
 	</a>
 
 	{# <!-- Preloader -->
-									<div id="preloader"></div> #}
+											<div id="preloader"></div> #}
 
 
 	{% block javascripts %}
