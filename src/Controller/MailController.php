@@ -20,15 +20,25 @@ class MailController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $userEmail = $data['email']; 
+            $userName = $data['nom'];
+            $message = $data['message'];
 
+            // Création de l'email
             $email = (new Email())
-                ->from($data['email'])
-                ->to('destinataire@example.com') // Remplace avec ton adresse e-mail
+                ->from($userEmail)  
+                ->to('stagetestmail1@gmail.com')
                 ->subject('Nouveau message de contact')
-                ->text($data['message']);
+                ->text(
+                    "Vous avez reçu un nouveau message de contact :\n\n" .
+                    "Nom : $userName\n" .
+                    "Email : $userEmail\n\n" .
+                    "Message :\n$message"
+                );
 
             $mailer->send($email);
 
+            // Message flash pour confirmer l'envoi
             $this->addFlash('success', 'Votre message a été envoyé avec succès !');
 
             return $this->redirectToRoute('contact');
@@ -39,4 +49,3 @@ class MailController extends AbstractController
         ]);
     }
 }
-
