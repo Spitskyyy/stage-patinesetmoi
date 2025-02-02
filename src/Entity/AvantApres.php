@@ -24,6 +24,9 @@ class AvantApres
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $detail = null;
 
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,4 +81,13 @@ class AvantApres
 
         return $this;
     }
+    public function setCreatedAtValue()
+{
+    $this->createdAt = new \DateTime();
+}
+
+public function getCreatedAt(): ?\DateTimeInterface
+{
+    return $this->createdAt;
+}
 }

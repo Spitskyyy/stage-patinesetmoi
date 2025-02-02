@@ -41,6 +41,8 @@ class DessusDeLit
 
     #[ORM\Column(length: 255, nullable: true)]
     private array $pictures = [];
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
 
     public function getId(): ?int
     {
@@ -168,4 +170,13 @@ class DessusDeLit
 
         return $this;
     }
+    public function setCreatedAtValue()
+{
+    $this->createdAt = new \DateTime();
+}
+
+public function getCreatedAt(): ?\DateTimeInterface
+{
+    return $this->createdAt;
+}
 }

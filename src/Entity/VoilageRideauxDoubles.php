@@ -41,6 +41,8 @@ class VoilageRideauxDoubles
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $time = null;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
 
     public function getId(): ?int
     {
@@ -168,4 +170,13 @@ class VoilageRideauxDoubles
 
         return $this;
     }
+    public function setCreatedAtValue()
+{
+    $this->createdAt = new \DateTime();
+}
+
+public function getCreatedAt(): ?\DateTimeInterface
+{
+    return $this->createdAt;
+}
 }
