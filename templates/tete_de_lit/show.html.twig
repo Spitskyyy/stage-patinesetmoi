@@ -90,7 +90,7 @@
 							<a href="/livre_dor">Livre d'or</a>
 						</li>
 						<li>
-							<a href="contact.html">Contact</a>
+							<a href="/contact">Contact</a>
 						</li>
 						<li></li>
 					</ul>
@@ -157,13 +157,13 @@
 				<!-- Galerie d'images -->
 				<div class="col-md-2 thumbnail-container">
 					{% for image in  tete_de_lit.pictures %}
-						<img src="{{ asset('uploads/images/' ~ image) }}" class="img-thumbnail img-preview" onclick="changeMainImage(this.src)" alt="{{  tete_de_lit.title }}">
+						<img src="{{ asset('uploads/images/' ~ image) }}" class="img-thumbnail img-preview" onclick="changeMainImage(this.src)" alt="{{ tete_de_lit.title }}">
 					{% endfor %}
 				</div>
 
 				<!-- Image principale -->
 				<div class="col-md-6">
-					<img id="main-image" src="{{ asset('uploads/images/' ~  tete_de_lit.pictures[0]) }}" class="img-fluid main-product-image" alt="{{  tete_de_lit.title }}">
+					<img id="main-image" src="{{ asset('uploads/images/' ~ tete_de_lit.pictures[0]) }}" class="img-fluid main-product-image" alt="{{ tete_de_lit.title }}">
 				</div>
 
 				<!-- Détails du produit -->
@@ -174,7 +174,7 @@
 						{{ tete_de_lit.width }}
 						cm
 					</p>
-                    <p>
+					<p>
 						<b>Hauteur:</b><br>
 						{{ tete_de_lit.width }}
 						cm
@@ -183,15 +183,15 @@
 						<b>Tissu(s) utilisé(s):</b><br>
 						{{ tete_de_lit.fabric }}
 					</p>
-                    <p>
+					<p>
 						<b>Materiaux utilisés:</b><br>
 						{{ tete_de_lit.materials }}
 					</p>
-                    <p>
+					<p>
 						<b>Support utilisé:</b><br>
 						{{ tete_de_lit.support }}
 					</p>
-                    <p>
+					<p>
 						<b>Finitions de la tête de lit (bordures):</b><br>
 						{{ tete_de_lit.headboardFinishes }}
 					</p>
@@ -300,4 +300,11 @@ document.getElementById("main-image").src = src;
 
 
 	</body>
+	{% block javascripts %}
+		<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+		<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+		<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+		<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+		<script src="{{ asset('style/js/main.js') }}"></script>
+	{% endblock %}
 {% endblock %}

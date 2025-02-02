@@ -90,7 +90,7 @@
 							<a href="/livre_dor">Livre d'or</a>
 						</li>
 						<li>
-							<a href="contact.html">Contact</a>
+							<a href="/contact">Contact</a>
 						</li>
 						<li></li>
 					</ul>
@@ -172,7 +172,7 @@
 					<p>
 						<b>Usage / Destination:</b><br>
 						{{ banquette.usetxt }}
-						</p>
+					</p>
 					<p>
 						<b>Largeur:</b><br>
 						{{ banquette.width }}
@@ -188,7 +188,7 @@
 					<p>
 						<b>Recouverture ou réfection complète :</b><br>
 						{{ banquette.coveringOrCompleteRepair }}
-						</p>
+					</p>
 					<p>
 						<b>Matériaux utilisé:</b><br>
 						{{ banquette.materials }}</p>
@@ -200,8 +200,9 @@
 					{{ banquette.finishes }}</p>
 				<p>
 					<b>Temps de réalisation nécessaire:</b><br>
-					{{ banquette.time }} h</p>
-					
+					{{ banquette.time }}
+					h</p>
+
 			</div>
 		</div>
 	</body>
@@ -300,4 +301,9 @@ document.getElementById("main-image").src = src;
 		</div>
 	</div>
 
-</footer></body>{% endblock %}
+</footer></body>{% block javascripts %}
+<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+<script src="{{ asset('style/js/main.js') }}"></script>{% endblock %}{% endblock %}

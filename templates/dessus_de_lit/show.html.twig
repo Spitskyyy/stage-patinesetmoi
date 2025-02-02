@@ -90,7 +90,7 @@
 							<a href="/livre_dor">Livre d'or</a>
 						</li>
 						<li>
-							<a href="contact.html">Contact</a>
+							<a href="/contact">Contact</a>
 						</li>
 						<li></li>
 					</ul>
@@ -190,8 +190,9 @@
 					{{ dessus_de_lit.bedspreadFinishes }}</p>
 				<p>
 					<b>Temps de réalisation nécessair</b><br>
-					{{ dessus_de_lit.time }} h</p>
-					
+					{{ dessus_de_lit.time }}
+					h</p>
+
 			</div>
 		</div>
 	</body>
@@ -290,4 +291,9 @@ document.getElementById("main-image").src = src;
 		</div>
 	</div>
 
-</footer></body>{% endblock %}
+</footer></body>{% block javascripts %}
+<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+<script src="{{ asset('style/js/main.js') }}"></script>{% endblock %}{% endblock %}

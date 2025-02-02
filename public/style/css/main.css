@@ -1706,11 +1706,11 @@ section,
     position: absolute;
     top: 0;
     right: 0;
-    min-height: 600px;
+    min-height: 590px;
   }
 }
 
-.about .about-img img {
+.about .about-img img { 
   position: absolute;
   inset: 0;
   display: block;

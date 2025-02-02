@@ -169,8 +169,6 @@ final class ObjetsDeDecorationController extends AbstractController
 
 
 
-
-
     #[Route('/{id}', name: 'app_objets_de_decoration_delete', methods: ['POST'])]
     public function delete(Request $request, ObjetsDeDecoration $objetsDeDecoration, EntityManagerInterface $entityManager): Response
     {

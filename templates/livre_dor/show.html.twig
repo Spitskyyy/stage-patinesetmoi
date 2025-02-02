@@ -90,7 +90,7 @@
 							<a href="/livre_dor">Livre d'or</a>
 						</li>
 						<li>
-							<a href="contact.html">Contact</a>
+							<a href="/contact">Contact</a>
 						</li>
 						<li></li>
 					</ul>
@@ -271,7 +271,13 @@ document.getElementById("main-image").src = src;
 			</div>
 
 		</footer>
-
+		{% block javascripts %}
+			<script src="{{ asset('style/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+			<script src="{{ asset('style/vendor/aos/aos.js') }}"></script>
+			<script src="{{ asset('style/vendor/glightbox/js/glightbox.min.js') }}"></script>
+			<script src="{{ asset('style/vendor/swiper/swiper-bundle.min.js') }}"></script>
+			<script src="{{ asset('style/js/main.js') }}"></script>
+		{% endblock %}
 
 	</body>
 {% endblock %}
