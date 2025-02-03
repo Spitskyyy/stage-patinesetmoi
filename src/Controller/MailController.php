@@ -27,7 +27,7 @@ class MailController extends AbstractController
             // Création de l'email
             $email = (new Email())
                 ->from($userEmail)  
-                ->to('stagetestmail1@gmail.com')
+                ->to('patinesmtmoi@gmail.com')
                 ->subject('Nouveau message de contact')
                 ->text(
                     "Vous avez reçu un nouveau message de contact :\n\n" .
