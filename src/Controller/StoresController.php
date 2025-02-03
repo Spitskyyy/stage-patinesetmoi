@@ -6,12 +6,13 @@ use App\Entity\Stores;
 use App\Form\StoresType;
 use App\Repository\StoresRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 #[Route('/stores')]
@@ -53,6 +54,7 @@ final class StoresController extends AbstractController
 
 
     #[Route('/new', name: 'app_stores_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $store = new Stores(); // Le tableau $pictures est initialisé dans l'entité
@@ -110,6 +112,7 @@ final class StoresController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stores_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Stores $store, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(StoresType::class, $store);
@@ -167,6 +170,7 @@ final class StoresController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_stores_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Stores $store, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $store->getId(), $request->request->get('_token'))) {

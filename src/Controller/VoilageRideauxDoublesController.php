@@ -4,14 +4,15 @@ namespace App\Controller;
 
 use App\Entity\VoilageRideauxDoubles;
 use App\Form\VoilageRideauxDoublesType;
-use App\Repository\VoilageRideauxDoublesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Repository\VoilageRideauxDoublesRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/voilage_rideaux_doubles')]
 final class VoilageRideauxDoublesController extends AbstractController
@@ -53,6 +54,7 @@ final class VoilageRideauxDoublesController extends AbstractController
 
 
     #[Route('/new', name: 'app_voilage_rideaux_doubles_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $voilageRideauxDouble = new VoilageRideauxDoubles(); // Le tableau $pictures est initialisé dans l'entité
@@ -111,6 +113,7 @@ final class VoilageRideauxDoublesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_voilage_rideaux_doubles_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(VoilageRideauxDoublesType::class, $voilageRideauxDouble);
@@ -168,6 +171,7 @@ final class VoilageRideauxDoublesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_voilage_rideaux_doubles_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $voilageRideauxDouble->getId(), $request->request->get('_token'))) {

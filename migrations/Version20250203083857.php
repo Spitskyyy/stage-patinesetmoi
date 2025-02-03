@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250129145811 extends AbstractMigration
+final class Version20250203083857 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,6 +29,7 @@ final class Version20250129145811 extends AbstractMigration
         $this->addSql('CREATE TABLE tbl_livre_d_or (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', detail LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tbl_mises_en_scene (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', detail LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tbl_objets_de_decoration (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', detail LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE tbl_papier_peint (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', detail LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tbl_secteur_publique_monument_historique (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', detail LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tbl_store (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', usetxt LONGTEXT DEFAULT NULL, width DOUBLE PRECISION DEFAULT NULL, height DOUBLE PRECISION DEFAULT NULL, lining LONGTEXT DEFAULT NULL, fabric LONGTEXT DEFAULT NULL, time LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tbl_tete_de_lit (id INT AUTO_INCREMENT NOT NULL, title LONGTEXT DEFAULT NULL, pictures JSON DEFAULT NULL COMMENT \'(DC2Type:json)\', width DOUBLE PRECISION DEFAULT NULL, height DOUBLE PRECISION DEFAULT NULL, fabric LONGTEXT DEFAULT NULL, materials LONGTEXT DEFAULT NULL, support LONGTEXT DEFAULT NULL, headboard_finishes LONGTEXT DEFAULT NULL, time LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -50,6 +51,7 @@ final class Version20250129145811 extends AbstractMigration
         $this->addSql('DROP TABLE tbl_livre_d_or');
         $this->addSql('DROP TABLE tbl_mises_en_scene');
         $this->addSql('DROP TABLE tbl_objets_de_decoration');
+        $this->addSql('DROP TABLE tbl_papier_peint');
         $this->addSql('DROP TABLE tbl_secteur_publique_monument_historique');
         $this->addSql('DROP TABLE tbl_store');
         $this->addSql('DROP TABLE tbl_tete_de_lit');

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\ObjetsDeDecorationRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -53,6 +54,7 @@ final class ObjetsDeDecorationController extends AbstractController
 
 
     #[Route('/new', name: 'app_objets_de_decoration_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $objetsDeDecoration = new ObjetsDeDecoration(); // Le tableau $pictures est initialisé dans l'entité
@@ -111,6 +113,7 @@ final class ObjetsDeDecorationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_objets_de_decoration_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, ObjetsDeDecoration $objetsDeDecoration, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ObjetsDeDecorationType::class, $objetsDeDecoration);
@@ -170,6 +173,7 @@ final class ObjetsDeDecorationController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_objets_de_decoration_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, ObjetsDeDecoration $objetsDeDecoration, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $objetsDeDecoration->getId(), $request->request->get('_token'))) {

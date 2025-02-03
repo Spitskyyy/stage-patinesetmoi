@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -51,10 +52,13 @@ final class AbatJourController extends AbstractController
             'totalPages' => $totalPages,
         ]);
     }
-    
+
     #[Route('/new', name: 'app_abat_jour_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
+    if (!$this->isGranted('ROLE_ADMIN')) {
+        throw $this->createAccessDeniedException();}
     $abatJour = new AbatJour(); // Pas besoin d'initialiser $pictures ici, c'est fait dans l'entité
 
     $form = $this->createForm(AbatJourType::class, $abatJour);
@@ -113,6 +117,7 @@ public function show(AbatJour $abatJour): Response
 
 
     #[Route('/{id}/edit', name: 'app_abat_jour_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $form = $this->createForm(AbatJourType::class, $abatJour);
@@ -170,7 +175,8 @@ public function show(AbatJour $abatJour): Response
 }
 
     #[Route('/{id}', name: 'app_abat_jour_delete', methods: ['POST'])]
-    #[Route('/{id}', name: 'app_abat_jour_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+
 public function delete(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager): Response
 {
     if ($this->isCsrfTokenValid('delete' . $abatJour->getId(), $request->request->get('_token'))) {

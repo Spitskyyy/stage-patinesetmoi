@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\SecteurPubliqueMonumentHistorique;
 use App\Form\SecteurPubliqueMonumentHistoriqueType;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\SecteurPubliqueMonumentHistoriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -51,6 +52,7 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
     }
 
     #[Route('/new', name: 'app_secteur_publique_monument_historique_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $secteurPubliqueMonumentHistorique = new SecteurPubliqueMonumentHistorique();
@@ -110,6 +112,7 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
     }
 
     #[Route('/{id}/edit', name: 'app_secteur_publique_monument_historique_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, SecteurPubliqueMonumentHistorique $secteurPubliqueMonumentHistorique, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(SecteurPubliqueMonumentHistoriqueType::class, $secteurPubliqueMonumentHistorique);
@@ -167,6 +170,7 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
     }
 
     #[Route('/{id}', name: 'app_secteur_publique_monument_historique_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, SecteurPubliqueMonumentHistorique $secteurPubliqueMonumentHistorique, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $secteurPubliqueMonumentHistorique->getId(), $request->request->get('_token'))) {

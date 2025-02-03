@@ -6,12 +6,13 @@ use App\Entity\Tringlerie;
 use App\Form\TringlerieType;
 use App\Repository\TringlerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/tringlerie')]
 final class TringlerieController extends AbstractController
@@ -54,6 +55,7 @@ final class TringlerieController extends AbstractController
 
 
     #[Route('/new', name: 'app_tringlerie_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $tringlerie = new Tringlerie();
@@ -114,6 +116,7 @@ final class TringlerieController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_tringlerie_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Tringlerie $tringlerie, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(TringlerieType::class, $tringlerie);
@@ -171,6 +174,7 @@ final class TringlerieController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_tringlerie_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Tringlerie $tringlerie, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $tringlerie->getId(), $request->request->get('_token'))) {

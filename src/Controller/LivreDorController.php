@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -53,6 +54,7 @@ public function index(Request $request, LivreDorRepository $livreDorRepository):
     }
 
     #[Route('/new', name: 'app_livre_dor_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $livreDor = new LivreDor(); // Le tableau $pictures est initialisé dans l'entité
@@ -109,6 +111,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}/edit', name: 'app_livre_dor_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, LivreDor $livreDor, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(LivreDorType::class, $livreDor);
@@ -166,6 +169,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}', name: 'app_livre_dor_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, LivreDor $livreDor, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $livreDor->getId(), $request->request->get('_token'))) {
