@@ -40,8 +40,8 @@ final class FauteuilDagrementController extends AbstractController
             ->getResult();
     
         
-        return $this->render('fauteuil_dagrement_/index.html.twig', [
-            'fauteuil_dagrement_' => $fauteuil_dagrement,
+        return $this->render('fauteuil_dagrement/index.html.twig', [
+            'fauteuil_dagrement' => $fauteuil_dagrement,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]);

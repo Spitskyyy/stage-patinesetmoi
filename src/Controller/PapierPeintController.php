@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/papier/peint')]
+#[Route('/papier_peint')]
 final class PapierPeintController extends AbstractController
 {
     #[Route(name: 'app_papier_peint_index', methods: ['GET'])]
@@ -39,8 +39,8 @@ final class PapierPeintController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        return $this->render('papierPeint/index.html.twig', [
-            'papierPeint' => $papierPeint,
+        return $this->render('papier_peint/index.html.twig', [
+            'papier_peint' => $papierPeint,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]);

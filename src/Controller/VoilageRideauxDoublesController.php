@@ -39,7 +39,7 @@ final class VoilageRideauxDoublesController extends AbstractController
             ->getQuery()
             ->getResult();
     
-        return $this->render('tringlerie/index.html.twig', [
+        return $this->render('voilage_rideaux_doubles/index.html.twig', [
             'voilage_rideaux_doubles' => $voilage_rideaux_doubless,
             'currentPage' => $page,
             'totalPages' => $totalPages,
