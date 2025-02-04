@@ -20,38 +20,31 @@ final class VoilageRideauxDoublesController extends AbstractController
     #[Route(name: 'app_voilage_rideaux_doubles_index', methods: ['GET'])]
     public function index(Request $request, VoilageRideauxDoublesRepository $voilageRideauxDoublesRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul de l'offset (la ligne de départ pour la requête)
+        $totalItems = $voilageRideauxDoublesRepository->count([]);
+        
+        $totalPages = max(1, ceil($totalItems / $limit));
+    
+        $page = min($page, $totalPages);
+    
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
         $voilage_rideaux_doubless = $voilageRideauxDoublesRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     
-       
-        $totalItems = count($voilageRideauxDoublesRepository->findAll()); 
-    
-        
-        $totalPages = ceil($totalItems / $limit);
-    
-        
-        return $this->render('voilage_rideaux_doubles/index.html.twig', [
+        return $this->render('tringlerie/index.html.twig', [
             'voilage_rideaux_doubles' => $voilage_rideaux_doubless,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]);
     }
-
-
 
     #[Route('/new', name: 'app_voilage_rideaux_doubles_new', methods: ['GET', 'POST'])]
 

@@ -38,74 +38,74 @@
 	<body class="blog-page">
 
 		<header id="header" class="header d-flex align-items-center fixed-top">
-		<div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+			<div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-			<a href="/" class="logo d-flex align-items-center">
-				<!-- Uncomment the line below if you also wish to use an image logo -->
-				<!-- <img src="style/img/logo.png" alt=""> -->
-					<h1 class="sitename"> Patines Et Moi</h1>
-			</a>
+				<a href="/" class="logo d-flex align-items-center">
+					<!-- Uncomment the line below if you also wish to use an image logo -->
+					<!-- <img src="style/img/logo.png" alt=""> -->
+						<h1 class="sitename"> Patines Et Moi</h1>
+				</a>
 
-			<nav id="navmenu" class="navmenu">
-				<ul>
-					<li>
-						<a href="/" class="active">Accueil</a>
-					</li>
-					<li>
-						<a href="/detail">Présentation</a>
-					</li>
+				<nav id="navmenu" class="navmenu">
+					<ul>
+						<li>
+							<a href="/" class="active">Accueil</a>
+						</li>
+						<li>
+							<a href="/detail">Présentation</a>
+						</li>
 
 
-					<li class="dropdown">
-						<a href="#">
-							<span>Ameublement</span>
-							<i class="bi bi-chevron-down toggle-dropdown"></i>
-						</a>
-						<ul>
-							<li><a href="/banquette">Banquettes</a></li>
-							<li><a href="/fauteuil_dagrement">Fauteuil d'agrement</a></li>
-							<li><a href="/garniture">Garniture</a></li>
-							<li><a href="/avant_apres">Avant / Après</a></li>
-							<li><a href="/secteur_publique_monument_historique">Travaux secteur public</a></li>
-						</ul>
-					</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Ameublement</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/banquette">Banquettes</a></li>
+								<li><a href="/fauteuil_dagrement">Fauteuil d'agrement</a></li>
+								<li><a href="/garniture">Garniture</a></li>
+								<li><a href="/avant_apres">Avant / Après</a></li>
+								<li><a href="/secteur_publique_monument_historique">Travaux secteur public</a></li>
+							</ul>
+						</li>
 
-					<li class="dropdown">
-						<a href="#">
-							<span>Couture d'ameublement 
-							</span>
-							<i class="bi bi-chevron-down toggle-dropdown"></i>
-						</a>
-						<ul>
-							<li><a href="/voilage_rideaux_doubles">voilages, rideaux doublés et stores</a></li>
-							<li><a href="/tringlerie">Tringlerie</a></li>
-							<li><a href="/tete_de_lit">Têtes de lits et dessus de lits</a></li>
-							<li><a href="/abat_jour">Abat-jour</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#">
-							<span>Décoration</span>
-							<i class="bi bi-chevron-down toggle-dropdown"></i>
-						</a>
-						<ul>
-							<li><a href="/objets_de_decoration">Objets de décoration</a></li>
-							<li><a href="/mises_en_scene">Mises en scène</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="/livre_dor">Livre d'or</a>
-					</li>
-					<li>
-						<a href="/contact">Contact</a>
-					</li>
-					<li></li>
-				</ul>
-				<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-			</nav>
+						<li class="dropdown">
+							<a href="#">
+								<span>Couture d'ameublement
+								</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/voilage_rideaux_doubles">voilages, rideaux doublés et stores</a></li>
+								<li><a href="/tringlerie">Tringlerie</a></li>
+								<li><a href="/tete_de_lit">Têtes de lits et dessus de lits</a></li>
+								<li><a href="/abat_jour">Abat-jour</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#">
+								<span>Décoration</span>
+								<i class="bi bi-chevron-down toggle-dropdown"></i>
+							</a>
+							<ul>
+								<li><a href="/objets_de_decoration">Objets de décoration</a></li>
+								<li><a href="/mises_en_scene">Mises en scène</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="/livre_dor">Livre d'or</a>
+						</li>
+						<li>
+							<a href="/contact">Contact</a>
+						</li>
+						<li></li>
+					</ul>
+					<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+				</nav>
 
-		</div>
-	</header>
+			</div>
+		</header>
 
 		<main
 			class="main">
@@ -163,9 +163,12 @@
 				.pagination .page-link i {
 					color: #333;
 				}
+				.back-color {
+					background-color: #d4b895;
+				}
 			</style>
 			<!-- Blog Posts Section -->
-			<section id="blog-posts" class="blog-posts section">
+			<section id="blog-posts" class="blog-posts section back-color">
 				<a href="{{ path('app_avant_apres_new') }}" class="btn btn-primary mb-4">Create New</a>
 				<div class="container py-5">
 					<div class="row row-cols-1 row-cols-md-3 g-4">
@@ -220,7 +223,7 @@
 
 				<!-- Pagination -->
 
-				<section id="blog-pagination" class="blog-pagination section">
+				<section id="blog-pagination" class="blog-pagination section back-color">
 					<div class="container">
 						<div class="d-flex justify-content-center">
 							<ul class="pagination">

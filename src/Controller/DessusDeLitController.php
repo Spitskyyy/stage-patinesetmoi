@@ -20,33 +20,28 @@ final class DessusDeLitController extends AbstractController
     #[Route(name: 'app_dessus_de_lit_index', methods: ['GET'])]
     public function index(Request $request, DessusDeLitRepository $dessus_de_litRepository): Response
 {
-    // Nombre d'éléments par page
     $limit = 6;
-
-    // Page actuelle, avec une valeur minimale de 1
+    
     $page = max(1, $request->query->getInt('page', 1));
 
-   
-    $totalItems = $dessus_de_litRepository->count([]); // Optimisé pour éviter de charger tous les éléments
+    $totalItems = $dessus_de_litRepository->count([]);
+    
     $totalPages = max(1, ceil($totalItems / $limit));
 
-    // Vérifie que la page courante ne dépasse pas le total des pages
     $page = min($page, $totalPages);
 
-    // Calcul de l'offset (départ des résultats pour la requête)
     $offset = ($page - 1) * $limit;
 
-    // Récupérer les éléments de la page actuelle
-    $dessus_de_lits = $dessus_de_litRepository->createQueryBuilder('a')
-        ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-        ->setFirstResult($offset)  // Définir l'offset
-        ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+    $dessus_de_lit = $dessus_de_litRepository->createQueryBuilder('a')
+        ->orderBy('a.title', 'ASC')
+        ->setFirstResult($offset)
+        ->setMaxResults($limit)
         ->getQuery()
         ->getResult();
 
     
     return $this->render('dessus_de_lit/index.html.twig', [
-        'dessus_de_lit' => $dessus_de_lits,
+        'dessus_de_lit' => $dessus_de_lit,
         'currentPage' => $page,
         'totalPages' => $totalPages,
     ]);

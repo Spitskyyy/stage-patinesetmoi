@@ -20,28 +20,24 @@ final class BanquetteController extends AbstractController
     #[Route(name: 'app_banquette_index', methods: ['GET'])]
     public function index(Request $request, BanquetteRepository $banquetteRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul de l'offset (la ligne de départ pour la requête)
+        $totalItems = $banquetteRepository->count([]);
+        
+        $totalPages = max(1, ceil($totalItems / $limit));
+    
+        $page = min($page, $totalPages);
+    
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
         $banquettes = $banquetteRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
-    
-       
-        $totalItems = count($banquetteRepository->findAll()); 
-    
-        
-        $totalPages = ceil($totalItems / $limit);
     
         
         return $this->render('banquette/index.html.twig', [
@@ -52,7 +48,7 @@ final class BanquetteController extends AbstractController
     }
 
     #[Route('/new', name: 'app_banquette_new', methods: ['GET', 'POST'])]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $banquette = new Banquette(); // Le tableau $pictures est initialisé dans l'entité
@@ -110,7 +106,7 @@ final class BanquetteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_banquette_edit', methods: ['GET', 'POST'])]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Banquette $banquette, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $form = $this->createForm(BanquetteType::class, $banquette);
@@ -168,7 +164,7 @@ final class BanquetteController extends AbstractController
 }
     
     #[Route('/{id}', name: 'app_banquette_delete', methods: ['POST'])]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Banquette $banquette, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $banquette->getId(), $request->request->get('_token'))) {

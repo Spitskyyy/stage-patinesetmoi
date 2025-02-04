@@ -20,32 +20,26 @@ final class AbatJourController extends AbstractController
     #[Route(name: 'app_abat_jour_index', methods: ['GET'])]
     public function index(Request $request, AbatJourRepository $abatJourRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, avec une valeur minimale de 1
         $page = max(1, $request->query->getInt('page', 1));
     
        
-        $totalItems = $abatJourRepository->count([]); // Optimisation pour éviter un chargement massif en mémoire
+        $totalItems = $abatJourRepository->count([]);
     
         $totalPages = max(1, ceil($totalItems / $limit));
     
-        // Vérifie que la page courante ne dépasse pas le total des pages
         $page = min($page, $totalPages);
     
-        // Calcul de l'offset (départ des résultats pour la requête)
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
         $abatJours = $abatJourRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     
-        
         return $this->render('abat_jour/index.html.twig', [
             'abat_jours' => $abatJours,
             'currentPage' => $page,

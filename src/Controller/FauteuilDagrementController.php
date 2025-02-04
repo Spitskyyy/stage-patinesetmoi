@@ -20,32 +20,28 @@ final class FauteuilDagrementController extends AbstractController
     #[Route(name: 'app_fauteuil_dagrement_index', methods: ['GET'])]
     public function index(Request $request, FauteuilDagrementRepository $fauteuilDagrementRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul de l'offset (la ligne de départ pour la requête)
+        $totalItems = $fauteuilDagrementRepository->count([]);
+        
+        $totalPages = max(1, ceil($totalItems / $limit));
+    
+        $page = min($page, $totalPages);
+    
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
-        $fauteuil_dagrements = $fauteuilDagrementRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+        $fauteuil_dagrement = $fauteuilDagrementRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     
-       
-        $totalItems = count($fauteuilDagrementRepository->findAll()); 
-    
         
-        $totalPages = ceil($totalItems / $limit);
-    
-        
-        return $this->render('fauteuil_dagrement/index.html.twig', [
-            'fauteuil_dagrement' => $fauteuil_dagrements,
+        return $this->render('fauteuil_dagrement_/index.html.twig', [
+            'fauteuil_dagrement_' => $fauteuil_dagrement,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]);

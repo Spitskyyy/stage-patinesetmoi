@@ -22,32 +22,28 @@ final class LivreDorController extends AbstractController
 
 public function index(Request $request, LivreDorRepository $livreDorRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul de l'offset (la ligne de départ pour la requête)
+        $totalItems = $livreDorRepository->count([]);
+        
+        $totalPages = max(1, ceil($totalItems / $limit));
+    
+        $page = min($page, $totalPages);
+    
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
-        $livre_dors = $livreDorRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+        $livre_dor = $livreDorRepository->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     
-       
-        $totalItems = count($livreDorRepository->findAll()); 
-    
-        
-        $totalPages = ceil($totalItems / $limit);
-    
         
         return $this->render('livre_dor/index.html.twig', [
-            'livre_dor' => $livre_dors,
+            'livre_dor' => $livre_dor,
             'currentPage' => $page,
             'totalPages' => $totalPages,
         ]);

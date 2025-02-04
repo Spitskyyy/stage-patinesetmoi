@@ -21,31 +21,26 @@ final class StoresController extends AbstractController
     #[Route(name: 'app_stores_index', methods: ['GET'])]
     public function index(Request $request, StoresRepository $storesRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul de l'offset (la ligne de départ pour la requête)
+        $totalItems = $storesRepository->count([]);
+        
+        $totalPages = max(1, ceil($totalItems / $limit));
+    
+        $page = min($page, $totalPages);
+    
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
         $stores = $storesRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     
-       
-        $totalItems = count($storesRepository->findAll()); 
-    
-        
-        $totalPages = ceil($totalItems / $limit);
-    
-        
-        return $this->render('stores/index.html.twig', [
+        return $this->render('secteur_publique_monument_historique/index.html.twig', [
             'store' => $stores,
             'currentPage' => $page,
             'totalPages' => $totalPages,

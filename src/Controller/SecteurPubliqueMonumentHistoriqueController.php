@@ -20,30 +20,25 @@ final class SecteurPubliqueMonumentHistoriqueController extends AbstractControll
     #[Route(name: 'app_secteur_publique_monument_historique_index', methods: ['GET'])]
     public function index(Request $request, SecteurPubliqueMonumentHistoriqueRepository $secteurPubliqueMonumentHistoriqueRepository): Response
     {
-        // Nombre d'éléments par page
         $limit = 6;
     
-        // Page actuelle, récupérée via le paramètre 'page' dans l'URL, par défaut 1
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
     
-        // Calcul de l'offset (la ligne de départ pour la requête)
+        $totalItems = $secteurPubliqueMonumentHistoriqueRepository->count([]);
+        
+        $totalPages = max(1, ceil($totalItems / $limit));
+    
+        $page = min($page, $totalPages);
+    
         $offset = ($page - 1) * $limit;
     
-        // Récupérer les éléments de la page actuelle
         $secteur_publique_monument_historiques = $secteurPubliqueMonumentHistoriqueRepository->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC') // Tri par titre (ordre croissant)
-            ->setFirstResult($offset)  // Définir l'offset
-            ->setMaxResults($limit)   // Limiter le nombre d'éléments par page
+            ->orderBy('a.title', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     
-       
-        $totalItems = count($secteurPubliqueMonumentHistoriqueRepository->findAll()); 
-    
-        
-        $totalPages = ceil($totalItems / $limit);
-    
-        
         return $this->render('secteur_publique_monument_historique/index.html.twig', [
             'secteur_publique_monument_historique' => $secteur_publique_monument_historiques,
             'currentPage' => $page,

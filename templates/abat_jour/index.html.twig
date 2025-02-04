@@ -139,37 +139,34 @@
 				.post-img img:hover {
 					transform: scale(1.05);
 				}
-				/* Couleur de base des liens de pagination */
+
 					.pagination .page-link {
-						color: #333; /* Change la couleur du texte */
-						background-color: transparent; /* Change la couleur de fond */
-						border: 1px solid #ddd; /* Modifie la bordure si nécessaire */
+						color: #333;
+						background-color: transparent;
+						border: 1px solid #ddd;
 					}
 
-					/* Changer la couleur au survol */
 					.pagination .page-link:hover {
-						color: #fff; /* Couleur du texte au survol */
-						background-color: #ffc107; /* Couleur de fond au survol (bleu) */
-						border-color: #ffc107; /* Bordure bleu au survol */
+						color: #fff;
+						background-color: #ffc107;
+						border-color: #ffc107; 
 					}
 
-					/* Couleur de la page active */
 					.pagination .page-item.active .page-link {
-						color: #fff; /* Couleur du texte pour la page active */
-						background-color: #ffc107; /* Couleur de fond jaune pour la page active */
-						border-color: #ffc107; /* Bordure jaune pour la page active */
+						color: #fff; 
+						background-color: #ffc107; 
+						border-color: #ffc107; 
 					}
 
-					/* Couleur de la flèche gauche et droite */
 					.pagination .page-link i {
-						color: #333; /* Couleur des icônes des chevrons */
+						color: #333; 
 					}
-					body{
-						background-color: #ccb28c;
-					}
+					.back-color {
+					background-color: #d4b895;
+				}
 			</style>
 			<!-- Blog Posts Section -->
-			<section id="blog-posts" class="blog-posts section">
+			<section id="blog-posts" class="blog-posts section back-color">
 				<a href="{{ path('app_abat_jour_new') }}" class="btn btn-primary mb-4">Create New</a>
 				<div class="container py-5">
 					<div class="row row-cols-1 row-cols-md-3 g-4">
@@ -220,7 +217,7 @@
 					</div>
 				</div>
 
-				<section id="blog-pagination" class="blog-pagination section">
+				<section id="blog-pagination" class="blog-pagination section back-color">
 					<div class="container">
 						<div class="d-flex justify-content-center">
 							<ul class="pagination">
