@@ -52,7 +52,7 @@ final class GarnitureController extends AbstractController
     }
 
     #[Route('/new', name: 'app_garniture_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $garniture = new Garniture(); // Le tableau $pictures est initialisé dans l'entité
@@ -109,7 +109,7 @@ final class GarnitureController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_garniture_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, Garniture $garniture, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(GarnitureType::class, $garniture);
@@ -167,7 +167,7 @@ final class GarnitureController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_garniture_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, Garniture $garniture, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$garniture->getId(), $request->getPayload()->getString('_token'))) {

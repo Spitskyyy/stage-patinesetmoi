@@ -54,7 +54,7 @@ final class VoilageRideauxDoublesController extends AbstractController
 
 
     #[Route('/new', name: 'app_voilage_rideaux_doubles_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $voilageRideauxDouble = new VoilageRideauxDoubles(); // Le tableau $pictures est initialisé dans l'entité
@@ -113,7 +113,7 @@ final class VoilageRideauxDoublesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_voilage_rideaux_doubles_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(VoilageRideauxDoublesType::class, $voilageRideauxDouble);
@@ -171,7 +171,7 @@ final class VoilageRideauxDoublesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_voilage_rideaux_doubles_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, VoilageRideauxDoubles $voilageRideauxDouble, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $voilageRideauxDouble->getId(), $request->request->get('_token'))) {

@@ -52,7 +52,7 @@ final class BanquetteController extends AbstractController
     }
 
     #[Route('/new', name: 'app_banquette_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $banquette = new Banquette(); // Le tableau $pictures est initialisé dans l'entité
@@ -110,7 +110,7 @@ final class BanquetteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_banquette_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, Banquette $banquette, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $form = $this->createForm(BanquetteType::class, $banquette);
@@ -168,7 +168,7 @@ final class BanquetteController extends AbstractController
 }
     
     #[Route('/{id}', name: 'app_banquette_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, Banquette $banquette, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $banquette->getId(), $request->request->get('_token'))) {

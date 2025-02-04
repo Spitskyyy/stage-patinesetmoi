@@ -53,7 +53,7 @@ final class TeteDeLitController extends AbstractController
 
 
     #[Route('/new', name: 'app_tete_de_lit_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $teteDeLit = new TeteDeLit(); // Le tableau $pictures est initialisé dans l'entité
@@ -112,7 +112,7 @@ final class TeteDeLitController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_tete_de_lit_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, TeteDeLit $teteDeLit, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(TeteDeLitType::class, $teteDeLit);
@@ -170,7 +170,7 @@ final class TeteDeLitController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_tete_de_lit_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, TeteDeLit $teteDeLit, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $teteDeLit->getId(), $request->request->get('_token'))) {

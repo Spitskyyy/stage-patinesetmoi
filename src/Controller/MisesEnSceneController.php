@@ -51,7 +51,7 @@ final class MisesEnSceneController extends AbstractController
     }
 
     #[Route('/new', name: 'app_mises_en_scene_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $misesEnScene = new MisesEnScene(); // Le tableau $pictures est initialisé dans l'entité
@@ -109,7 +109,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}/edit', name: 'app_mises_en_scene_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, MisesEnScene $misesEnScene, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(MisesEnSceneType::class, $misesEnScene);
@@ -167,7 +167,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}', name: 'app_mises_en_scene_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, MisesEnScene $misesEnScene, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $misesEnScene->getId(), $request->request->get('_token'))) {

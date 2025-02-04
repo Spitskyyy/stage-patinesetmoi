@@ -54,7 +54,7 @@ final class AbatJourController extends AbstractController
     }
 
     #[Route('/new', name: 'app_abat_jour_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     if (!$this->isGranted('ROLE_ADMIN')) {
@@ -117,7 +117,7 @@ public function show(AbatJour $abatJour): Response
 
 
     #[Route('/{id}/edit', name: 'app_abat_jour_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $form = $this->createForm(AbatJourType::class, $abatJour);
@@ -175,7 +175,7 @@ public function show(AbatJour $abatJour): Response
 }
 
     #[Route('/{id}', name: 'app_abat_jour_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 
 public function delete(Request $request, AbatJour $abatJour, EntityManagerInterface $entityManager): Response
 {

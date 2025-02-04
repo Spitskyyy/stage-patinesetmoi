@@ -54,7 +54,7 @@ final class FauteuilDagrementController extends AbstractController
 
 
     #[Route('/new', name: 'app_fauteuil_dagrement_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
 {
     $fauteuilDagrement = new FauteuilDagrement(); // Le tableau $pictures est initialisé dans l'entité
@@ -111,7 +111,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}/edit', name: 'app_fauteuil_dagrement_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, FauteuilDagrement $fauteuilDagrement, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(FauteuilDagrementType::class, $fauteuilDagrement);
@@ -169,7 +169,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Slu
     }
 
     #[Route('/{id}', name: 'app_fauteuil_dagrement_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, FauteuilDagrement $fauteuilDagrement, EntityManagerInterface $entityManager): Response
 {
     if ($this->isCsrfTokenValid('delete' . $fauteuilDagrement->getId(), $request->request->get('_token'))) {

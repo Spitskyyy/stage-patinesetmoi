@@ -52,7 +52,7 @@ final class PapierPeintController extends AbstractController
     }
 
     #[Route('/new', name: 'app_papier_peint_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -112,7 +112,7 @@ final class PapierPeintController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_papier_peint_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 
     public function edit(Request $request, PapierPeint $papierPeint, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -172,7 +172,7 @@ final class PapierPeintController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_papier_peint_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
 
     public function delete(Request $request, PapierPeint $papierPeint, EntityManagerInterface $entityManager): Response
     {

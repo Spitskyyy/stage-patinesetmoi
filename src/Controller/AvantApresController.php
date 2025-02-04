@@ -54,7 +54,7 @@ final class AvantApresController extends AbstractController
 
 
     #[Route('/new', name: 'app_avant_apres_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $avantApre = new AvantApres(); // Le tableau $pictures est initialisé dans l'entité
@@ -113,7 +113,7 @@ final class AvantApresController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_avant_apres_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function edit(Request $request, AvantApres $avantApre, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(AvantApresType::class, $avantApre);
@@ -171,7 +171,7 @@ final class AvantApresController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_avant_apres_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function delete(Request $request, AvantApres $avantApre, EntityManagerInterface $entityManager): Response
 {
     if ($this->isCsrfTokenValid('delete' . $avantApre->getId(), $request->request->get('_token'))) {
