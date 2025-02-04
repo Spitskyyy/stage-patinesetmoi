@@ -25,5 +25,3 @@
 ###< symfony/asset-mapper ###
 
 /public/uploads
-
-/public/.htaccess
