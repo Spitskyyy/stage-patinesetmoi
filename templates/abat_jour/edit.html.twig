@@ -1,25 +1,127 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Modifier Abat-Jour</h1>
 
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+	<style>
+		.form-container {
+			max-width: 600px;
+			margin: 50px auto;
+			padding: 30px;
+			background: #fff;
+			border-radius: 10px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			animation: fadeIn 0.5s ease-in-out;
+		}
 
-    <div>
-        <label>Images actuelles :</label>
-        <div class="d-flex flex-wrap">
-            {% for picture in abat_jour.pictures %}
-                <div class="m-2 position-relative">
-                    <img src="{{ asset('uploads/images/' ~ picture) }}" width="100" class="rounded shadow">
-                    <input type="checkbox" name="delete_pictures[]" value="{{ picture }}"> Supprimer
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+		.form-container h1 {
+			text-align: center;
+			font-size: 24px;
+			font-weight: 600;
+			margin-bottom: 20px;
+		}
 
-    {{ form_row(form.pictures) }}
+		.form-container form {
+			display: flex;
+			flex-direction: column;
+		}
 
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
+		.form-container input,
+		.form-container textarea,
+		.form-container select {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 15px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			transition: all 0.3s ease-in-out;
+		}
 
-    {{ form_end(form) }}
+		.form-container input:focus,
+		.form-container textarea:focus,
+		.form-container select:focus {
+			border-color: #ffc107;
+			box-shadow: 0 0 5px rgba(142, 68, 173, 0.5);
+		}
+
+		.form-container button {
+			background: #ffc107;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background 0.3s ease-in-out;
+		}
+
+		.form-container button:hover {
+			background: #ffc107;
+		}
+
+		/* Style pour les images */
+		.image-preview {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			justify-content: center;
+		}
+
+		.image-preview .image-item {
+			position: relative;
+			display: inline-block;
+			text-align: center;
+		}
+
+		.image-preview img {
+			width: 100px;
+			border-radius: 8px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			transition: transform 0.3s ease-in-out;
+		}
+
+		.image-preview img:hover {
+			transform: scale(1.1);
+		}
+
+		.image-preview input[type="checkbox"] {
+			margin-top: 5px;
+		}
+
+		/* Animation d'apparition */
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+	<div class="form-container">
+		<h1>Modifier Abat-Jour</h1>
+
+		{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+		<div>
+			<label>Images actuelles :</label>
+			<div class="image-preview">
+				{% for picture in abat_jour.pictures %}
+					<div class="image-item">
+						<img src="{{ asset('uploads/images/' ~ picture) }}" alt="Image actuelle">
+						<div>
+							<input type="checkbox" name="delete_pictures[]" value="{{ picture }}">
+							Supprimer
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		{{ form_row(form.pictures) }}
+
+		<button type="submit" class="btn btn-primary">Enregistrer</button>
+
+		{{ form_end(form) }}
+	</div>
 {% endblock %}
